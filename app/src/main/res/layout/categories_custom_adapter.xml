@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:padding="3dp">
+
+<ImageView
+    android:id="@+id/os_images"
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:scaleType="fitXY"
+    android:src="@mipmap/ic_launcher" />
+
+<TextView
+    android:layout_below="@+id/os_images"
+    android:id="@+id/os_texts"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="This is Just"
+    android:textAlignment="center"
+    android:textSize="20dp"
+    android:layout_marginTop="160dp"
+    android:textStyle="bold"
+    android:background="@color/lightWhite"
+    android:textColor="@color/Red"
+
+    android:layout_alignRight="@id/os_images"
+    android:layout_alignTop="@id/os_images"
+    android:layout_alignBottom="@id/os_images"
+
+    android:gravity="center"/>
+
+</RelativeLayout>

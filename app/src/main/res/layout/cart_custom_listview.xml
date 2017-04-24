@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@color/blue"
+         android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        >
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="160dp"
+            android:layout_height="130dp"
+            android:scaleType="fitXY"
+            />
+        <TextView
+            android:id="@+id/txt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="API: "
+            android:layout_alignTop="@+id/img"
+            android:layout_toRightOf="@+id/img"
+            android:textColor="@color/grey"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            android:layout_marginLeft="10dp"
+            />
+        <TextView
+            android:id="@+id/size"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt"
+            android:layout_gravity="center"
+            android:layout_marginTop="2dip"
+            android:layout_toRightOf="@id/img"
+            android:gravity="right"
+            android:text="size: 23"
+            android:textColor="@color/grey"
+            android:layout_marginLeft="10dp"
+            />
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/size"
+            android:layout_gravity="center"
+            android:layout_marginTop="2dip"
+            android:layout_toRightOf="@id/img"
+            android:gravity="right"
+            android:text="price: 23 $"
+            android:textColor="@color/grey"
+            android:layout_marginLeft="10dp"
+            />
+        <TextView
+        android:id="@+id/category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/price"
+        android:layout_gravity="center"
+         android:layout_marginTop="2dip"
+        android:layout_toRightOf="@id/img"
+        android:gravity="right"
+        android:text="23-12-2017"
+        android:textColor="@color/grey"
+        android:layout_marginLeft="10dp"
+        />
+    </RelativeLayout>
+</LinearLayout>

@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="48dp"
+    android:layout_height="fill_parent"
+    android:layout_gravity="right" >
+
+    <!-- Menu Item Image -->
+    <ImageView
+        android:id="@+id/pic"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:src="@drawable/cart" />
+
+    <!-- Badge Count -->
+
+    <com.example.hp.smdproject.RoundedLetterView
+        android:id="@+id/setround"
+        android:layout_alignParentRight="true"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="20dp"
+        />
+
+</RelativeLayout>

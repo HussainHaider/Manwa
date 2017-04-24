@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/white"
+
+    tools:context="com.example.hp.smdproject.userProfile">
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+
+            <ImageView
+                android:id="@+id/header_cover_image"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="fitXY"
+
+                android:background="#000000"
+                />
+            <!-- android:src="@drawable/navigation_header_image"-->
+
+            <ImageButton
+                android:id="@+id/user_profile_photo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_below="@+id/header_cover_image"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-60dp"
+                android:background="@drawable/profile_circular_border_imageview"
+                android:onClick="buttonClick"
+
+                android:elevation="5dp"
+                android:padding="20dp"
+                android:scaleType="centerCrop"
+
+                />
+            <!--android:src="@drawable/profile"-->
+
+            <RelativeLayout
+                android:id="@+id/profile_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/header_cover_image"
+                android:background="@color/lightRed"
+                android:elevation="4dp"
+                android:paddingBottom="24dp">
+
+                <TextView
+                    android:id="@+id/user_profile_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="40dp"
+                    android:text="Shoib Khalid"
+                    android:textColor="#fff"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+
+               <!-- <TextView
+                    android:id="@+id/user_profile_short_bio"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/user_profile_name"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="2dp"
+                    android:text="shoib4112@gmail.com"
+                    android:textColor="#fff"
+                    android:textSize="14sp" />-->
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/WatchList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/profile_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-4dp"
+                android:text="Whish List"
+                android:textColor="@color/BackColor"
+                android:textSize="25sp" />
+
+
+            <ListView
+                    android:layout_below="@id/WatchList"
+                    android:id="@+id/listnumbers"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
+                </ListView>
+
+
+
+
+        </RelativeLayout>
+
+    </LinearLayout>
+    </RelativeLayout>
+
+
