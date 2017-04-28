@@ -31,9 +31,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:textColor="#ffffff"
+            android:textColor="@color/theme1"
             android:textStyle="bold"
-            android:background="@drawable/mybutton"
+            android:background="@drawable/mybutton2"
             android:text="Join Now" />
 
         <Button
@@ -42,9 +42,9 @@
             android:layout_height="wrap_content"
             android:padding="10dp"
             android:layout_marginLeft="25dp"
-            android:textColor="#ffffff"
+            android:textColor="@color/theme1"
             android:textStyle="bold"
-            android:background="@drawable/mybutton"
+            android:background="@drawable/mybutton2"
             android:text="Signin" />
 
 

@@ -76,9 +76,9 @@ public class Show_items extends AppCompatActivity {
 //        id=1;
         Helper = new DataBaseAdpter(this);
         D = new LinearLayout(this);
-//        item_id = getIntent().getStringExtra("EXTRA_SESSION_ID");
+        item_id = getIntent().getStringExtra("EXTRA_SESSION_ID");
         list1 = new ArrayList<String>();
-//        list1 = Helper.getspeceficitem(item_id);
+        list1 = Helper.getspeceficitem(item_id);
 
         MY_URL_STRING = "http://www.cricketact.com.au/images/junior-competition.jpg";
 
@@ -87,11 +87,10 @@ public class Show_items extends AppCompatActivity {
 //        Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 //        imageView.setImageBitmap(bmp);
 
-//        items_size=list1.get(1);
-
-        items_size = "";
-//        items_Descrption=list1.get(2);
-        items_Descrption = "";
+        items_size=list1.get(1);
+//        items_size = "";
+        items_Descrption=list1.get(2);
+//        items_Descrption = "";
 
         wishcount = 0;
         favorite = (MaterialFavoriteButton) findViewById(R.id.wishbtn);
