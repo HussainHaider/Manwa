@@ -54,7 +54,7 @@ public class Category_Services extends Service {
     {
         long id1=Helper.inserttable2(id,n);
         String numberAsString = Long.toString(id1);
-        Log.d("Data inserted",numberAsString);
+        Log.d("Data inserted2",numberAsString);
     }
     class LoadAllProductName extends AsyncTask<String, String, String> {
 

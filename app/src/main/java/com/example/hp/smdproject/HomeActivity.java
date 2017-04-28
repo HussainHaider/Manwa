@@ -148,7 +148,6 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_menshop) {
             Log.d("Gallery","option");
-
             getApplicationContext().startService(new Intent(getApplicationContext(), ItemList_Services.class));
 //            test=new testing();
 //            test.setContext(getApplication());

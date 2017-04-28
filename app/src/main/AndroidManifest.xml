@@ -55,6 +55,7 @@
         </receiver>
 
         <service android:name=".Category_Services" />
+        <service android:name=".ItemList_Services" />
 
 
 

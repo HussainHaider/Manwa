@@ -20,12 +20,14 @@ public class ItemList extends AppCompatActivity {
 
     DataBaseAdpter helper;
     List<String> list1;
+    String Products_id;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
+        Products_id = getIntent().getStringExtra("EXTRA_SESSION_ID");
         helper=new DataBaseAdpter(this);
         list1 = new ArrayList<String>();
         mProductList = new ArrayList<>();
@@ -62,7 +64,7 @@ public class ItemList extends AppCompatActivity {
     public void CreateUI()
     {
         int j=1;
-        list1= helper.gettable5();
+        list1= helper.gettable5(Products_id);
         for(int i=0;i<list1.size();i++) {
             if(j%5==0 && i!=0)
             {

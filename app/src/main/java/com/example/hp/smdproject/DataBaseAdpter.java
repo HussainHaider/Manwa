@@ -72,14 +72,14 @@ public class DataBaseAdpter {
         Log.d("checking","ID");
         return idcheck;
     }
-    public List<String> gettable5()
+    public List<String> gettable5(String id)
     {
         List<String> list = new ArrayList<String>();
 
         SQLiteDatabase db=Helper.getWritableDatabase();
         String [] columns={ShopHelper.ProductID,ShopHelper.PDid,ShopHelper.Size,ShopHelper.Price,ShopHelper.Descrption};
         Log.d("checking","columns");
-        Cursor c=db.query(ShopHelper.TABLE_NAME5,columns,null,null,null,null,null,null);
+        Cursor c=db.query(ShopHelper.TABLE_NAME5,columns,ShopHelper.ProductID+" = '"+id+"'",null,null,null,null,null);
         Log.d("checking","Query");
         while (c.moveToNext())
         {
