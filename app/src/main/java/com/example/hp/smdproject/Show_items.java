@@ -1,6 +1,10 @@
 package com.example.hp.smdproject;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +25,13 @@ import android.widget.Toast;
 
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,6 +57,16 @@ public class Show_items extends AppCompatActivity {
     int wishcount;
     MaterialFavoriteButton favorite;
     String item_id;
+    String MY_URL_STRING;
+
+    JSONArray products = null;
+    private ProgressDialog pDialog;
+    JSONParser jParser = new JSONParser();
+    private static String url_all_gameName = "https://stopshop321.000webhostapp.com/getimage2.php";
+    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_GAME_NAME = "image_detail";
+    private static final String TAG_IMAGE= "image";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +76,9 @@ public class Show_items extends AppCompatActivity {
         item_id = getIntent().getStringExtra("EXTRA_SESSION_ID");
         list1 = new ArrayList<String>();
         list1 = Helper.getspeceficitem(item_id);
+
+        MY_URL_STRING="http://www.cricketact.com.au/images/junior-competition.jpg";
+
 //        imageView=(ImageView)findViewById(R.id.img1);
 //        URL url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
 //        Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
@@ -99,7 +123,14 @@ public class Show_items extends AppCompatActivity {
                 T.setText("Size");
             }
         });*/
+        new LoadAllProductName().execute();
 
+
+    }
+    public void callimagetask(String a)
+    {
+        new DownloadImageTask((ImageView) findViewById(R.id.img1))
+                .execute(a);
     }
 
     @Override
@@ -338,8 +369,112 @@ public class Show_items extends AppCompatActivity {
 //            }
 //        });
 
-
-
     }
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            Toast toast = Toast.makeText(getApplicationContext(),"Getting Image",Toast.LENGTH_LONG);
+            toast.show();
+            bmImage.setImageBitmap(result);
+        }
+    }
+
+    class LoadAllProductName extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(Show_items.this);
+            pDialog.setMessage("Loading data. Please wait...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
+        }
+
+        /**
+         * getting All products from url
+         */
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("image_id","1"));
+
+            // getting JSON string from URL
+            JSONObject json = jParser.makeHttpRequest(url_all_gameName, "GET", params);
+
+            // Check your log cat for JSON reponse
+//            Log.d("All Patients: ", json.toString());
+
+            try {
+                // Checking for SUCCESS TAG
+                int success = json.getInt(TAG_SUCCESS);
+
+                if (success == 1) {
+                    // products found
+                    // Getting Array of patients
+                    products = json.getJSONArray(TAG_GAME_NAME);
+
+                    // looping through All Patients
+                    for (int i = 0; i < products.length(); i++) {
+                        JSONObject c = products.getJSONObject(i);
+
+                        // Storing each json item in variable
+                        String image = c.getString(TAG_IMAGE);
+                        Log.d("IMAGE_URL",image);
+//                        Toast toast = Toast.makeText(getApplicationContext(),"Image URL"+image,Toast.LENGTH_LONG);
+//                        toast.show();
+                        callimagetask(image);
+
+                    }
+                } else {
+                    Log.d("no Product","found");
+                    // no products found
+                    // Launch Add New product Activity
+                   /* Intent i = new Intent(getApplicationContext(),
+                            NewProductActivity.class);
+                    // Closing all previous activities
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);*/
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog after getting all products
+            pDialog.dismiss();
+            // updating UI from Background Thread
+
+        }
+    }
+
 
 }

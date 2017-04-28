@@ -22,10 +22,13 @@ public class DataBaseAdpter {
     public DataBaseAdpter(Context context) {
         Helper = new ShopHelper(context);
         idcheck=0;
+        Log.d("Helper","class2");
     }
     public long inserttable2(String id,String name)
     {
+        Log.d("checking","Value1");
         SQLiteDatabase db=Helper.getWritableDatabase();
+        Log.d("checking","Value2");
         ContentValues value=new ContentValues();
         value.put(ShopHelper.PID,id);
         value.put(ShopHelper.PNAME,name);

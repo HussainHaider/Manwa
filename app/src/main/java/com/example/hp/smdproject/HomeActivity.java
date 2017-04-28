@@ -61,7 +61,9 @@ public class HomeActivity extends AppCompatActivity
         setSupportActionBar(toolbar);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
+        Log.d("Helper","class1");
         Helper=new DataBaseAdpter(this);
+        Log.d("Helper","class");
         categoryid="";btnid=1;
 
         HomeActivity.ImagePagerAdapter adapter = new HomeActivity.ImagePagerAdapter();
@@ -95,6 +97,8 @@ public class HomeActivity extends AppCompatActivity
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
@@ -139,6 +143,7 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_homebtn) {
             Log.d("Camera","option");
             Intent intent = new Intent(getApplicationContext(), Show_items.class);
+            intent.putExtra("EXTRA_SESSION_ID", 1);
             startActivity(intent);
             // Handle the camera action
         } else if (id == R.id.nav_menshop) {
@@ -147,16 +152,16 @@ public class HomeActivity extends AppCompatActivity
 //            test.setContext(getApplication());
 //            test.loadData();
             categoryid="1";
-            callaysnc();
+//            callaysnc();
 //            new LoadAllProductName().execute();
 
 
-//            Intent intent = new Intent(getApplicationContext(), Categories.class);
-//            startActivity(intent);
+            Intent intent = new Intent(getApplicationContext(), Categories.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_womenshop) {
             categoryid="2";
-            callaysnc();
+//            callaysnc();
 
             Log.d("slideshow","option");
 
@@ -240,7 +245,7 @@ public class HomeActivity extends AppCompatActivity
     }
     public void callaysnc()
     {
-        new LoadAllProductName().execute();
+//        new LoadAllProductName().execute();
     }
     public void addproductName(String id,String n)
     {
