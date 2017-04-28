@@ -4,24 +4,25 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
-    <LinearLayout android:id="@+id/ControlButtons"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dip">
-        <!--<Button android:id="@+id/SetDateTime"-->
-            <!--android:layout_width="0dip"-->
-            <!--android:text="@android:string/ok"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_height="wrap_content"  />-->
-        <!--<Button android:id="@+id/ResetDateTime"-->
-            <!--android:layout_width="0dip"-->
-            <!--android:text="Reset"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_height="wrap_content" />-->
-        <!--<Button android:id="@+id/CancelDialog"-->
-            <!--android:layout_width="0dip"-->
-            <!--android:text="@android:string/cancel"-->
-            <!--android:layout_weight="1"-->
-            <!--android:layout_height="wrap_content" />-->
-    </LinearLayout>
+    <!--<LinearLayout android:id="@+id/ControlButtons"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:padding="5dip">-->
+        <!--&lt;!&ndash;<Button android:id="@+id/SetDateTime"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="0dip"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:text="@android:string/ok"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content"  />&ndash;&gt;-->
+        <!--&lt;!&ndash;<Button android:id="@+id/ResetDateTime"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="0dip"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:text="Reset"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content" />&ndash;&gt;-->
+        <!--&lt;!&ndash;<Button android:id="@+id/CancelDialog"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="0dip"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:text="@android:string/cancel"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_weight="1"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="wrap_content" />&ndash;&gt;-->
+    <!--</LinearLayout>-->
 </LinearLayout>

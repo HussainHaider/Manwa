@@ -143,11 +143,13 @@ public class HomeActivity extends AppCompatActivity
         if (id == R.id.nav_homebtn) {
             Log.d("Camera","option");
             Intent intent = new Intent(getApplicationContext(), Show_items.class);
-            intent.putExtra("EXTRA_SESSION_ID", 1);
             startActivity(intent);
             // Handle the camera action
+
         } else if (id == R.id.nav_menshop) {
             Log.d("Gallery","option");
+
+            getApplicationContext().startService(new Intent(getApplicationContext(), ItemList_Services.class));
 //            test=new testing();
 //            test.setContext(getApplication());
 //            test.loadData();

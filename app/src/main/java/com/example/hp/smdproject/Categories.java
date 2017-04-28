@@ -91,9 +91,10 @@ public class Categories extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(),"Item is clicked no. "+v,Toast.LENGTH_SHORT).show();
 
-                new LoadAllProductdetailName().execute();
-//                Intent intent = new Intent(getBaseContext(),ItemList.class);
-//                startActivity(intent);
+//                new LoadAllProductdetailName().execute();
+                Intent intent = new Intent(getBaseContext(),ItemList.class);
+                intent.putExtra("EXTRA_SESSION_ID", sessionId);
+                startActivity(intent);
 
             }
         });
@@ -192,9 +193,9 @@ public class Categories extends AppCompatActivity {
 
                         addproductName(id,pid,Description,price,size);
 
-                        Intent intent = new Intent(getBaseContext(),ItemList.class);
-                        intent.putExtra("EXTRA_SESSION_ID", sessionId);
-                        startActivity(intent);
+//                        Intent intent = new Intent(getBaseContext(),ItemList.class);
+//                        intent.putExtra("EXTRA_SESSION_ID", sessionId);
+//                        startActivity(intent);
                     }
                 } else {
                     Log.d("no Productitems","found");

@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -49,7 +50,7 @@ public class Show_items extends AppCompatActivity {
     ImageButton B3;
     RelativeLayout notifCount;
     DataBaseAdpter Helper;
-    LinearLayout L1;
+    LinearLayout L1, D;
     List<String> list1;
     String items_Descrption;
     String items_size;
@@ -59,13 +60,14 @@ public class Show_items extends AppCompatActivity {
     String item_id;
     String MY_URL_STRING;
 
+
     JSONArray products = null;
     private ProgressDialog pDialog;
     JSONParser jParser = new JSONParser();
     private static String url_all_gameName = "https://stopshop321.000webhostapp.com/getimage2.php";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_GAME_NAME = "image_detail";
-    private static final String TAG_IMAGE= "image";
+    private static final String TAG_IMAGE = "image";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,21 +75,26 @@ public class Show_items extends AppCompatActivity {
         setContentView(R.layout.activity_show_items);
 //        id=1;
         Helper = new DataBaseAdpter(this);
-        item_id = getIntent().getStringExtra("EXTRA_SESSION_ID");
+        D = new LinearLayout(this);
+//        item_id = getIntent().getStringExtra("EXTRA_SESSION_ID");
         list1 = new ArrayList<String>();
-        list1 = Helper.getspeceficitem(item_id);
+//        list1 = Helper.getspeceficitem(item_id);
 
-        MY_URL_STRING="http://www.cricketact.com.au/images/junior-competition.jpg";
+        MY_URL_STRING = "http://www.cricketact.com.au/images/junior-competition.jpg";
 
 //        imageView=(ImageView)findViewById(R.id.img1);
 //        URL url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
 //        Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 //        imageView.setImageBitmap(bmp);
 
-        items_size=list1.get(1);
-        items_Descrption=list1.get(2);
-        wishcount=0;
-        favorite=(MaterialFavoriteButton)findViewById(R.id.wishbtn);
+//        items_size=list1.get(1);
+
+        items_size = "";
+//        items_Descrption=list1.get(2);
+        items_Descrption = "";
+
+        wishcount = 0;
+        favorite = (MaterialFavoriteButton) findViewById(R.id.wishbtn);
         favorite.setOnFavoriteChangeListener(
                 new MaterialFavoriteButton.OnFavoriteChangeListener() {
                     @Override
@@ -123,12 +130,12 @@ public class Show_items extends AppCompatActivity {
                 T.setText("Size");
             }
         });*/
-        new LoadAllProductName().execute();
+//        new LoadAllProductName().execute();
 
 
     }
-    public void callimagetask(String a)
-    {
+
+    public void callimagetask(String a) {
         new DownloadImageTask((ImageView) findViewById(R.id.img1))
                 .execute(a);
     }
@@ -137,21 +144,19 @@ public class Show_items extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
     }
-    public void whishlistbtn()
-    {
-        Log.d("Check","wishbtn");
-        if(btnwhishlist==false && wishcount%2==0)
-        {
-            Toast toast = Toast.makeText(getApplicationContext(),"WhishList_On",Toast.LENGTH_SHORT);
+
+    public void whishlistbtn() {
+        Log.d("Check", "wishbtn");
+        if (btnwhishlist == false && wishcount % 2 == 0) {
+            Toast toast = Toast.makeText(getApplicationContext(), "WhishList_On", Toast.LENGTH_SHORT);
             toast.show();
-            btnwhishlist=true;
-            Helper.inserttable4("4",item_id);
+            btnwhishlist = true;
+            Helper.inserttable4("4", item_id);
         }
-        if(btnwhishlist==true && wishcount%2!=0)
-        {
-            Toast toast = Toast.makeText(getApplicationContext(),"WhishList_OFF",Toast.LENGTH_SHORT);
+        if (btnwhishlist == true && wishcount % 2 != 0) {
+            Toast toast = Toast.makeText(getApplicationContext(), "WhishList_OFF", Toast.LENGTH_SHORT);
             toast.show();
-            btnwhishlist=false;
+            btnwhishlist = false;
         }
         wishcount++;
     }
@@ -166,12 +171,12 @@ public class Show_items extends AppCompatActivity {
 
 //        tv = (TextView) notifCount.findViewById(R.id.actionbar_notifcation_textview);
 //        tv.setText("0");
-        B=(Button)findViewById(R.id.addtocart);
+        B = (Button) findViewById(R.id.addtocart);
 
 //        B1=(ImageButton) notifCount.findViewById(R.id.pic);
-        R1=(RoundedLetterView) notifCount.findViewById(R.id.setround);
+        R1 = (RoundedLetterView) notifCount.findViewById(R.id.setround);
 
-        B2=(ImageView) notifCount.findViewById(R.id.pic);
+        B2 = (ImageView) notifCount.findViewById(R.id.pic);
 //        B3=(ImageButton) notifCount.findViewById(R.id.pic);
 
         B.setOnClickListener(new View.OnClickListener() {
@@ -179,7 +184,7 @@ public class Show_items extends AppCompatActivity {
             public void onClick(View v) {
                 count++;
 
-                Log.d("Hello","world1");
+                Log.d("Hello", "world1");
                 String numberAsString2 = Integer.toString(count);
                 //              tv.setText(numberAsString2);
                 R1.setTitleText(numberAsString2);
@@ -192,29 +197,64 @@ public class Show_items extends AppCompatActivity {
             public void onClick(View v) {
 //                count++;
 
-                Log.d("Hello","world4");
-              //  final Dialog mDateTimeDialog = new Dialog(getApplicationContext());
+                Log.d("Hello", "world4");
+                //  final Dialog mDateTimeDialog = new Dialog(getApplicationContext());
                 // Inflate the root layout
-                final Dialog mDateTimeDialog = new Dialog(Show_items.this);
+                final Dialog CartDialog = new Dialog(Show_items.this);
 
-                final LinearLayout mDateTimeDialogView = (LinearLayout) getLayoutInflater().inflate(R.layout.cart_layout, null);
 
-                android.widget.Button B=new Button(Show_items.this);
+                CartDialog.setTitle("Cart Products");
+
+
+                final LinearLayout CartDialogView = (LinearLayout) getLayoutInflater().inflate(R.layout.cart_layout, null);
+
+                android.widget.Button B = new Button(Show_items.this);
                 B.setText("Hello");
-//                B.setId(id);
-                B.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-                mDateTimeDialogView.addView(B);
+                B.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                CartDialogView.addView(B);
+
+                ScrollView S = new ScrollView(Show_items.this);
+                S.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+                //Testing
+                for (int i = 0; i < 25; i++) {
 
 
-                // Setup TimePicker
-                // No title on the dialog window
-                mDateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                // Set the dialog content view
-                mDateTimeDialog.setContentView(mDateTimeDialogView);
+                    LinearLayout L = new LinearLayout(Show_items.this);
+                    L.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    L.setOrientation(LinearLayout.HORIZONTAL);
 
 
-                mDateTimeDialog.show();
+                    TextView T = new TextView(Show_items.this);
+                    T.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    T.setText("Jeans");
+                    T.setTextSize(25);
+                    L.addView(T);
 
+                    Button B1 = new Button(Show_items.this);
+                    B1.setText("X");
+                    B1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    B1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast toast = Toast.makeText(getApplicationContext(), "clicking" + v.getId(), Toast.LENGTH_LONG);
+                            toast.show();
+                            D = (LinearLayout) v.getParent();
+                            CartDialogView.removeView(D);
+
+                        }
+                    });
+                    L.addView(B1);
+                    CartDialogView.addView(L);
+
+                }
+                S.addView(CartDialogView);
+
+
+                CartDialog.requestWindowFeature(Window.FEATURE_SWIPE_TO_DISMISS);
+                CartDialog.setContentView(S);
+
+                CartDialog.show();
             }
         });
 
@@ -231,7 +271,7 @@ public class Show_items extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add) {
-            Log.d("Hello","World");
+            Log.d("Menu", "World1");
 //            final Dialog mDateTimeDialog = new Dialog(this);
 //            // Inflate the root layout
 //
@@ -283,27 +323,26 @@ public class Show_items extends AppCompatActivity {
             return true;
         }
         if (id == R.id.action_share) {
-            Log.d("Hello","World2");
+            Log.d("Menu", "World2");
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
-    public void Button(View v)
-    {
-        if(v.getId()==R.id.infobtn)
-        {
-            Toast toast = Toast.makeText(getApplicationContext(),"Infromation",Toast.LENGTH_SHORT);
+
+    public void Button(View v) {
+        if (v.getId() == R.id.infobtn) {
+            Toast toast = Toast.makeText(getApplicationContext(), "Infromation", Toast.LENGTH_SHORT);
             toast.show();
 
             final Dialog minfoDialog = new Dialog(Show_items.this);
 
             final LinearLayout mDateTimeDialogView = (LinearLayout) getLayoutInflater().inflate(R.layout.cart_layout, null);
 
-            android.widget.TextView B=new TextView(Show_items.this);
-            B.setText("Hello_Descrption:_"+items_Descrption);
+            android.widget.TextView B = new TextView(Show_items.this);
+            B.setText("Hello_Descrption:_" + items_Descrption);
 //                B.setId(id);
-            B.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.MATCH_PARENT));
+            B.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
             mDateTimeDialogView.addView(B);
             B.setTextColor(getResources().getColor(R.color.black));
             minfoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -313,37 +352,37 @@ public class Show_items extends AppCompatActivity {
         }
     }
 
-    public void openBottomSheet (View v) {
-        Log.d("VIew ","BottomSheet");
-        View view = getLayoutInflater ().inflate (R.layout.bottom_sheet, null);
+    public void openBottomSheet(View v) {
+        Log.d("VIew ", "BottomSheet");
+        View view = getLayoutInflater().inflate(R.layout.bottom_sheet, null);
 //        TextView txtBackup = (TextView)view.findViewById( R.id.txt_backup);
 //        TextView txtDetail = (TextView)view.findViewById( R.id.txt_detail);
 //        TextView txtOpen = (TextView)view.findViewById( R.id.txt_open);
 //        final TextView txtUninstall = (TextView)view.findViewById( R.id.txt_uninstall);
 
         L1 = (LinearLayout) view.findViewById(R.id.popup_window);
-        TextView textsize=new TextView(getApplicationContext());
-        textsize.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.MATCH_PARENT));
-        textsize.setText("Size:"+items_size);
+        TextView textsize = new TextView(getApplicationContext());
+        textsize.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT));
+        textsize.setText("Size:" + items_size);
         textsize.setCompoundDrawablePadding(15);
         textsize.setGravity(1);
         textsize.setTextColor(getResources().getColor(R.color.black));
-        textsize.setPadding(15,15,15,15);
+        textsize.setPadding(15, 15, 15, 15);
         L1.addView(textsize);
 
-        final Dialog mBottomSheetDialog = new Dialog (Show_items.this,
+        final Dialog mBottomSheetDialog = new Dialog(Show_items.this,
                 R.style.MaterialDialogSheet);
-        mBottomSheetDialog.setContentView (view);
-        mBottomSheetDialog.setCancelable (true);
-        mBottomSheetDialog.getWindow ().setLayout (LinearLayout.LayoutParams.MATCH_PARENT,
+        mBottomSheetDialog.setContentView(view);
+        mBottomSheetDialog.setCancelable(true);
+        mBottomSheetDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        mBottomSheetDialog.getWindow ().setGravity (Gravity.BOTTOM);
-        mBottomSheetDialog.show ();
+        mBottomSheetDialog.getWindow().setGravity(Gravity.BOTTOM);
+        mBottomSheetDialog.show();
 
         textsize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Show_items.this,"Clicked Backup",Toast.LENGTH_SHORT).show();
+                Toast.makeText(Show_items.this, "Clicked Backup", Toast.LENGTH_SHORT).show();
                 mBottomSheetDialog.dismiss();
             }
         });
@@ -370,6 +409,7 @@ public class Show_items extends AppCompatActivity {
 //        });
 
     }
+
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -392,7 +432,7 @@ public class Show_items extends AppCompatActivity {
         }
 
         protected void onPostExecute(Bitmap result) {
-            Toast toast = Toast.makeText(getApplicationContext(),"Getting Image",Toast.LENGTH_LONG);
+            Toast toast = Toast.makeText(getApplicationContext(), "Getting Image", Toast.LENGTH_LONG);
             toast.show();
             bmImage.setImageBitmap(result);
         }
@@ -419,7 +459,7 @@ public class Show_items extends AppCompatActivity {
         protected String doInBackground(String... args) {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("image_id","1"));
+            params.add(new BasicNameValuePair("image_id", "1"));
 
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(url_all_gameName, "GET", params);
@@ -442,14 +482,14 @@ public class Show_items extends AppCompatActivity {
 
                         // Storing each json item in variable
                         String image = c.getString(TAG_IMAGE);
-                        Log.d("IMAGE_URL",image);
+                        Log.d("IMAGE_URL", image);
 //                        Toast toast = Toast.makeText(getApplicationContext(),"Image URL"+image,Toast.LENGTH_LONG);
 //                        toast.show();
                         callimagetask(image);
 
                     }
                 } else {
-                    Log.d("no Product","found");
+                    Log.d("no Product", "found");
                     // no products found
                     // Launch Add New product Activity
                    /* Intent i = new Intent(getApplicationContext(),

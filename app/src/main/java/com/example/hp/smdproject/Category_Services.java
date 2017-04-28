@@ -41,7 +41,7 @@ public class Category_Services extends Service {
     @Override
     public int onStartCommand(Intent pIntent, int flags, int startId) {
         // TODO Auto-generated method stub
-        Toast.makeText(this, "Notifying check Service", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Notifying Category Service", Toast.LENGTH_LONG).show();
         Helper=new DataBaseAdpter(this);
         callaysnc();
         return super.onStartCommand(pIntent, flags, startId);
