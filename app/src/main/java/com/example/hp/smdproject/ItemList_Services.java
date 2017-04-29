@@ -231,8 +231,21 @@ public class ItemList_Services extends Service {
                         String image = c.getString(TAG_IMAGE);
                         Log.d("IMAGE_URL", image);
 
+                        String urldisplay = image;
+                        Bitmap mIcon11 = null;
+                        try {
+                            InputStream in = new java.net.URL(urldisplay).openStream();
+                            mIcon11 = BitmapFactory.decodeStream(in);
 
-                        callimagetask(image);
+                        } catch (Exception e) {
+                            Log.e("Error", e.getMessage());
+                            e.printStackTrace();
+                        }
+
+                        addproductImage(_id,mIcon11);
+
+
+//                        callimagetask(image);
 
                     }
                 } else {

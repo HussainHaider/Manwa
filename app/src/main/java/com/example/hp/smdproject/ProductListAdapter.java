@@ -73,7 +73,8 @@ public class ProductListAdapter extends BaseAdapter {
         holder.name.setText("Jeans");
 //        holder.price.setText(numberAsString);
         holder.price.setText("$ "+p.getPrice());
-        holder.img.setImageResource(p.getImage());
+//        holder.img.setImageResource(p.getImage());
+        holder.img.setImageBitmap(p.getImage());
 
 
         return convertView;

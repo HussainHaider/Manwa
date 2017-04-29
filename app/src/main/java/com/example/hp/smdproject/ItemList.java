@@ -1,8 +1,9 @@
 package com.example.hp.smdproject;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -65,6 +66,7 @@ public class ItemList extends AppCompatActivity {
     {
         int j=1;
         list1= helper.gettable5(Products_id);
+        Bitmap B;
         for(int i=0;i<list1.size();i++) {
             if(j%5==0 && i!=0)
             {
@@ -79,13 +81,16 @@ public class ItemList extends AppCompatActivity {
 
                 int result2 = Integer.parseInt(list1.get(i-3));
                 Log.d("get4_1",list1.get(i-3));
+                B=helper.getImage(list1.get(i-3));
+
+
                 int P=Integer.parseInt(list1.get(i-2));
                 Log.d("get3_1",list1.get(i-2));
                 int S=Integer.parseInt(list1.get(i-1));
                 Log.d("get2_1",list1.get(i-1));
                 Log.d("get1_1",list1.get(i));
 
-                mProductList.add(new Productdetailclass(result1,list1.get(i),S,P,result2,R.drawable.pant2));
+                mProductList.add(new Productdetailclass(result1,list1.get(i),S,P,result2,B));
             }
             j++;
         }

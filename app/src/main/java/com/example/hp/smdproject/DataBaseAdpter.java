@@ -7,6 +7,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
@@ -93,10 +94,14 @@ public class DataBaseAdpter {
     public long inserttable5_2(String id,Bitmap bitmap)
     {
         byte[] image=null;
+        Log.d("Data inserted5_2_1",id);
         if(bitmap!=null)
         {
             image=getBitmapAsByteArray(bitmap);
+            Log.d("Data inserted5_2_1","Nothing");
         }
+
+
 
 
         SQLiteDatabase db=Helper.getWritableDatabase();
@@ -134,6 +139,29 @@ public class DataBaseAdpter {
             list.add(Descrption);
         }
         return list;
+    }
+    public Bitmap getImage(String i){
+
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        String qu = "select "+ShopHelper.KEY_IMAGE2+"  from "+ShopHelper.TABLE_NAME5+" where "+ShopHelper.PDid+"="+i+";" ;
+        Log.d("Query",qu);
+        Cursor cur = db.rawQuery(qu, null);
+
+        if (cur.moveToFirst()){
+            byte[] imgByte = cur.getBlob(0);
+            if(imgByte==null)
+            {
+                return null;
+            }
+
+            cur.close();
+            return BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+        }
+        if (cur != null && !cur.isClosed()) {
+            cur.close();
+        }
+
+        return null ;
     }
 
 

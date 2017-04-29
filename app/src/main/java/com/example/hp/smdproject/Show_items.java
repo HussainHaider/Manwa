@@ -46,7 +46,7 @@ public class Show_items extends AppCompatActivity {
     Button B;
     RoundedLetterView R1;
     ImageView B2;
-    ImageView imageView;
+    ImageView img;
     ImageButton B3;
     RelativeLayout notifCount;
     DataBaseAdpter Helper;
@@ -92,6 +92,8 @@ public class Show_items extends AppCompatActivity {
         items_Descrption=list1.get(2);
 //        items_Descrption = "";
 
+        img=(ImageView)findViewById(R.id.img1);
+        img.setImageBitmap(Helper.getImage(item_id));
         wishcount = 0;
         favorite = (MaterialFavoriteButton) findViewById(R.id.wishbtn);
         favorite.setOnFavoriteChangeListener(
@@ -129,7 +131,7 @@ public class Show_items extends AppCompatActivity {
                 T.setText("Size");
             }
         });*/
-        new LoadAllProductName().execute();
+//        new LoadAllProductName().execute();
 
 
     }
