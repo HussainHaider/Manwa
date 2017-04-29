@@ -129,7 +129,7 @@ public class Show_items extends AppCompatActivity {
                 T.setText("Size");
             }
         });*/
-//        new LoadAllProductName().execute();
+        new LoadAllProductName().execute();
 
 
     }

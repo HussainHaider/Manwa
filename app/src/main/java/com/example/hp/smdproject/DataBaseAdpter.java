@@ -24,6 +24,7 @@ public class DataBaseAdpter {
         idcheck=0;
         Log.d("Helper","class2");
     }
+
     public long inserttable2(String id,String name)
     {
         Log.d("checking","Value1");
@@ -37,22 +38,32 @@ public class DataBaseAdpter {
         Log.d("checking","ID");
         return idcheck;
     }
-    public List<String> gettable2()
+
+
+
+
+    public List<String> gettable2(String id)
     {
         List<String> list = new ArrayList<String>();
 
         SQLiteDatabase db=Helper.getWritableDatabase();
         String [] columns={ShopHelper.PID,ShopHelper.PNAME};
         Log.d("checking","columns");
-        Cursor c=db.query(ShopHelper.TABLE_NAME2,columns,null,null,null,null,null,null);
+        String qu = "select * from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+" in (Select "+ShopHelper.ProductID+" from "+ShopHelper.TABLE_NAME7+" where "+ShopHelper.CategoryID+" = '"+id+"'"+");";
+        Log.d("Query",qu);
+        Cursor c = db.rawQuery(qu, null);
+
+//        Cursor c=db.query(ShopHelper.TABLE_NAME2,columns,null,null,null,null,null,null);
         Log.d("checking","Query");
         while (c.moveToNext())
         {
+            Log.d("Work","help1");
             int cid=c.getInt(0);
             String numberAsString = Integer.toString(cid);
             list.add(numberAsString);
             String name=c.getString(1);
             list.add(name);
+            Log.d("Work","help2");
         }
         return list;
     }
@@ -72,6 +83,7 @@ public class DataBaseAdpter {
         Log.d("checking","ID");
         return idcheck;
     }
+
     public List<String> gettable5(String id)
     {
         List<String> list = new ArrayList<String>();
@@ -99,6 +111,7 @@ public class DataBaseAdpter {
         }
         return list;
     }
+
 
 
     public List<String> getspeceficitem(String id)
@@ -135,7 +148,32 @@ public class DataBaseAdpter {
         Log.d("checking","ID");
         return idcheck;
     }
-
+    public long inserttable6(String id,String name)
+    {
+        Log.d("checking","Value1");
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        Log.d("checking","Value2");
+        ContentValues value=new ContentValues();
+        value.put(ShopHelper.CID,id);
+        value.put(ShopHelper.CNAME,name);
+        Log.d("checking","Value");
+        idcheck=db.insert(ShopHelper.TABLE_NAME6,null,value);
+        Log.d("checking","ID");
+        return idcheck;
+    }
+    public long inserttable7(String id1,String id2)
+    {
+        Log.d("checking","Value1");
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        Log.d("checking","Value2");
+        ContentValues value=new ContentValues();
+        value.put(ShopHelper.ProductID,id1);
+        value.put(ShopHelper.CategoryID,id2);
+        Log.d("checking","Value");
+        idcheck=db.insert(ShopHelper.TABLE_NAME7,null,value);
+        Log.d("checking","ID");
+        return idcheck;
+    }
 
 
 

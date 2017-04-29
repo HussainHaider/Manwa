@@ -48,13 +48,13 @@ public class Categories extends AppCompatActivity {
     private static final String TAG_Description = "Description";
     private static final String TAG_Size = "size";
 
-
+    String Category_id;
     public static int[] osImages = {
             R.mipmap.jeans,
             R.mipmap.pents,
             R.mipmap.suit,
             R.mipmap.shoe,
-//            R.mipmap.shirt,
+ //           R.mipmap.shirt,
 //            R.mipmap.accessories,
            };
 
@@ -68,6 +68,8 @@ public class Categories extends AppCompatActivity {
 
         list1 = new ArrayList<String>();
         mProductlist = new ArrayList<Productclass>();
+        Category_id = getIntent().getStringExtra("EXTRA_SESSION_ID");
+
         CreateUi();
 
 
@@ -105,7 +107,7 @@ public class Categories extends AppCompatActivity {
     }
     public void CreateUi()
     {
-        list1= helper.gettable2();
+        list1= helper.gettable2(Category_id);
         for(int i=0;i<list1.size();i++) {
             if(i%2!=0)
             {

@@ -24,7 +24,7 @@ public class Category_Services extends Service {
     JSONArray products = null;
 //    private ProgressDialog pDialog;
     JSONParser jParser = new JSONParser();
-    private static String url_all_gameName = "https://stopshop321.000webhostapp.com/getProduct.php";
+    private static String url_all_gameName = "https://stopshop321.000webhostapp.com/getProduct2.php";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_GAME_NAME = "ProductNames";
     private static final String TAG_GID = "ID";
@@ -77,7 +77,7 @@ public class Category_Services extends Service {
         protected String doInBackground(String... args) {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("category_id","1"));
+            params.add(new BasicNameValuePair("category_id","2"));
 
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(url_all_gameName, "GET", params);

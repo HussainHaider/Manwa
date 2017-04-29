@@ -43,11 +43,11 @@ public class HomeActivity extends AppCompatActivity
     JSONArray products = null;
     private ProgressDialog pDialog;
     JSONParser jParser = new JSONParser();
-    private static String url_all_gameName = "https://stopshop321.000webhostapp.com/getProduct.php";
+    private static String url_all_gameName = "https://stopshop321.000webhostapp.com/getProductCategory.php";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_GAME_NAME = "ProductNames";
-    private static final String TAG_GID = "ID";
-    private static final String TAG_NAME = "Name";
+    private static final String TAG_PID = "PID";
+    private static final String TAG_CID = "CID";
 
     DataBaseAdpter Helper;
     String categoryid;
@@ -97,6 +97,14 @@ public class HomeActivity extends AppCompatActivity
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
+        Helper.inserttable6("1","Men");
+        Helper.inserttable6("2","Female");
+        Helper.inserttable6("1","kid");
+        callaysnc();
+
+
+        getApplicationContext().startService(new Intent(getApplicationContext(), Category_Services.class));
+
 
 
     }
@@ -148,21 +156,28 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_menshop) {
             Log.d("Gallery","option");
-            getApplicationContext().startService(new Intent(getApplicationContext(), ItemList_Services.class));
-//            test=new testing();
-//            test.setContext(getApplication());
-//            test.loadData();
             categoryid="1";
-//            callaysnc();
-//            new LoadAllProductName().execute();
+            //Service
+            Intent i = new Intent(this, ItemList_Services.class);
+            i.putExtra("Category_id",categoryid);
+            startService(i);
 
-
+            //Activity
             Intent intent = new Intent(getApplicationContext(), Categories.class);
+            intent.putExtra("EXTRA_SESSION_ID", categoryid);
             startActivity(intent);
 
         } else if (id == R.id.nav_womenshop) {
             categoryid="2";
-//            callaysnc();
+
+            //Service
+            Intent i = new Intent(this, ItemList_Services.class);
+            i.putExtra("Category_id",categoryid);
+            startService(i);
+            //Activity
+            Intent intent = new Intent(getApplicationContext(), Categories.class);
+            intent.putExtra("EXTRA_SESSION_ID", categoryid);
+            startActivity(intent);
 
             Log.d("slideshow","option");
 
@@ -246,11 +261,11 @@ public class HomeActivity extends AppCompatActivity
     }
     public void callaysnc()
     {
-//        new LoadAllProductName().execute();
+        new LoadAllProductCatgory().execute();
     }
-    public void addproductName(String id,String n)
+    public void addproductCategory(String id,String n)
     {
-        long id1=Helper.inserttable2(id,n);
+        long id1=Helper.inserttable7(id,n);
         String numberAsString = Long.toString(id1);
         Log.d("Data inserted",numberAsString);
     }
@@ -262,7 +277,7 @@ public class HomeActivity extends AppCompatActivity
     }
 
 
-    class LoadAllProductName extends AsyncTask<String, String, String> {
+    class LoadAllProductCatgory extends AsyncTask<String, String, String> {
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -270,11 +285,11 @@ public class HomeActivity extends AppCompatActivity
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(HomeActivity.this);
-            pDialog.setMessage("Loading data. Please wait...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
+//            pDialog = new ProgressDialog(HomeActivity.this);
+//            pDialog.setMessage("Loading data. Please wait...");
+//            pDialog.setIndeterminate(false);
+//            pDialog.setCancelable(false);
+//            pDialog.show();
         }
 
         /**
@@ -283,7 +298,7 @@ public class HomeActivity extends AppCompatActivity
         protected String doInBackground(String... args) {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("category_id",categoryid));
+            params.add(new BasicNameValuePair("Productcategory_id",categoryid));
 
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(url_all_gameName, "GET", params);
@@ -305,15 +320,13 @@ public class HomeActivity extends AppCompatActivity
                         JSONObject c = products.getJSONObject(i);
 
                         // Storing each json item in variable
-                        String id = c.getString(TAG_GID);
-                        String name = c.getString(TAG_NAME);
+                        String id = c.getString(TAG_PID);
+                        String name = c.getString(TAG_CID);
                         Log.d("Userid",id);
                         Log.d("Username",name);
 
-                        addproductName(id,name);
+                        addproductCategory(id,name);
 
-                        Intent intent = new Intent(getApplicationContext(), Categories.class);
-                        startActivity(intent);
                     }
                 } else {
                     Log.d("no Product","found");
@@ -337,7 +350,7 @@ public class HomeActivity extends AppCompatActivity
          **/
         protected void onPostExecute(String file_url) {
             // dismiss the dialog after getting all products
-            pDialog.dismiss();
+//            pDialog.dismiss();
             // updating UI from Background Thread
 
         }
