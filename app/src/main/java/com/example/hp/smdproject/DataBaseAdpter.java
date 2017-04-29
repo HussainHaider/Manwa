@@ -6,8 +6,10 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 import android.util.Log;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,6 +82,28 @@ public class DataBaseAdpter {
         value.put(ShopHelper.Descrption,D);
         Log.d("checking","Value");
         idcheck=db.insert(ShopHelper.TABLE_NAME5,null,value);
+        Log.d("checking","ID");
+        return idcheck;
+    }
+    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
+        return outputStream.toByteArray();
+    }
+    public long inserttable5_2(String id,Bitmap bitmap)
+    {
+        byte[] image=null;
+        if(bitmap!=null)
+        {
+            image=getBitmapAsByteArray(bitmap);
+        }
+
+
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        ContentValues value=new ContentValues();
+        value.put(ShopHelper.KEY_IMAGE2,image); //These Fields should be your String values of actual column names
+
+        db.update(ShopHelper.TABLE_NAME5, value, ShopHelper.PDid+" ="+id, null);
         Log.d("checking","ID");
         return idcheck;
     }

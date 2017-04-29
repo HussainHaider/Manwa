@@ -1,5 +1,7 @@
 package com.example.hp.smdproject;
 
+import android.widget.ImageView;
+
 /**
  * Created by HP on 21-Apr-17.
  */
@@ -10,6 +12,7 @@ public class Productdetailclass {
     int Size;
     int Price;
     int img;
+    ImageView image;
 
     Productdetailclass()
     {

@@ -56,7 +56,7 @@ public class SignIn extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        pDialog.dismiss();
+//        pDialog.dismiss();
     }
 
     class LoginUser extends AsyncTask<String, String, String> {

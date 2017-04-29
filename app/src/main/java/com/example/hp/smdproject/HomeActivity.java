@@ -174,6 +174,7 @@ public class HomeActivity extends AppCompatActivity
             Intent i = new Intent(this, ItemList_Services.class);
             i.putExtra("Category_id",categoryid);
             startService(i);
+
             //Activity
             Intent intent = new Intent(getApplicationContext(), Categories.class);
             intent.putExtra("EXTRA_SESSION_ID", categoryid);

@@ -59,7 +59,7 @@ public class ItemList_Services extends Service {
     public int onStartCommand(Intent pIntent, int flags, int startId) {
         // TODO Auto-generated method stub
         Category_id = pIntent.getStringExtra("Category_id");
-
+        Log.d("ID is:",Category_id);
         Toast.makeText(this, "Notifying ItemList Service", Toast.LENGTH_LONG).show();
         Helper = new DataBaseAdpter(this);
         callaysnc();
@@ -84,11 +84,7 @@ public class ItemList_Services extends Service {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            pDialog = new ProgressDialog(Categories.this);
-//            pDialog.setMessage("Loading data. Please wait...");
-//            pDialog.setIndeterminate(false);
-//            pDialog.setCancelable(false);
-//            pDialog.show();
+            Log.d("Productdetail","Start");
         }
 
         /**
@@ -100,7 +96,7 @@ public class ItemList_Services extends Service {
             params.add(new BasicNameValuePair("Category_id", Category_id));
 
             // getting JSON string from URL
-            JSONObject json = jParser.makeHttpRequest(url_all_Name, "GET", params);
+            JSONObject json = jParser.makeHttpRequest(url_all_gameName, "GET", params);
 
             // Check your log cat for JSON reponse
             Log.d("All Patients: ", json.toString());
@@ -138,13 +134,6 @@ public class ItemList_Services extends Service {
                     }
                 } else {
                     Log.d("no Productitems", "found");
-                    // no products found
-                    // Launch Add New product Activity
-                   /* Intent i = new Intent(getApplicationContext(),
-                            NewProductActivity.class);
-                    // Closing all previous activities
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);*/
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -157,8 +146,7 @@ public class ItemList_Services extends Service {
          * After completing background task Dismiss the progress dialog
          **/
         protected void onPostExecute(String file_url) {
-            // dismiss the dialog after getting all products
-//            pDialog.dismiss();
+            Log.d("Productdetail","END");
             // updating UI from Background Thread
             new LoadProductImage().execute();
 
@@ -166,9 +154,9 @@ public class ItemList_Services extends Service {
     }
 
     public void addproductImage(String id, Bitmap B1) {
-/*        long id1 = Helper.inserttable5(id);
+        long id1 = Helper.inserttable5_2(id,B1);
         String numberAsString = Long.toString(id1);
-        Log.d("Data inserted5_2", numberAsString);*/
+        Log.d("Data inserted5_2", numberAsString);
     }
 
     public void callimagetask(String a) {
@@ -198,6 +186,7 @@ public class ItemList_Services extends Service {
 
         protected void onPostExecute(Bitmap result) {
             Log.d("Getting","Image");
+            addproductImage(_id,result);
         }
     }
 
@@ -220,7 +209,7 @@ public class ItemList_Services extends Service {
             params.add(new BasicNameValuePair("Category_id", Category_id));
 
             // getting JSON string from URL
-            JSONObject json = jParser.makeHttpRequest(url_all_gameName, "GET", params);
+            JSONObject json = jParser.makeHttpRequest(url_all_Name, "GET", params);
 
 
             try {
@@ -238,7 +227,7 @@ public class ItemList_Services extends Service {
 
                         // Storing each json item in variable
                         _id = c.getString(TAG_ID);
-                        Log.d("product_id", _id);
+                        Log.d("product_id1", _id);
                         String image = c.getString(TAG_IMAGE);
                         Log.d("IMAGE_URL", image);
 
