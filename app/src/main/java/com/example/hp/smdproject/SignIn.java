@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,10 +22,18 @@ public class SignIn extends AppCompatActivity {
     private ProgressDialog pDialog;
     JSONParser jsonParser = new JSONParser();
     // url to create new product
+    JSONArray products = null;
     private static String url_create_product = "https://stopshop321.000webhostapp.com/login_check.php";
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
-    private static final String TAG_TYPE = "type";
+    private static final String TAG_GAME_NAME = "productdetails";
+    private static final String TAG_ID = "ID";
+    private static final String TAG_NAME = "Name";
+    private static final String TAG_ADDRESS = "Address";
+    private static final String TAG_COUNTRY = "Country";
+    private static final String TAG_EMAIL = "email";
+    private static final String TAG_CC = "CC";
+
     private String email,password;
     private EditText etEmail,etPassword;
 
@@ -94,6 +103,35 @@ public class SignIn extends AppCompatActivity {
                 if (success == 1) {
                     // successfully created product
                     Log.d("success","is here!");
+
+                    products = json.getJSONArray(TAG_GAME_NAME);
+
+                    // looping through All Patients
+                    for (int i = 0; i < products.length(); i++) {
+                        JSONObject c = products.getJSONObject(i);
+
+                        // Storing each json item in variable
+                        String id = c.getString(TAG_ID);
+                        String name = c.getString(TAG_NAME);
+                        String address = c.getString(TAG_ADDRESS);
+                        String country = c.getString(TAG_COUNTRY);
+                        String email = c.getString(TAG_EMAIL);
+                        String CC = c.getString(TAG_CC);
+
+
+                        Log.d("user_id", id);
+                        Log.d("user_name", name);
+                        Log.d("user_address", address);
+                        Log.d("user_country", country);
+                        Log.d("user_email", email);
+                        Log.d("user_CC", CC);
+
+
+                    }
+
+
+
+
                     Intent intent = new Intent(getApplicationContext(), Show_items.class);
                     startActivity(intent);
                     // closing this screen
