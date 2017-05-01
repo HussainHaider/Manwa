@@ -23,10 +23,10 @@ public class SignIn extends AppCompatActivity {
     JSONParser jsonParser = new JSONParser();
     // url to create new product
     JSONArray products = null;
-    private static String url_create_product = "https://stopshop321.000webhostapp.com/login_check.php";
+    private static String url_create_product = "https://stopshop321.000webhostapp.com/login_check2.php";
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
-    private static final String TAG_GAME_NAME = "productdetails";
+    private static final String TAG_GAME_NAME = "User_detail";
     private static final String TAG_ID = "ID";
     private static final String TAG_NAME = "Name";
     private static final String TAG_ADDRESS = "Address";
@@ -132,7 +132,7 @@ public class SignIn extends AppCompatActivity {
 
 
 
-                    Intent intent = new Intent(getApplicationContext(), Show_items.class);
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                     startActivity(intent);
                     // closing this screen
                     finish();
