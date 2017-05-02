@@ -51,6 +51,7 @@ public class ItemList_Services extends Service {
     public IBinder onBind(Intent arg0) {
         // TODO Auto-generated method stub
         Log.d("Item_LIST", "ACTIVTY");
+        Category_id="0";
         Toast.makeText(this, "Notifying Start Service", Toast.LENGTH_LONG).show();
         return null;
     }
@@ -61,12 +62,11 @@ public class ItemList_Services extends Service {
 
         try {
             Category_id = pIntent.getStringExtra("Category_id");
-
+            Log.d("ID is:",Category_id);
         }catch (Exception e)
         {
 
         }
-        Log.d("ID is:",Category_id);
         Toast.makeText(this, "Notifying ItemList Service", Toast.LENGTH_LONG).show();
         Helper = new DataBaseAdpter(this);
         callaysnc();

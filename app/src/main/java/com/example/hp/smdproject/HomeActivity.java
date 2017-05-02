@@ -23,6 +23,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 
@@ -72,8 +73,42 @@ public class HomeActivity extends AppCompatActivity
         categoryid="";btnid=1;
 
         mAdView = (AdView) findViewById(R.id.adView);
+//
         AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                // Check the LogCat to get your test device ID
+                .addTestDevice("51BC4A7A6F9441A4F3FD979DD2D32F66")
                 .build();
+
+        mAdView.loadAd(adRequest);
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                Toast.makeText(getApplicationContext(), "Ad is loaded!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdClosed() {
+                Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOpened() {
+                Toast.makeText(getApplicationContext(), "Ad is opened!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
         mAdView.loadAd(adRequest);
 
 
@@ -234,11 +269,11 @@ public class HomeActivity extends AppCompatActivity
     private class ImagePagerAdapter extends PagerAdapter
     {
         private int[] mImages = new int[]{
-                R.drawable.a,
-                R.drawable.b,
-                R.drawable.c,
-                R.drawable.d,
-                R.drawable.e,
+                R.drawable.men,
+                R.drawable.women,
+                R.drawable.kids,
+//                R.drawable.d,
+//                R.drawable.e,
         };
 
         private String[] title = {

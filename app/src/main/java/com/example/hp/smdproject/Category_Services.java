@@ -48,6 +48,7 @@ public class Category_Services extends Service {
     }
     public void callaysnc()
     {
+        Log.d("Category","Service");
         new LoadAllProductName().execute();
     }
     public void addproductName(String id,String n)
@@ -84,7 +85,7 @@ public class Category_Services extends Service {
 
             // Check your log cat for JSON reponse
 //            Log.d("All Patients: ", json.toString());
-
+            Log.d("Category","Service2");
             try {
                 // Checking for SUCCESS TAG
                 int success = json.getInt(TAG_SUCCESS);
@@ -93,11 +94,11 @@ public class Category_Services extends Service {
                     // products found
                     // Getting Array of patients
                     products = json.getJSONArray(TAG_GAME_NAME);
-
+                    Log.d("Category","Service3");
                     // looping through All Patients
                     for (int i = 0; i < products.length(); i++) {
                         JSONObject c = products.getJSONObject(i);
-
+                        Log.d("Category","Service4");
                         // Storing each json item in variable
                         String id = c.getString(TAG_GID);
                         String name = c.getString(TAG_NAME);
@@ -109,6 +110,7 @@ public class Category_Services extends Service {
                     }
                 } else {
                     Log.d("no Product","found");
+                    Log.d("Category","Service5");
                     // no products found
                     // Launch Add New product Activity
                    /* Intent i = new Intent(getApplicationContext(),

@@ -108,10 +108,13 @@ public class Categories extends AppCompatActivity {
     }
     public void CreateUi()
     {
+        Log.d("CreateUI","1");
         list1= helper.gettable2(Category_id);
         for(int i=0;i<list1.size();i++) {
+            Log.d("CreateUI","2_1");
             if(i%2!=0)
             {
+                Log.d("CreateUI","2_2");
                 int result = Integer.parseInt(list1.get(i-1));
                 Log.d("get1",list1.get(i-1));
                 Log.d("get2",list1.get(i));
