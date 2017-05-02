@@ -226,6 +226,8 @@ public class DataBaseAdpter {
         Log.d("checking","ID");
         return idcheck;
     }
+
+
     public long inserttable10(String id,String n,String D,String P)
     {
         Log.d("checking","Value1");
@@ -241,6 +243,30 @@ public class DataBaseAdpter {
         idcheck=db.insert(ShopHelper.TABLE_NAME10,null,value);
         Log.d("checking","ID");
         return idcheck;
+    }
+    public List<String> gettable10()
+    {
+        List<String> list = new ArrayList<String>();
+
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        String [] columns={ShopHelper.OfferID,ShopHelper.Name,ShopHelper.Price,ShopHelper.Price};
+        Log.d("checking","columns");
+        Cursor c=db.query(ShopHelper.TABLE_NAME10,columns,null,null,null,null,null,null);
+        Log.d("checking","Query");
+        while (c.moveToNext())
+        {
+            int _id=c.getInt(0);
+            String numberAsString = Integer.toString(_id);
+            list.add(numberAsString);
+
+            String Name=c.getString(1);
+            list.add(Name);
+            String Price=c.getString(2);
+            list.add(Price);
+            String Descrption=c.getString(3);
+            list.add(Descrption);
+        }
+        return list;
     }
 
     public long inserttable11(String id1,String id2)

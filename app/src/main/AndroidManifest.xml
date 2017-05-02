@@ -60,6 +60,7 @@
         <service android:name=".Category_Services" />
         <service android:name=".ItemList_Services" />
         <service android:name=".Sale_Service" />
+        <service android:name=".Sale_Notifcation_Service" />
 
 
         <activity

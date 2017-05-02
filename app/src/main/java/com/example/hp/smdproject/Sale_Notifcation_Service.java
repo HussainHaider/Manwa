@@ -1,9 +1,15 @@
 package com.example.hp.smdproject;
 
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.app.TaskStackBuilder;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.IBinder;
+import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -19,8 +25,7 @@ import java.util.List;
 /**
  * Created by HP on 03-May-17.
  */
-public class Sale_Service extends Service {
-
+public class Sale_Notifcation_Service extends Service {
     JSONArray products = null;
     //    private ProgressDialog pDialog;
     JSONParser jParser = new JSONParser();
@@ -35,7 +40,8 @@ public class Sale_Service extends Service {
 
     DataBaseAdpter Helper;
     private String[] Saleimages;
-
+    List<String> list1;
+    int result2;
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -49,7 +55,9 @@ public class Sale_Service extends Service {
         Toast.makeText(this, "Notifying Sale Service", Toast.LENGTH_LONG).show();
         Helper=new DataBaseAdpter(this);
         Saleimages= new String[6];
-
+        list1 = new ArrayList<String>();
+        result2=0;
+        CreateUI();
         callaysnc();
         return super.onStartCommand(pIntent, flags, startId);
     }
@@ -60,10 +68,59 @@ public class Sale_Service extends Service {
     }
     public void addSaleproduct(String id,String n,String D,String P)
     {
-        long id1=Helper.inserttable10(id,n,D,P);
-        String numberAsString = Long.toString(id1);
-        Log.d("Data inserted10",numberAsString);
+        NotificationCompat.Builder builder=new NotificationCompat.Builder(Sale_Notifcation_Service.this);
+        builder.setContentTitle("Check my Notification");
+        builder.setContentText("Actullay I want this Notification in the Srevice ID:"+id);
+        builder.setSmallIcon(R.mipmap.ic_launcher);
+        builder.setTicker("Hey do u want the Sale");
+        builder.setAutoCancel(true);
+
+//        builder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+
+        Intent i=new Intent(Sale_Notifcation_Service.this,SignIn.class);
+        TaskStackBuilder stackBuilder=TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(SignIn.class);
+        stackBuilder.addNextIntent(i);
+        PendingIntent pi_main=stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pi_main);
+
+
+        Notification notification= builder.build();
+        NotificationManager manager=(NotificationManager)getSystemService(NOTIFICATION_SERVICE);
+        manager.notify(1234,notification);
     }
+    public void CreateUI()
+    {
+        int j=1;
+        list1= Helper.gettable10();
+        Bitmap B;
+        for(int i=0;i<list1.size();i++) {
+            if(j%4==0 && i!=0)
+            {
+                int result1=0;
+                String des="";
+
+                result2 = Integer.parseInt(list1.get(i-3));
+                Log.d("get4_1",list1.get(i-3));
+
+
+
+
+                Log.d("get3_1",list1.get(i-2));
+                Log.d("get2_1",list1.get(i-1));
+                Log.d("get1_1",list1.get(i));
+
+
+            }
+            j++;
+        }
+        String numberAsString = Integer.toString(result2);
+        Log.d("result2",numberAsString);
+        return;
+    }
+
+
+
     class LoadAllProductName extends AsyncTask<String, String, String> {
 
         /**
@@ -116,9 +173,11 @@ public class Sale_Service extends Service {
                         Log.d("Special_product_price", price);
                         Log.d("Special_IMAGE_URL", image);
 //                        Saleimages[i]=image;
-                        addSaleproduct(id,name,Description,price);
-
-
+                        if(result2<Integer.parseInt(id))
+                        {
+                            addSaleproduct(id,name,Description,price);
+                            break;
+                        }
 
                     }
                 } else {
