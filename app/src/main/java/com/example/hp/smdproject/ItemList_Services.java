@@ -58,7 +58,14 @@ public class ItemList_Services extends Service {
     @Override
     public int onStartCommand(Intent pIntent, int flags, int startId) {
         // TODO Auto-generated method stub
-        Category_id = pIntent.getStringExtra("Category_id");
+
+        try {
+            Category_id = pIntent.getStringExtra("Category_id");
+
+        }catch (Exception e)
+        {
+
+        }
         Log.d("ID is:",Category_id);
         Toast.makeText(this, "Notifying ItemList Service", Toast.LENGTH_LONG).show();
         Helper = new DataBaseAdpter(this);

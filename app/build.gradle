@@ -35,4 +35,6 @@ dependencies {
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     compile 'com.github.ivbaranov:materialfavoritebutton:0.1.4'
     compile files('libs/apache-httpcomponents-httpcore.jar')
+
+    compile 'com.google.android.gms:play-services-ads:8.4.0'
 }

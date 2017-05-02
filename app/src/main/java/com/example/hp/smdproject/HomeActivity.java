@@ -23,6 +23,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
@@ -52,6 +55,8 @@ public class HomeActivity extends AppCompatActivity
     DataBaseAdpter Helper;
     String categoryid;
 
+    private AdView mAdView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +70,12 @@ public class HomeActivity extends AppCompatActivity
         Helper=new DataBaseAdpter(this);
         Log.d("Helper","class");
         categoryid="";btnid=1;
+
+        mAdView = (AdView) findViewById(R.id.adView);
+        AdRequest adRequest = new AdRequest.Builder()
+                .build();
+        mAdView.loadAd(adRequest);
+
 
         HomeActivity.ImagePagerAdapter adapter = new HomeActivity.ImagePagerAdapter();
         viewPager.setAdapter(adapter);
@@ -117,6 +128,30 @@ public class HomeActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    public void onPause() {
+        if (mAdView != null) {
+            mAdView.pause();
+        }
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mAdView != null) {
+            mAdView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mAdView != null) {
+            mAdView.destroy();
+        }
+        super.onDestroy();
     }
 
 //    @Override
@@ -271,11 +306,6 @@ public class HomeActivity extends AppCompatActivity
         Log.d("Data inserted",numberAsString);
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-//        pDialog.dismiss();
-    }
 
 
     class LoadAllProductCatgory extends AsyncTask<String, String, String> {
