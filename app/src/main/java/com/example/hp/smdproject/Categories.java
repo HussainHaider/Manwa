@@ -77,6 +77,7 @@ public class Categories extends AppCompatActivity {
         final ImageButton imgb = (ImageButton) findViewById(R.id.user_profile_photo);
         final ImageView imgp = (ImageView) findViewById(R.id.header_cover_image);
 
+
 //        setSupportActionBar(myToolbar);
         gridview = (GridView) findViewById(R.id.customgrid);
 

@@ -54,18 +54,6 @@
             android:textColor="@color/grey"
             android:layout_marginLeft="10dp"
             />
-        <TextView
-        android:id="@+id/category"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/price"
-        android:layout_gravity="center"
-         android:layout_marginTop="2dip"
-        android:layout_toRightOf="@id/img"
-        android:gravity="right"
-        android:text="23-12-2017"
-        android:textColor="@color/grey"
-        android:layout_marginLeft="10dp"
-        />
+
     </RelativeLayout>
 </LinearLayout>

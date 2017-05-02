@@ -227,6 +227,60 @@ public class DataBaseAdpter {
         return idcheck;
     }
 
+    public long inserttable11(String id1,String id2)
+    {
+        Log.d("checking","Value1");
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        Log.d("checking","Value2");
+        ContentValues value=new ContentValues();
+        value.put(ShopHelper.pid,id1);
+        value.put(ShopHelper.uid,id2);
+        Log.d("checking","Value");
+        idcheck=db.insert(ShopHelper.TABLE_NAME11,null,value);
+        Log.d("checking","ID");
+        return idcheck;
+    }
+
+    public Productdetailclass getitem(String id)
+    {
+        Productdetailclass pr=new Productdetailclass();
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        String query = "SELECT * FROM " + ShopHelper.TABLE_NAME5+ " where "+ShopHelper.PDid+"=?" ;
+
+        String[] params = new String[]{ id };
+        Cursor c=db.rawQuery(query,params);
+
+        Log.d("checking","Query");
+        while (c.moveToNext())
+        {
+            pr.PID= Integer.parseInt( c.getString(c.getColumnIndex(ShopHelper.PDid)));
+            pr.Size=  Integer.parseInt(c.getString(c.getColumnIndex(ShopHelper.Size)));
+            pr.Description=  c.getString(c.getColumnIndex(ShopHelper.Descrption));
+            pr.Price= Integer.parseInt( c.getString(c.getColumnIndex(ShopHelper.Price)));
+
+        }
+        return pr;
+    }
+
+    public ArrayList<Productdetailclass> getCartList(String id1)
+    {
+        ArrayList<Productdetailclass> list = new ArrayList<>();
+
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        Log.d("checking","columns");
+        String query = "SELECT * FROM " + ShopHelper.TABLE_NAME11+ " WHERE "+ShopHelper.uid+"=?" ;
+        //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
+        String[] params = new String[]{ id1 };
+        Cursor c=db.rawQuery(query,params);
+        Log.d("checking","Query");
+        while (c.moveToNext())
+        {
+            list.add(getitem( c.getString(c.getColumnIndex("pid"))));
+
+        }
+        return list;
+    }
+
 
 
 
@@ -244,6 +298,7 @@ public class DataBaseAdpter {
         private static final String TABLE_NAME8 = "Gold_User";
         private static final String TABLE_NAME9 = "Premium_User";
         private static final String TABLE_NAME10 = "Special_offer";
+        private static final String TABLE_NAME11 = "Cart";
         private static final int DATABASE_VERSION = 7;
         //Table 1 attribute
         private static final String KEY_IMAGE1 = "Photo";
@@ -283,6 +338,9 @@ public class DataBaseAdpter {
         //Table 10 attribute
         private static final String OfferID = "ID_";
         private static final String Discount = "discount";
+        //Table 11 attribute
+        private static final String uid = "uid";
+        private static final String pid = "pid";
 
 
         public ShopHelper(Context context) {
@@ -415,7 +473,16 @@ public class DataBaseAdpter {
                 Log.d("check for something", "getting error10");
             }
             //---------------------------------------------------------------------------------------------------------------
-
+            String query11 = "CREATE TABLE " + TABLE_NAME11 + " ( " + pid + " INTEGER ," + uid +
+                    " INTEGER, FOREIGN KEY (" + uid + ") REFERENCES " +
+                    TABLE_NAME1 + "(" + UID + ") , FOREIGN KEY (" + pid + ") REFERENCES " + TABLE_NAME2 + "(" + PID + "));";
+            Log.d("checking", query11);
+            try {
+                db.execSQL(query11);
+                Log.d("check for something", "getting done with query4");
+            } catch (SQLException e) {
+                Log.d("check for something", "getting error4");
+            }
 
         }
 
@@ -517,11 +584,21 @@ public class DataBaseAdpter {
             try {
                 db.execSQL(query20);
                 Log.d("check for something", "getting done with query20");
-                onCreate(db);
+               // onCreate(db);
             } catch (SQLException e) {
                 Log.d("check for something", "getting error with query20");
             }
             //---------------------------------------------------------------------------------------------------------------
+            String query21 = "DROP TABLE IF EXISTS " + TABLE_NAME11;
+            try {
+                db.execSQL(query21);
+                Log.d("check for something", "getting done with query20");
+                  onCreate(db);
+            } catch (SQLException e) {
+                Log.d("check for something", "getting error with query20");
+            }
+
+            Log.d("check for updation", "yes it is obtain");
 
 
             Log.d("check for updation", "yes it is obtain");

@@ -67,7 +67,7 @@
             android:padding="20dp"
             android:id="@+id/addtocart"
             android:text="Add to cart"
-            android:textSize="15sp" />
+            android:textSize="20sp" />
 
     </LinearLayout>
 

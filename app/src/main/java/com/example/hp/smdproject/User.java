@@ -6,7 +6,7 @@ import android.util.Log;
  * Created by shoib on 4/15/2017.
  */
 
-public class User {
+public class User implements java.io.Serializable {
     int ID;
     String Password;
     String Name;

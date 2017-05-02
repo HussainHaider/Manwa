@@ -15,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +37,8 @@ public class SignIn extends AppCompatActivity {
 
     private String email,password;
     private EditText etEmail,etPassword;
+    User U1=new User();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,6 +122,12 @@ public class SignIn extends AppCompatActivity {
                         String CC = c.getString(TAG_CC);
 
 
+                        U1.ID=Integer.parseInt(id);
+                        U1.Name=name;
+                        U1.Address=address;
+                        U1.Country=country;
+                        U1.Creidt_Card=Integer.parseInt(CC);
+
                         Log.d("user_id", id);
                         Log.d("user_name", name);
                         Log.d("user_address", address);
@@ -132,7 +141,9 @@ public class SignIn extends AppCompatActivity {
 
 
 
-                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), userProfile.class);
+                   // intent.putExtra("UserObject",U1);
+                    intent.putExtra("usee", (Serializable) U1);
                     startActivity(intent);
                     // closing this screen
                     finish();

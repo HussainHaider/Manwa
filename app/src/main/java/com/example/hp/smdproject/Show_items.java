@@ -14,15 +14,17 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.app.AlertDialog;
 
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 
@@ -107,32 +109,6 @@ public class Show_items extends AppCompatActivity {
 
 
 
-/*        T=(TextView)findViewById(R.id.size);
-        dropdown = (Spinner)findViewById(R.id.spin);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        dropdown.setAdapter(adapter);
-        dropdown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapter, View v, int position, long id) {
-                // On selecting a spinner item
-                //String Text  = adapter.getItemAtPosition(position).toString();
-                String Text = dropdown.getSelectedItem().toString();
-                Log.d("String is:",Text);
-                if(Text.matches("") || Text.matches("Size")){
-                    //conditions accordingly
-                    return;
-                }
-                else
-                    T.setText(Text);
-
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> arg0) {
-                T.setText("Size");
-            }
-        });*/
-//        new LoadAllProductName().execute();
-
 
     }
 
@@ -187,8 +163,10 @@ public class Show_items extends AppCompatActivity {
 
                 Log.d("Hello", "world1");
                 String numberAsString2 = Integer.toString(count);
-                //              tv.setText(numberAsString2);
                 R1.setTitleText(numberAsString2);
+                long c=Helper.inserttable11(item_id,"4");
+                Toast.makeText(getApplicationContext(), "Infromation  "+c, Toast.LENGTH_SHORT)
+                        .show();
 
             }
         });
@@ -198,64 +176,31 @@ public class Show_items extends AppCompatActivity {
             public void onClick(View v) {
 //                count++;
 
-                Log.d("Hello", "world4");
-                //  final Dialog mDateTimeDialog = new Dialog(getApplicationContext());
-                // Inflate the root layout
-                final Dialog CartDialog = new Dialog(Show_items.this);
+                ArrayList<Productdetailclass> list2=Helper.getCartList("4");
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(Show_items.this);
+                View mView = getLayoutInflater().inflate(R.layout.material_design_profile_screen_xml_ui_design, null);
 
+                final TextView name = (TextView) mView.findViewById(R.id.user_profile_name);
+                name.setText("Cart List");
 
-                CartDialog.setTitle("Cart Products");
+                final ListView list = (ListView) mView.findViewById(R.id.listnumbers);
 
+                cart_custom_adapter adapter = new
+                        cart_custom_adapter(Show_items.this, list2);
 
-                final LinearLayout CartDialogView = (LinearLayout) getLayoutInflater().inflate(R.layout.cart_layout, null);
+                list.setAdapter(adapter);
 
-                android.widget.Button B = new Button(Show_items.this);
-                B.setText("Hello");
-                B.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                CartDialogView.addView(B);
+                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapter, View v, int position,
+                                            long arg3) {
 
-                ScrollView S = new ScrollView(Show_items.this);
-                S.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                    }
+                });
 
-                //Testing
-                for (int i = 0; i < 25; i++) {
-
-
-                    LinearLayout L = new LinearLayout(Show_items.this);
-                    L.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    L.setOrientation(LinearLayout.HORIZONTAL);
-
-
-                    TextView T = new TextView(Show_items.this);
-                    T.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    T.setText("Jeans");
-                    T.setTextSize(25);
-                    L.addView(T);
-
-                    Button B1 = new Button(Show_items.this);
-                    B1.setText("X");
-                    B1.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-                    B1.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast toast = Toast.makeText(getApplicationContext(), "clicking" + v.getId(), Toast.LENGTH_LONG);
-                            toast.show();
-                            D = (LinearLayout) v.getParent();
-                            CartDialogView.removeView(D);
-
-                        }
-                    });
-                    L.addView(B1);
-                    CartDialogView.addView(L);
-
-                }
-                S.addView(CartDialogView);
-
-
-                CartDialog.requestWindowFeature(Window.FEATURE_SWIPE_TO_DISMISS);
-                CartDialog.setContentView(S);
-
-                CartDialog.show();
+                mBuilder.setView(mView);
+                final AlertDialog dialog = mBuilder.create();
+                dialog.show();
             }
         });
 
@@ -273,53 +218,6 @@ public class Show_items extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_add) {
             Log.d("Menu", "World1");
-//            final Dialog mDateTimeDialog = new Dialog(this);
-//            // Inflate the root layout
-//
-//            final LinearLayout mDateTimeDialogView = (LinearLayout) getLayoutInflater().inflate(R.layout.cart_layout, null);
-//
-//            android.widget.Button B=new Button(getApplicationContext());
-//            B.setText("Hello");
-//            B.setId(id);
-//            B.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT));
-//            mDateTimeDialogView.addView(B);
-//
-//
-//            ((Button) mDateTimeDialogView.findViewById(R.id.SetDateTime)).setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    Log.d("Start your","work1");
-//                    mDateTimeDialog.dismiss();
-//                }
-//            });
-//
-//
-//            ((Button) mDateTimeDialogView.findViewById(R.id.CancelDialog)).setOnClickListener(new View.OnClickListener() {
-//                public void onClick(View v) {
-//                    // TODO Auto-generated method stub
-//                    Log.d("Start your","work2");
-//                    mDateTimeDialog.cancel();
-//                }
-//            });
-//
-//            // Reset Date and Time pickers when the "Reset" button is clicked
-//
-//            ((Button) mDateTimeDialogView.findViewById(R.id.ResetDateTime)).setOnClickListener(new View.OnClickListener() {
-//
-//                public void onClick(View v) {
-//                    // TODO Auto-generated method stub
-//                    Log.d("Start your","work3");
-//                }
-//            });
-//
-//            // Setup TimePicker
-//            // No title on the dialog window
-//            mDateTimeDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-//            // Set the dialog content view
-//            mDateTimeDialog.setContentView(mDateTimeDialogView);
-//
-//
-//            mDateTimeDialog.show();
-//
 
             return true;
         }
@@ -387,27 +285,7 @@ public class Show_items extends AppCompatActivity {
                 mBottomSheetDialog.dismiss();
             }
         });
-//        txtDetail.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(Show_items.this,"Clicked Detail",Toast.LENGTH_SHORT).show();
-//                mBottomSheetDialog.dismiss();
-//            }
-//        });
-//        txtOpen.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(Show_items.this,"Clicked Open",Toast.LENGTH_SHORT).show();
-//                mBottomSheetDialog.dismiss();
-//            }
-//        });
-//        txtUninstall.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(Show_items.this,"Clicked Uninstall",Toast.LENGTH_SHORT).show();
-//                mBottomSheetDialog.dismiss();
-//            }
-//        });
+
 
     }
 
