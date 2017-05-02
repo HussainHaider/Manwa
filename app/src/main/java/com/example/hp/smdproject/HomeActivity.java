@@ -148,7 +148,7 @@ public class HomeActivity extends AppCompatActivity
         Helper.inserttable6("1","kid");
         callaysnc();
 
-
+        getApplicationContext().startService(new Intent(getApplicationContext(), Sale_Service.class));
         getApplicationContext().startService(new Intent(getApplicationContext(), Category_Services.class));
 
 

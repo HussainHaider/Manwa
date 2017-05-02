@@ -215,14 +215,30 @@ public class DataBaseAdpter {
     }
     public long inserttable7(String id1,String id2)
     {
+        Log.d("checking10","Value1");
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        Log.d("checking10","Value2");
+        ContentValues value=new ContentValues();
+        value.put(ShopHelper.ProductID,id1);
+        value.put(ShopHelper.CategoryID,id2);
+        Log.d("checking10","Value");
+        idcheck=db.insert(ShopHelper.TABLE_NAME7,null,value);
+        Log.d("checking","ID");
+        return idcheck;
+    }
+    public long inserttable10(String id,String n,String D,String P)
+    {
         Log.d("checking","Value1");
         SQLiteDatabase db=Helper.getWritableDatabase();
         Log.d("checking","Value2");
         ContentValues value=new ContentValues();
-        value.put(ShopHelper.ProductID,id1);
-        value.put(ShopHelper.CategoryID,id2);
+        value.put(ShopHelper.OfferID,id);
+        value.put(ShopHelper.Name,n);
+        value.put(ShopHelper.Price,P);
+        value.put(ShopHelper.Descrption,D);
+
         Log.d("checking","Value");
-        idcheck=db.insert(ShopHelper.TABLE_NAME7,null,value);
+        idcheck=db.insert(ShopHelper.TABLE_NAME10,null,value);
         Log.d("checking","ID");
         return idcheck;
     }
@@ -297,7 +313,7 @@ public class DataBaseAdpter {
         private static final String TABLE_NAME7 = "ProductCategory";
         private static final String TABLE_NAME8 = "Gold_User";
         private static final String TABLE_NAME9 = "Premium_User";
-        private static final String TABLE_NAME10 = "Special_offer";
+        private static final String TABLE_NAME10 = "SpecialOffer";
         private static final String TABLE_NAME11 = "Cart";
         private static final int DATABASE_VERSION = 7;
         //Table 1 attribute
@@ -336,8 +352,9 @@ public class DataBaseAdpter {
         //Table 9 attribute
         private static final String Phonenumber = "Pnumber";
         //Table 10 attribute
-        private static final String OfferID = "ID_";
-        private static final String Discount = "discount";
+        private static final String OfferID = "OfferID";
+        private static final String Name = "Name";
+        private static final String Offer_img = "img";
         //Table 11 attribute
         private static final String uid = "uid";
         private static final String pid = "pid";
@@ -462,9 +479,8 @@ public class DataBaseAdpter {
             }
             //---------------------------------------------------------------------------------------------------------------
 
-            String query10 = "CREATE TABLE " + TABLE_NAME10 + " ( " + OfferID + "" +
-                    " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ," + Discount + " INTEGER, " + ProductID + " INTEGER ," +
-                    "FOREIGN KEY (" + ProductID + ") REFERENCES " + TABLE_NAME2 + "(" + PID + "));";
+            String query10 = "CREATE TABLE " + TABLE_NAME10 + " ( " + OfferID +
+                    " INTEGER ," +Name+" TEXT ,"+Price+" INTEGER ,"+Descrption+" TEXT ,"+Offer_img+" BLOB );";
             Log.d("checking", query10);
             try {
                 db.execSQL(query10);
