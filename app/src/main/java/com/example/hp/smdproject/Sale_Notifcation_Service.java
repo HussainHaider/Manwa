@@ -148,7 +148,14 @@ public class Sale_Notifcation_Service extends Service {
             Log.d("Sale","Service2");
             try {
                 // Checking for SUCCESS TAG
-                int success = json.getInt(TAG_SUCCESS);
+                int success=0;
+                // Checking for SUCCESS TAG
+                try{
+                    success = json.getInt(TAG_SUCCESS);
+                }catch (Exception e)
+                {
+                    Log.d("Service","Sale Notifying  Service not working");
+                }
 
                 if (success == 1) {
                     // products found

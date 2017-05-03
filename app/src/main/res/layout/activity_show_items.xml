@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="Button"
-            android:padding="20dp"
+            android:padding="22dp"
             android:src="@drawable/icon" />
 
         <Button
@@ -71,11 +71,9 @@
 
     </LinearLayout>
     <com.google.android.gms.ads.AdView
-        android:id="@+id/adView"
+        android:id="@+id/adView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
         android:layout_marginBottom="20dp"
         ads:adSize="BANNER"
         ads:adUnitId="@string/banner_level">

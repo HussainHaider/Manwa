@@ -87,8 +87,16 @@ public class Category_Services extends Service {
 //            Log.d("All Patients: ", json.toString());
             Log.d("Category","Service2");
             try {
+                int success=0;
                 // Checking for SUCCESS TAG
-                int success = json.getInt(TAG_SUCCESS);
+//                success = json.getInt(TAG_SUCCESS);
+                try{
+                    success = json.getInt(TAG_SUCCESS);
+                }catch (Exception e)
+                {
+                    Log.d("Service","Notifying Category Service not working");
+                }
+
 
                 if (success == 1) {
                     // products found

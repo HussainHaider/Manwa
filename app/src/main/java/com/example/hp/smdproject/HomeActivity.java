@@ -52,7 +52,7 @@ public class HomeActivity extends AppCompatActivity
     private static final String TAG_GAME_NAME = "ProductNames";
     private static final String TAG_PID = "PID";
     private static final String TAG_CID = "CID";
-
+    Button B1;
     DataBaseAdpter Helper;
     String categoryid;
 
@@ -124,7 +124,7 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerview = navigationView.getHeaderView(0);
-        Button B1=(Button)headerview.findViewById(R.id.joinbtn);
+        B1=(Button)headerview.findViewById(R.id.joinbtn);
         Button B2=(Button)headerview.findViewById(R.id.signinbtn);
         B1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,14 +138,16 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 Toast.makeText(HomeActivity.this, "clicked2", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(getApplicationContext(), SignIn.class);
-                startActivity(intent);
+
+                B1.setVisibility(View.INVISIBLE);
+//                Intent intent = new Intent(getApplicationContext(), SignIn.class);
+//                startActivity(intent);
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
         Helper.inserttable6("1","Men");
         Helper.inserttable6("2","Female");
-        Helper.inserttable6("1","kid");
+        Helper.inserttable6("3","kid");
         callaysnc();
 
         getApplicationContext().startService(new Intent(getApplicationContext(), Sale_Service.class));
@@ -220,7 +222,7 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_homebtn) {
             Log.d("Camera","option");
-            Intent intent = new Intent(getApplicationContext(), Show_items.class);
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intent);
             // Handle the camera action
 
@@ -252,8 +254,10 @@ public class HomeActivity extends AppCompatActivity
 
             Log.d("slideshow","option");
 
-        } else if (id == R.id.nav_manage) {
-            Log.d("Manage","option");
+        } else if (id == R.id.nav_profile) {
+            Log.d("nav_profile","option");
+            Intent intent = new Intent(getApplicationContext(), userProfile.class);
+            startActivity(intent);
 
         } else if (id == R.id.nav_share) {
             Log.d("Share","option");
@@ -354,11 +358,7 @@ public class HomeActivity extends AppCompatActivity
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-//            pDialog = new ProgressDialog(HomeActivity.this);
-//            pDialog.setMessage("Loading data. Please wait...");
-//            pDialog.setIndeterminate(false);
-//            pDialog.setCancelable(false);
-//            pDialog.show();
+
         }
 
         /**
@@ -373,11 +373,19 @@ public class HomeActivity extends AppCompatActivity
             JSONObject json = jParser.makeHttpRequest(url_all_gameName, "GET", params);
 
             // Check your log cat for JSON reponse
-//            Log.d("All Patients: ", json.toString());
+            Log.d("All Patients: ", json.toString());
 
             try {
                 // Checking for SUCCESS TAG
-                int success = json.getInt(TAG_SUCCESS);
+
+                int success=0;
+                // Checking for SUCCESS TAG
+                try{
+                    success = json.getInt(TAG_SUCCESS);
+                }catch (Exception e)
+                {
+                    Log.d("Service","Product Category Service not working");
+                }
 
                 if (success == 1) {
                     // products found
@@ -398,14 +406,8 @@ public class HomeActivity extends AppCompatActivity
 
                     }
                 } else {
-                    Log.d("no Product","found");
-                    // no products found
-                    // Launch Add New product Activity
-                   /* Intent i = new Intent(getApplicationContext(),
-                            NewProductActivity.class);
-                    // Closing all previous activities
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);*/
+                    Log.d("no Product Category","found");
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

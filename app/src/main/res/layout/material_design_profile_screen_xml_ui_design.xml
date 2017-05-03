@@ -3,56 +3,63 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">-->
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
     >
 
 
-        <RelativeLayout
+        <LinearLayout
             android:id="@+id/profile_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/header_cover_image"
             android:background="@color/colorAccent"
-            android:elevation="4dp"
-            android:paddingBottom="24dp">
+            android:gravity="center"
+            android:paddingBottom="5dp"
+            >
 
             <TextView
                 android:id="@+id/user_profile_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="76dp"
+                android:layout_marginTop="3dp"
                 android:text="Viral Android"
                 android:textColor="#fff"
-                android:textSize="24sp"
+
+
+                android:textSize="28sp"
                 android:textStyle="bold" />
-
-
-        </RelativeLayout>
-
-
-
-
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/profile_layout"
-            android:layout_marginTop="2dp"
-            android:orientation="vertical">
-            <ListView
-                android:id="@+id/listnumbers"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                >
-            </ListView>
 
 
         </LinearLayout>
 
+        <ListView
+                android:id="@+id/listnumbers"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/profile_layout"
+            android:layout_weight="1"
 
-    </RelativeLayout>
+
+                >
+        </ListView>
+
+
+    <Button
+        android:id="@+id/button_order"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="buttonClick"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_below="@+id/listnumbers"
+        android:textSize="30dp"
+        android:text="Order NOW"
+        />
+
+    </LinearLayout>
 
 <!--
 </ScrollView>-->

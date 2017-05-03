@@ -16,9 +16,9 @@
             android:icon="@drawable/hanger"
             android:title="Women Shop" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_profile"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Help" />
+            android:title="User Profile" />
 
         <item
             android:id="@+id/nav_salebtn"

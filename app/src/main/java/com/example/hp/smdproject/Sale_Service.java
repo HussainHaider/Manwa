@@ -3,6 +3,7 @@ package com.example.hp.smdproject;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
@@ -14,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,20 +54,20 @@ public class Sale_Service extends Service {
         Saleimages= new String[6];
 
         callaysnc();
-//        for(int i=0;i<Saleimages.length;i++)
-//        {
-//            String urldisplay = Saleimages[i];
-//            Bitmap mIcon11 = null;
-//            try {
-//                InputStream in = new java.net.URL(urldisplay).openStream();
-//                mIcon11 = BitmapFactory.decodeStream(in);
-//
-//            } catch (Exception e) {
+        for(int i=0;i<Saleimages.length;i++)
+        {
+            String urldisplay = Saleimages[i];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+
+            } catch (Exception e) {
 //                Log.e("Error", e.getMessage());
-//                e.printStackTrace();
-//            }
-//            addSproductImage(i+1,mIcon11);
-//        }
+                e.printStackTrace();
+            }
+            addSproductImage(i+1,mIcon11);
+        }
 
 
         return super.onStartCommand(pIntent, flags, startId);
@@ -73,9 +75,9 @@ public class Sale_Service extends Service {
     public void addSproductImage(int id,Bitmap n)
     {
         String numberAsString = Integer.toString(id);
-//        long id1=Helper.inserttable10_2(numberAsString,n);
-//        String numberAsString2 = Long.toString(id1);
-//        Log.d("Data inserted10",numberAsString2);
+        long id1=Helper.inserttable10_2(numberAsString,n);
+        String numberAsString2 = Long.toString(id1);
+        Log.d("Data inserted10",numberAsString2);
     }
 
     public void callaysnc()
@@ -117,7 +119,14 @@ public class Sale_Service extends Service {
             Log.d("Sale","Service2");
             try {
                 // Checking for SUCCESS TAG
-                int success = json.getInt(TAG_SUCCESS);
+                int success=0;
+                // Checking for SUCCESS TAG
+                try{
+                    success = json.getInt(TAG_SUCCESS);
+                }catch (Exception e)
+                {
+                    Log.d("Service","Sale Service not working");
+                }
 
                 if (success == 1) {
                     // products found

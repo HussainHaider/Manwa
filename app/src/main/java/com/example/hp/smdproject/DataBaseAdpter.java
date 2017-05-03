@@ -244,6 +244,25 @@ public class DataBaseAdpter {
         Log.d("checking","ID");
         return idcheck;
     }
+    public long inserttable10_2(String id,Bitmap B)
+    {
+        byte[] image=null;
+        Log.d("Data inserted5_2_1",id);
+        if(B!=null)
+        {
+            image=getBitmapAsByteArray(B);
+            Log.d("Data inserted10_2_1","Nothing");
+        }
+
+
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        ContentValues value=new ContentValues();
+        value.put(ShopHelper.Offer_img,image); //These Fields should be your String values of actual column names
+
+        db.update(ShopHelper.TABLE_NAME10, value, ShopHelper.OfferID+" ="+id, null);
+        Log.d("checking","ID");
+        return idcheck;
+    }
     public List<String> gettable10()
     {
         List<String> list = new ArrayList<String>();
@@ -300,6 +319,16 @@ public class DataBaseAdpter {
             pr.Description=  c.getString(c.getColumnIndex(ShopHelper.Descrption));
             pr.Price= Integer.parseInt( c.getString(c.getColumnIndex(ShopHelper.Price)));
 
+            byte[] imgByte =  c.getBlob(c.getColumnIndex(ShopHelper.KEY_IMAGE2));
+            if(imgByte==null)
+            {
+                return null;
+            }
+
+            c.close();
+            pr.image= BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+
+
         }
         return pr;
     }
@@ -323,6 +352,40 @@ public class DataBaseAdpter {
         return list;
     }
 
+    public int getCount(String id1)
+    {
+        ArrayList<Productdetailclass> list = new ArrayList<>();
+
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        Log.d("checking","columns");
+        String query = "SELECT * FROM " + ShopHelper.TABLE_NAME11+ " WHERE "+ShopHelper.uid+"=?" ;
+        //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
+        String[] params = new String[]{ id1 };
+        Cursor c=db.rawQuery(query,params);
+        Log.d("checking","Query");
+
+        return c.getCount();
+    }
+
+
+
+
+    public long removeFromCart(String id1)
+    {
+        long check=0;
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        Log.d("checking","columns");
+        //  String query = "DELETE * FROM " + ShopHelper.TABLE_NAME11+ " WHERE "+ShopHelper.pid+"=?" ;
+        //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
+        check=db.delete(ShopHelper.TABLE_NAME11, ShopHelper.pid + "=" + id1, null);
+        //   String[] params = new String[]{ id1 };
+        //  db.execSQL(query,params);
+        Log.d("checking","Query");
+
+        return check;
+    }
+
+
 
 
 
@@ -341,7 +404,7 @@ public class DataBaseAdpter {
         private static final String TABLE_NAME9 = "Premium_User";
         private static final String TABLE_NAME10 = "SpecialOffer";
         private static final String TABLE_NAME11 = "Cart";
-        private static final int DATABASE_VERSION = 7;
+        private static final int DATABASE_VERSION = 9;
         //Table 1 attribute
         private static final String KEY_IMAGE1 = "Photo";
         private static final String UID = "_id";
@@ -516,14 +579,14 @@ public class DataBaseAdpter {
             }
             //---------------------------------------------------------------------------------------------------------------
             String query11 = "CREATE TABLE " + TABLE_NAME11 + " ( " + pid + " INTEGER ," + uid +
-                    " INTEGER, FOREIGN KEY (" + uid + ") REFERENCES " +
-                    TABLE_NAME1 + "(" + UID + ") , FOREIGN KEY (" + pid + ") REFERENCES " + TABLE_NAME2 + "(" + PID + "));";
+                    " INTEGER , FOREIGN KEY (" + uid + ") REFERENCES " +
+                    TABLE_NAME1 + "(" + UID + ") , FOREIGN KEY (" + pid + ") REFERENCES " + TABLE_NAME2 + "(" + PID + "), PRIMARY KEY ("+pid+","+uid+"));";
             Log.d("checking", query11);
             try {
                 db.execSQL(query11);
-                Log.d("check for something", "getting done with query4");
+                Log.d("check for something", "getting done with query11");
             } catch (SQLException e) {
-                Log.d("check for something", "getting error4");
+                Log.d("check for something", "getting error11");
             }
 
         }
@@ -634,10 +697,10 @@ public class DataBaseAdpter {
             String query21 = "DROP TABLE IF EXISTS " + TABLE_NAME11;
             try {
                 db.execSQL(query21);
-                Log.d("check for something", "getting done with query20");
+                Log.d("check for something", "getting done with query21");
                   onCreate(db);
             } catch (SQLException e) {
-                Log.d("check for something", "getting error with query20");
+                Log.d("check for something", "getting error with query21");
             }
 
             Log.d("check for updation", "yes it is obtain");

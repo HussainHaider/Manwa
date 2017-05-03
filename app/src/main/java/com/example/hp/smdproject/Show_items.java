@@ -1,7 +1,9 @@
 package com.example.hp.smdproject;
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -24,9 +26,11 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.app.AlertDialog;
 
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
+import com.google.android.gms.ads.AdListener;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -46,6 +50,7 @@ public class Show_items extends AppCompatActivity {
     static Dialog D1;
     int count;
     Button B;
+    ArrayList<Productdetailclass> list2;
     RoundedLetterView R1;
     ImageView B2;
     ImageView img;
@@ -71,6 +76,8 @@ public class Show_items extends AppCompatActivity {
     private static final String TAG_GAME_NAME = "image_detail";
     private static final String TAG_IMAGE = "image";
 
+    private AdView mAdView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,6 +90,47 @@ public class Show_items extends AppCompatActivity {
         list1 = Helper.getspeceficitem(item_id);
 
         MY_URL_STRING = "http://www.cricketact.com.au/images/junior-competition.jpg";
+
+
+        mAdView = (AdView) findViewById(R.id.adView1);
+//
+        AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                // Check the LogCat to get your test device ID
+//                .addTestDevice("51BC4A7A6F9441A4F3FD979DD2D32F66")
+                .build();
+
+        mAdView.loadAd(adRequest);
+
+        mAdView.setAdListener(new AdListener() {
+            @Override
+            public void onAdLoaded() {
+                Toast.makeText(getApplicationContext(), "Ad is loaded!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdClosed() {
+                Toast.makeText(getApplicationContext(), "Ad is closed!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdFailedToLoad(int errorCode) {
+                Toast.makeText(getApplicationContext(), "Ad failed to load! error code: " + errorCode, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdLeftApplication() {
+                Toast.makeText(getApplicationContext(), "Ad left application!", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onAdOpened() {
+                Toast.makeText(getApplicationContext(), "Ad is opened!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mAdView.loadAd(adRequest);
+
 
 //        imageView=(ImageView)findViewById(R.id.img1);
 //        URL url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
@@ -107,9 +155,6 @@ public class Show_items extends AppCompatActivity {
                     }
                 });
 
-
-
-
     }
 
     public void callimagetask(String a) {
@@ -120,7 +165,9 @@ public class Show_items extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
     }
+
 
     public void whishlistbtn() {
         Log.d("Check", "wishbtn");
@@ -138,6 +185,7 @@ public class Show_items extends AppCompatActivity {
         wishcount++;
     }
 
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -145,38 +193,46 @@ public class Show_items extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.action_add);
         MenuItemCompat.setActionView(item, R.layout.badge_count);
         notifCount = (RelativeLayout) MenuItemCompat.getActionView(item);
-
 //        tv = (TextView) notifCount.findViewById(R.id.actionbar_notifcation_textview);
 //        tv.setText("0");
         B = (Button) findViewById(R.id.addtocart);
 
+
 //        B1=(ImageButton) notifCount.findViewById(R.id.pic);
         R1 = (RoundedLetterView) notifCount.findViewById(R.id.setround);
+        count=Helper.getCount("4");
 
+
+        R1.setTitleText(Integer.toString(count));
         B2 = (ImageView) notifCount.findViewById(R.id.pic);
 //        B3=(ImageButton) notifCount.findViewById(R.id.pic);
 
         B.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                count++;
 
-                Log.d("Hello", "world1");
-                String numberAsString2 = Integer.toString(count);
-                R1.setTitleText(numberAsString2);
                 long c=Helper.inserttable11(item_id,"4");
-                Toast.makeText(getApplicationContext(), "Infromation  "+c, Toast.LENGTH_SHORT)
-                        .show();
+                if(c==-1) {
+                    Toast.makeText(getApplicationContext(), "Item Already Exist in Cart", Toast.LENGTH_SHORT)
+                            .show();
+                }
+                else
+                {
+                    Toast.makeText(getApplicationContext(), "Item Added to Cart Successfully", Toast.LENGTH_SHORT)
+                            .show();
+                    count++;
+                    Log.d("Hello", "world1");
+                    String numberAsString2 = Integer.toString(count);
+                    R1.setTitleText(numberAsString2);
 
+                }
             }
         });
-
         B2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                count++;
-
-                ArrayList<Productdetailclass> list2=Helper.getCartList("4");
+                list2=Helper.getCartList("4");
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(Show_items.this);
                 View mView = getLayoutInflater().inflate(R.layout.material_design_profile_screen_xml_ui_design, null);
 
@@ -197,14 +253,19 @@ public class Show_items extends AppCompatActivity {
 
                     }
                 });
-
                 mBuilder.setView(mView);
                 final AlertDialog dialog = mBuilder.create();
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        // TODO Auto-generated method stub
+                         count=Helper.getCount("4");
+                         R1.setTitleText(Integer.toString(count));
+                    }
+                });
                 dialog.show();
             }
         });
-
-
         return true;
     }
 
@@ -228,7 +289,6 @@ public class Show_items extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
     public void Button(View v) {
         if (v.getId() == R.id.infobtn) {
             Toast toast = Toast.makeText(getApplicationContext(), "Infromation", Toast.LENGTH_SHORT);
@@ -238,7 +298,7 @@ public class Show_items extends AppCompatActivity {
 
             final LinearLayout mDateTimeDialogView = (LinearLayout) getLayoutInflater().inflate(R.layout.cart_layout, null);
 
-            android.widget.TextView B = new TextView(Show_items.this);
+            TextView B = new TextView(Show_items.this);
             B.setText("Hello_Descrption:_" + items_Descrption);
 //                B.setId(id);
             B.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
@@ -247,6 +307,7 @@ public class Show_items extends AppCompatActivity {
             minfoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
             minfoDialog.setContentView(mDateTimeDialogView);
             minfoDialog.show();
+
 
         }
     }
@@ -394,6 +455,5 @@ public class Show_items extends AppCompatActivity {
 
         }
     }
-
 
 }

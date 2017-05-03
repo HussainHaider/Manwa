@@ -106,11 +106,18 @@ public class ItemList_Services extends Service {
             JSONObject json = jParser.makeHttpRequest(url_all_gameName, "GET", params);
 
             // Check your log cat for JSON reponse
-            Log.d("All Patients: ", json.toString());
+//            Log.d("All Patients: ", json.toString());
 
             try {
                 // Checking for SUCCESS TAG
-                int success = json.getInt(TAG_SUCCESS);
+                int success=0;
+                // Checking for SUCCESS TAG
+                try{
+                    success = json.getInt(TAG_SUCCESS);
+                }catch (Exception e)
+                {
+                    Log.d("Service","Item_List Service not working");
+                }
 
                 if (success == 1) {
                     // products found
@@ -221,7 +228,14 @@ public class ItemList_Services extends Service {
 
             try {
                 // Checking for SUCCESS TAG
-                int success = json.getInt(TAG_SUCCESS);
+                int success=0;
+                // Checking for SUCCESS TAG
+                try{
+                    success = json.getInt(TAG_SUCCESS);
+                }catch (Exception e)
+                {
+                    Log.d("Service","Product Image Service not working");
+                }
 
                 if (success == 1) {
                     // products found
