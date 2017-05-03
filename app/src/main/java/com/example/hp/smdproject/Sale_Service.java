@@ -80,6 +80,7 @@ public class Sale_Service extends Service {
 
     public void callaysnc()
     {
+
         Log.d("Sale","Service");
         new LoadAllProductName().execute();
     }
