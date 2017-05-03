@@ -173,7 +173,7 @@ public class Sale_Notifcation_Service extends Service {
                         Log.d("Special_product_price", price);
                         Log.d("Special_IMAGE_URL", image);
 //                        Saleimages[i]=image;
-                        if(result2<Integer.parseInt(id))
+                        if(result2<=Integer.parseInt(id))
                         {
                             addSaleproduct(id,name,Description,price);
                             break;

@@ -2,6 +2,7 @@ package com.example.hp.smdproject;
 
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
@@ -51,8 +52,32 @@ public class Sale_Service extends Service {
         Saleimages= new String[6];
 
         callaysnc();
+//        for(int i=0;i<Saleimages.length;i++)
+//        {
+//            String urldisplay = Saleimages[i];
+//            Bitmap mIcon11 = null;
+//            try {
+//                InputStream in = new java.net.URL(urldisplay).openStream();
+//                mIcon11 = BitmapFactory.decodeStream(in);
+//
+//            } catch (Exception e) {
+//                Log.e("Error", e.getMessage());
+//                e.printStackTrace();
+//            }
+//            addSproductImage(i+1,mIcon11);
+//        }
+
+
         return super.onStartCommand(pIntent, flags, startId);
     }
+    public void addSproductImage(int id,Bitmap n)
+    {
+        String numberAsString = Integer.toString(id);
+//        long id1=Helper.inserttable10_2(numberAsString,n);
+//        String numberAsString2 = Long.toString(id1);
+//        Log.d("Data inserted10",numberAsString2);
+    }
+
     public void callaysnc()
     {
         Log.d("Sale","Service");
@@ -115,10 +140,8 @@ public class Sale_Service extends Service {
                         Log.d("Special_p_Description", Description);
                         Log.d("Special_product_price", price);
                         Log.d("Special_IMAGE_URL", image);
-//                        Saleimages[i]=image;
+                        Saleimages[i]=image;
                         addSaleproduct(id,name,Description,price);
-
-
 
                     }
                 } else {
