@@ -139,9 +139,8 @@ public class HomeActivity extends AppCompatActivity
             public void onClick(View v) {
                 Toast.makeText(HomeActivity.this, "clicked2", Toast.LENGTH_SHORT).show();
 
-                B1.setVisibility(View.INVISIBLE);
-//                Intent intent = new Intent(getApplicationContext(), SignIn.class);
-//                startActivity(intent);
+                Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                startActivity(intent);
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
@@ -222,6 +221,7 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_homebtn) {
             Log.d("Camera","option");
+            finish();
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intent);
             // Handle the camera action

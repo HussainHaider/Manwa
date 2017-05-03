@@ -40,17 +40,30 @@ public class userProfile extends AppCompatActivity {
         setContentView(R.layout.activity_user_profile);
         Helper = new DataBaseAdpter(this);
 
-        user=new User();
+        //user=new User();
 //        int f=db.delete("Users", null, null);
   //      Toast.makeText(userProfile.this, "deleted rows "+f, Toast.LENGTH_SHORT).show();
+
 
 
         final ImageButton imgb = (ImageButton) findViewById(R.id.user_profile_photo);
         final ImageView imgp = (ImageView) findViewById(R.id.header_cover_image);
 
+        Intent i=getIntent();
+
+
+        user=(User)i.getSerializableExtra("user");
+        if(user==null)
+        {
+            Intent intent = new Intent(this, SignIn.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
 
         String image=user.image;
         String name=user.Name;
+
         String str = "INFO";
         TextDrawable drawable = TextDrawable.builder().buildRound(str, R.color.blue);
         imgb.setImageDrawable(drawable);
