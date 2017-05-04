@@ -1,9 +1,11 @@
 package com.example.hp.smdproject;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -31,6 +33,11 @@ import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -39,6 +46,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -66,6 +74,8 @@ public class Show_items extends AppCompatActivity {
     MaterialFavoriteButton favorite;
     String item_id;
     String MY_URL_STRING;
+    PayPalConfiguration m_configuration;
+    Intent m_service;
 
 
     JSONArray products = null;
@@ -83,6 +93,14 @@ public class Show_items extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_items);
 //        id=1;
+
+        m_configuration = new PayPalConfiguration()
+                .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX) // sandbox for test, production for real
+                .clientId("AWvDMZF-l65d7qGELQVfS0Sj076kN_JEpWpWS3thgqaz0oZ65qV7WI88gUNOpvZN5uoEE307qkGyjjmE");
+        m_service = new Intent(this, PayPalService.class);
+        m_service.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, m_configuration);
+        startService(m_service);
+
         Helper = new DataBaseAdpter(this);
         D = new LinearLayout(this);
         item_id = getIntent().getStringExtra("EXTRA_SESSION_ID");
@@ -268,7 +286,13 @@ public class Show_items extends AppCompatActivity {
                     public void onClick(View v) {
                         Toast t=Toast.makeText(getApplicationContext(),"Order now",Toast.LENGTH_SHORT);
                         t.show();
+                        PayPalPayment payment = new PayPalPayment(new BigDecimal(100), "USD", "Paypal",
+                                PayPalPayment.PAYMENT_INTENT_SALE);
 
+                        Intent intent = new Intent(getApplicationContext(), PaymentActivity.class); // it's not paypalpayment, it's paymentactivity !
+                        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, m_configuration);
+                        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+                        startActivityForResult(intent, 999);
 
 //                        for(int i=0;i<list2.size();i++)
 //                        {
@@ -291,7 +315,31 @@ public class Show_items extends AppCompatActivity {
         });
         return true;
     }
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
 
+        if(requestCode == 999)
+        {
+            if(resultCode == Activity.RESULT_OK)
+            {
+                // we have to confirm that the payment worked to avoid fraud
+                PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+
+                if(confirmation != null)
+                {
+                    String state = confirmation.getProofOfPayment().getState();
+
+                    if(state.equals("approved")) // if the payment worked, the state equals approved
+                        Toast.makeText(getApplicationContext(), "Payment Success", Toast.LENGTH_SHORT).show();
+                    else
+                        Toast.makeText(getApplicationContext(), "Error", Toast.LENGTH_SHORT).show();
+                }
+                else
+                    Toast.makeText(getApplicationContext(), "Confirmation is null", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
