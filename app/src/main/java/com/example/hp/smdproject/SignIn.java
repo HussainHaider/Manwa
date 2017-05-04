@@ -160,7 +160,7 @@ public class SignIn extends AppCompatActivity {
 
 
 
-                    Intent intent = new Intent(getApplicationContext(), userProfile.class);
+                    Intent intent = new Intent(getApplicationContext(), User_Profile_Activity.class);
                    // intent.putExtra("UserObject",U1);
                     intent.putExtra("user", U1);
                     startActivity(intent);

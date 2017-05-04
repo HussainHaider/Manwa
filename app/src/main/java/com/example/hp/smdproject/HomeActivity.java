@@ -321,7 +321,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_profile) {
             Log.d("nav_profile","option");
-            Intent intent = new Intent(getApplicationContext(), userProfile.class);
+            Intent intent = new Intent(getApplicationContext(), User_Profile_Activity.class);
             startActivity(intent);
 
         } else if (id == R.id.nav_share) {
@@ -331,7 +331,7 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_send) {
             Log.d("Send","option");
-            getApplicationContext().startService(new Intent(getApplicationContext(), Sale_Notifcation_Service.class));
+//            getApplicationContext().startService(new Intent(getApplicationContext(), Sale_Notifcation_Service.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

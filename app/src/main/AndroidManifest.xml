@@ -32,19 +32,13 @@
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".userProfile"
-            android:label="Profile">
-
-        </activity>
+            android:label="Profile"></activity>
         <activity
             android:name=".Categories"
-            android:label="StopShop">
-
-        </activity>
+            android:label="StopShop"></activity>
 
         <receiver android:name=".BootCompletedReceiver">
             <intent-filter>
@@ -62,13 +56,17 @@
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
-        <activity android:name=".Sale_Activity">
+        <activity android:name=".Sale_Activity"></activity>
 
-        </activity>
-        <provider android:name="DetailContentProvider"
+        <provider
+            android:name=".DetailContentProvider"
             android:authorities="com.example.hp.smdproject.DetailContentProvider"
             android:exported="true" />
 
+        <activity
+            android:name=".User_Profile_Activity"
+            android:label="@string/title_activity_user__profile_"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
