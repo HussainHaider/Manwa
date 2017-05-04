@@ -148,6 +148,9 @@ public class HomeActivity extends AppCompatActivity
         SP_User_EMAIL=sharedPreferences.getString("user_EMAIL",DEFAULT);
         SP_User_CC=sharedPreferences.getString("user_CC",DEFAULT);
 
+
+
+
         if(SP_User_ID.equals(DEFAULT) || SP_User_NAME.equals(DEFAULT) || SP_User_ADDRESS.equals(DEFAULT) || SP_User_COUNTRY.equals(DEFAULT) || SP_User_EMAIL.equals(DEFAULT) || SP_User_CC.equals(DEFAULT))
         {
             Toast.makeText(this, "SharedPreferences Empty", Toast.LENGTH_LONG).show();
@@ -173,7 +176,6 @@ public class HomeActivity extends AppCompatActivity
                 }
             });
             L1.addView(B3);
-
 
         }
 

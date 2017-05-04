@@ -5,19 +5,24 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 
@@ -30,8 +35,15 @@ public class userProfile extends AppCompatActivity {
     ImageView v;
     TextView t;
     DataBaseAdpter Helper;
-
     ListView list;
+
+    RelativeLayout notifCount;
+    int count;
+    Button B;
+    ArrayList<Productdetailclass> list2;
+    RoundedLetterView R1;
+    ImageView B2;
+    String item_id;
 
     @Override
 
@@ -104,23 +116,138 @@ public class userProfile extends AppCompatActivity {
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu1, menu);
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.items_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_add);
+        MenuItemCompat.setActionView(item, R.layout.badge_count);
+        notifCount = (RelativeLayout) MenuItemCompat.getActionView(item);
+//        tv = (TextView) notifCount.findViewById(R.id.actionbar_notifcation_textview);
+//        tv.setText("0");
+//        B = (Button) findViewById(R.id.addtocart);
+
+
+//        B1=(ImageButton) notifCount.findViewById(R.id.pic);
+        R1 = (RoundedLetterView) notifCount.findViewById(R.id.setround);
+        count = Helper.getCount("4");
+
+
+        R1.setTitleText(Integer.toString(count));
+        B2 = (ImageView) notifCount.findViewById(R.id.pic);
+//        B3=(ImageButton) notifCount.findViewById(R.id.pic);
+
+//        B.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                long c = Helper.inserttable11(item_id, "4");
+//                if (c == -1) {
+//                    Toast.makeText(getApplicationContext(), "Item Already Exist in Cart", Toast.LENGTH_SHORT)
+//                            .show();
+//                } else {
+//                    Toast.makeText(getApplicationContext(), "Item Added to Cart Successfully", Toast.LENGTH_SHORT)
+//                            .show();
+//                    count++;
+//                    Log.d("Hello", "world1");
+//                    String numberAsString2 = Integer.toString(count);
+//                    R1.setTitleText(numberAsString2);
+//
+//                }
+//            }
+//        });
+        B2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//                count++;
+                list2 = Helper.getCartList("4");
+                android.app.AlertDialog.Builder mBuilder = new android.app.AlertDialog.Builder(userProfile.this);
+                View mView = getLayoutInflater().inflate(R.layout.material_design_profile_screen_xml_ui_design, null);
+
+                final TextView name = (TextView) mView.findViewById(R.id.user_profile_name);
+                name.setText("Cart List");
+
+                final ListView list = (ListView) mView.findViewById(R.id.listnumbers);
+
+                cart_custom_adapter adapter = new
+                        cart_custom_adapter(userProfile.this, list2);
+
+                list.setAdapter(adapter);
+
+                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapter, View v, int position,
+                                            long arg3) {
+
+                    }
+                });
+                mBuilder.setView(mView);
+                final android.app.AlertDialog dialog = mBuilder.create();
+                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        // TODO Auto-generated method stub
+                        count = Helper.getCount("4");
+                        R1.setTitleText(Integer.toString(count));
+                    }
+                });
+                final Button Btn = (Button) mView.findViewById(R.id.button_order);
+
+                Btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast t=Toast.makeText(getApplicationContext(),"Order now",Toast.LENGTH_SHORT);
+                        t.show();
+
+
+//                        for(int i=0;i<list2.size();i++)
+//                        {
+//                            Helper.inserttable3(Integer.toString(list2.get(i).ID),"4","4/5/2017",Integer.toString(list2.get(i).Price));
+//                            Helper.removeFromCart(Integer.toString(list2.get(i).PID));
+//                        }
+//                        list2.clear();
+//
+//
+//
+//                        count = Helper.getCount("4");
+//                        R1.setTitleText(Integer.toString(count));
+
+
+                    }
+                });
+
+                dialog.show();
+            }
+        });
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch(item.getItemId()){
-            case R.id.cart:
-                return true;
-            case R.id.action_settings:
-                Intent intent1 =new Intent(this,Categories.class);
-                startActivity(intent1);
-                return true;
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-            default:
-                return super.onOptionsItemSelected(item);
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_add) {
+            Log.d("Menu", "World1");
+
+            return true;
         }
+        if (id == R.id.action_share) {
+            Log.d("Menu", "World2");
+
+            Intent share=new Intent();
+            share.setAction(Intent.ACTION_SEND);
+            share.putExtra(Intent.EXTRA_TEXT,
+                    "https://ae01.alicdn.com/kf/HTB12JGALFXXXXajXXXXq6xXFXXXZ/YuooMuoo-Fashion-Chiffon-Patchwork-font-" +
+                            "b-Women-b-font-Asymmetrical-Dress-Brand-Zipper-font-b-Design.jpg");
+            share.setType("text/plain");
+            startActivity(share);
+
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
     public void buttonClick(View v)
     {
