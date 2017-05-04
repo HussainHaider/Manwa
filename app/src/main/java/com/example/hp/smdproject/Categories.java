@@ -2,6 +2,8 @@ package com.example.hp.smdproject;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,20 +36,17 @@ public class Categories extends AppCompatActivity {
     List<Productclass> mProductlist;
     String sessionId;
 
-
+    String _id;
 
 
     JSONArray products = null;
     private ProgressDialog pDialog;
     JSONParser jParser = new JSONParser();
-    private static String url_all_gameName = "https://stopshop321.000webhostapp.com/getProductdetail.php";
+    private static String url_all_Name = "https://stopshop321.000webhostapp.com/getProductdetail2image.php";
+    private static final String TAG_IMAGE = "img";
+    private static final String TAG_GAME_IMAGE = "productdetailimage";
     private static final String TAG_SUCCESS = "success";
-    private static final String TAG_GAME_NAME = "productdetails";
     private static final String TAG_ID = "ID";
-    private static final String TAG_pID = "PID";
-    private static final String TAG_Price = "Price";
-    private static final String TAG_Description = "Description";
-    private static final String TAG_Size = "size";
 
     String Category_id;
     public static int[] osImages = {
@@ -94,7 +94,7 @@ public class Categories extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(),"Item is clicked no. "+v,Toast.LENGTH_SHORT).show();
 
-//                new LoadAllProductdetailName().execute();
+               new LoadProductImage().execute();
                 Intent intent = new Intent(getBaseContext(),ItemList.class);
                 intent.putExtra("EXTRA_SESSION_ID", sessionId);
                 startActivity(intent);
@@ -141,7 +141,13 @@ public class Categories extends AppCompatActivity {
         super.onPause();
     }
 
-    class LoadAllProductdetailName extends AsyncTask<String, String, String> {
+    public void addproductImage(String id, Bitmap B1) {
+        long id1 = helper.inserttable5_2(id,B1);
+        String numberAsString = Long.toString(id1);
+        Log.d("Data inserted5_2", numberAsString);
+    }
+
+    class LoadProductImage extends AsyncTask<String, String, String> {
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -150,9 +156,9 @@ public class Categories extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             pDialog = new ProgressDialog(Categories.this);
-            pDialog.setMessage("Loading data. Please wait...");
+            pDialog.setMessage("Checking from server...");
             pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
+            pDialog.setCancelable(true);
             pDialog.show();
         }
 
@@ -162,56 +168,58 @@ public class Categories extends AppCompatActivity {
         protected String doInBackground(String... args) {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("product_id",sessionId));
+            params.add(new BasicNameValuePair("Category_id", Category_id));
 
             // getting JSON string from URL
-            JSONObject json = jParser.makeHttpRequest(url_all_gameName, "GET", params);
+            JSONObject json = jParser.makeHttpRequest(url_all_Name, "GET", params);
 
-            // Check your log cat for JSON reponse
-            Log.d("All Patients: ", json.toString());
 
             try {
                 // Checking for SUCCESS TAG
-                int success = json.getInt(TAG_SUCCESS);
+                int success=0;
+                // Checking for SUCCESS TAG
+                try{
+                    success = json.getInt(TAG_SUCCESS);
+                }catch (Exception e)
+                {
+                    Log.d("Service","Product Image Service not working");
+                }
 
                 if (success == 1) {
                     // products found
                     // Getting Array of patients
-                    products = json.getJSONArray(TAG_GAME_NAME);
+                    products = json.getJSONArray(TAG_GAME_IMAGE);
 
                     // looping through All Patients
                     for (int i = 0; i < products.length(); i++) {
                         JSONObject c = products.getJSONObject(i);
 
                         // Storing each json item in variable
-                        String id = c.getString(TAG_ID);
-                        String pid = c.getString(TAG_pID);
-                        String Description = c.getString(TAG_Description);
-                        String price = c.getString(TAG_Price);
-                        String size = c.getString(TAG_Size);
+                        _id = c.getString(TAG_ID);
+                        Log.d("product_id1", _id);
+                        String image = c.getString(TAG_IMAGE);
+                        Log.d("IMAGE_URL", image);
+
+                        String urldisplay = image;
+                        Bitmap mIcon11 = null;
+                        try {
+                            InputStream in = new java.net.URL(urldisplay).openStream();
+                            mIcon11 = BitmapFactory.decodeStream(in);
+
+                        } catch (Exception e) {
+                            Log.e("Error", e.getMessage());
+                            e.printStackTrace();
+                        }
+
+                        addproductImage(_id,mIcon11);
 
 
-                        Log.d("Userid",id);
-                        Log.d("Usernpid",pid);
-                        Log.d("UserDescription",Description);
-                        Log.d("Userprice",price);
-                        Log.d("Usersize",size);
+//                        callimagetask(image);
 
-                        addproductName(id,pid,Description,price,size);
-
-//                        Intent intent = new Intent(getBaseContext(),ItemList.class);
-//                        intent.putExtra("EXTRA_SESSION_ID", sessionId);
-//                        startActivity(intent);
                     }
                 } else {
-                    Log.d("no Productitems","found");
-                    // no products found
-                    // Launch Add New product Activity
-                   /* Intent i = new Intent(getApplicationContext(),
-                            NewProductActivity.class);
-                    // Closing all previous activities
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);*/
+                    Log.d("no Product", "found");
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -225,8 +233,9 @@ public class Categories extends AppCompatActivity {
          **/
         protected void onPostExecute(String file_url) {
             // dismiss the dialog after getting all products
-            pDialog.dismiss();
             // updating UI from Background Thread
+
+            pDialog.dismiss();
 
         }
     }

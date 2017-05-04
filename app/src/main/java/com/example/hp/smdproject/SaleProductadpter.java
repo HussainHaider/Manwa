@@ -71,8 +71,8 @@ public class SaleProductadpter extends BaseAdapter {
         holder.name.setText(p.getName());
 //        holder.price.setText(numberAsString);
         holder.price.setText("$ "+p.getPrice());
-        holder.img.setImageResource(R.drawable.pant2);
-//        holder.img.setImageBitmap(p.getImage());
+//        holder.img.setImageResource(R.drawable.pant2);
+        holder.img.setImageBitmap(p.getImage());
 
 
         return convertView;

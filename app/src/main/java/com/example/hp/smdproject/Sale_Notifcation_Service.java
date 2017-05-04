@@ -77,7 +77,7 @@ public class Sale_Notifcation_Service extends Service {
 
 //        builder.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 
-        Intent i=new Intent(Sale_Notifcation_Service.this,SignIn.class);
+        Intent i=new Intent(Sale_Notifcation_Service.this,Sale_Activity.class);
         TaskStackBuilder stackBuilder=TaskStackBuilder.create(this);
         stackBuilder.addParentStack(SignIn.class);
         stackBuilder.addNextIntent(i);

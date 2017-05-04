@@ -31,6 +31,8 @@ public class Sale_Activity extends AppCompatActivity {
         helper=new DataBaseAdpter(this);
         list1 = new ArrayList<String>();
         mProductList = new ArrayList<>();
+        mProductList.clear();
+
 
         lvProduct=(ListView)findViewById(R.id.Salelistview);
 
@@ -69,6 +71,8 @@ public class Sale_Activity extends AppCompatActivity {
 
                 int id_ = Integer.parseInt(list1.get(i-3));
                 Log.d("get4_1",list1.get(i-3));
+                B=helper.getImage2(list1.get(i-3));
+
 
                 Log.d("get3_1",list1.get(i-2));
                 String name=list1.get(i-2);

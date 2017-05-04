@@ -137,12 +137,12 @@ public class Show_items extends AppCompatActivity {
 //        Bitmap bmp = BitmapFactory.decodeStream(url.openConnection().getInputStream());
 //        imageView.setImageBitmap(bmp);
 
-        items_size=list1.get(1);
+        items_size = list1.get(1);
 //        items_size = "";
-        items_Descrption=list1.get(2);
+        items_Descrption = list1.get(2);
 //        items_Descrption = "";
 
-        img=(ImageView)findViewById(R.id.img1);
+        img = (ImageView) findViewById(R.id.img1);
         img.setImageBitmap(Helper.getImage(item_id));
         wishcount = 0;
         favorite = (MaterialFavoriteButton) findViewById(R.id.wishbtn);
@@ -200,7 +200,7 @@ public class Show_items extends AppCompatActivity {
 
 //        B1=(ImageButton) notifCount.findViewById(R.id.pic);
         R1 = (RoundedLetterView) notifCount.findViewById(R.id.setround);
-        count=Helper.getCount("4");
+        count = Helper.getCount("4");
 
 
         R1.setTitleText(Integer.toString(count));
@@ -211,13 +211,11 @@ public class Show_items extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                long c=Helper.inserttable11(item_id,"4");
-                if(c==-1) {
+                long c = Helper.inserttable11(item_id, "4");
+                if (c == -1) {
                     Toast.makeText(getApplicationContext(), "Item Already Exist in Cart", Toast.LENGTH_SHORT)
                             .show();
-                }
-                else
-                {
+                } else {
                     Toast.makeText(getApplicationContext(), "Item Added to Cart Successfully", Toast.LENGTH_SHORT)
                             .show();
                     count++;
@@ -232,7 +230,7 @@ public class Show_items extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                count++;
-                list2=Helper.getCartList("4");
+                list2 = Helper.getCartList("4");
                 AlertDialog.Builder mBuilder = new AlertDialog.Builder(Show_items.this);
                 View mView = getLayoutInflater().inflate(R.layout.material_design_profile_screen_xml_ui_design, null);
 
@@ -259,10 +257,33 @@ public class Show_items extends AppCompatActivity {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                         // TODO Auto-generated method stub
-                         count=Helper.getCount("4");
-                         R1.setTitleText(Integer.toString(count));
+                        count = Helper.getCount("4");
+                        R1.setTitleText(Integer.toString(count));
                     }
                 });
+                final Button Btn = (Button) mView.findViewById(R.id.button_order);
+
+                Btn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast t=Toast.makeText(getApplicationContext(),"Order now",Toast.LENGTH_SHORT);
+                        t.show();
+                        for(int i=0;i<list2.size();i++)
+                        {
+                            Helper.inserttable3(Integer.toString(list2.get(i).ID),"4","4/5/2017",Integer.toString(list2.get(i).Price));
+                            Helper.removeFromCart(Integer.toString(list2.get(i).PID));
+                        }
+                        list2.clear();
+
+
+
+                        count = Helper.getCount("4");
+                        R1.setTitleText(Integer.toString(count));
+
+
+                    }
+                });
+
                 dialog.show();
             }
         });
@@ -289,6 +310,7 @@ public class Show_items extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
     public void Button(View v) {
         if (v.getId() == R.id.infobtn) {
             Toast toast = Toast.makeText(getApplicationContext(), "Infromation", Toast.LENGTH_SHORT);

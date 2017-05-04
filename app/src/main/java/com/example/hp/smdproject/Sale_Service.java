@@ -37,7 +37,8 @@ public class Sale_Service extends Service {
     private static final String TAG_IMG = "img";
 
     DataBaseAdpter Helper;
-    private String[] Saleimages;
+//    private String[] Saleimages;
+    private List<String> Saleimages;
 
 
     @Override
@@ -51,23 +52,23 @@ public class Sale_Service extends Service {
         // TODO Auto-generated method stub
         Toast.makeText(this, "Notifying Sale Service", Toast.LENGTH_LONG).show();
         Helper=new DataBaseAdpter(this);
-        Saleimages= new String[6];
+//        Saleimages= new String[6];
+        Saleimages=new ArrayList<>();
 
         callaysnc();
-        for(int i=0;i<Saleimages.length;i++)
-        {
-            String urldisplay = Saleimages[i];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-
-            } catch (Exception e) {
-//                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            addSproductImage(i+1,mIcon11);
-        }
+//        for(int i=0;i<Saleimages.size();i++)
+//        {
+//            String urldisplay = Saleimages.get(i);
+//            Bitmap mIcon11 = null;
+//            try {
+//                InputStream in = new java.net.URL(urldisplay).openStream();
+//                mIcon11 = BitmapFactory.decodeStream(in);
+//
+//            } catch (Exception e) {;
+//                e.printStackTrace();
+//            }
+//            addSproductImage(i+1,mIcon11);
+//        }
 
 
         return super.onStartCommand(pIntent, flags, startId);
@@ -77,7 +78,7 @@ public class Sale_Service extends Service {
         String numberAsString = Integer.toString(id);
         long id1=Helper.inserttable10_2(numberAsString,n);
         String numberAsString2 = Long.toString(id1);
-        Log.d("Data inserted10",numberAsString2);
+        Log.d("Data inserted10_image",numberAsString2);
     }
 
     public void callaysnc()
@@ -150,8 +151,19 @@ public class Sale_Service extends Service {
                         Log.d("Special_p_Description", Description);
                         Log.d("Special_product_price", price);
                         Log.d("Special_IMAGE_URL", image);
-                        Saleimages[i]=image;
+                        Saleimages.add(image);
                         addSaleproduct(id,name,Description,price);
+
+                        String urldisplay = image;
+                        Bitmap mIcon11 = null;
+                        try {
+                            InputStream in = new java.net.URL(urldisplay).openStream();
+                            mIcon11 = BitmapFactory.decodeStream(in);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                        addSproductImage(i+1,mIcon11);
 
                     }
                 } else {

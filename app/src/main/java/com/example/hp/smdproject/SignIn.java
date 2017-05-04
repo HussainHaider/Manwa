@@ -1,7 +1,9 @@
 package com.example.hp.smdproject;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -127,6 +129,17 @@ public class SignIn extends AppCompatActivity {
                         Log.d("user_email", email);
                         Log.d("user_CC", CC);
 
+
+                        SharedPreferences sharedPreferences=getSharedPreferences("MyData", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor=sharedPreferences.edit();
+                        editor.putString("User_ID",id);
+                        editor.putString("user_NAME",name);
+                        editor.putString("user_ADDRESS",address);
+                        editor.putString("user_COUNTRY",country);
+                        editor.putString("user_EMAIL",email);
+                        editor.putString("user_CC",CC);
+
+                        editor.commit();
 
                         U1.ID=Integer.parseInt(id);
                         U1.Name=name;

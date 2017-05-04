@@ -287,6 +287,29 @@ public class DataBaseAdpter {
         }
         return list;
     }
+    public Bitmap getImage2(String i){
+
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        String qu = "select "+ShopHelper.Offer_img+"  from "+ShopHelper.TABLE_NAME10+" where "+ShopHelper.OfferID+"="+i+";" ;
+        Log.d("Query",qu);
+        Cursor cur = db.rawQuery(qu, null);
+
+        if (cur.moveToFirst()){
+            byte[] imgByte = cur.getBlob(0);
+            if(imgByte==null)
+            {
+                return null;
+            }
+
+            cur.close();
+            return BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+        }
+        if (cur != null && !cur.isClosed()) {
+            cur.close();
+        }
+
+        return null ;
+    }
 
     public long inserttable11(String id1,String id2)
     {
@@ -298,6 +321,21 @@ public class DataBaseAdpter {
         value.put(ShopHelper.uid,id2);
         Log.d("checking","Value");
         idcheck=db.insert(ShopHelper.TABLE_NAME11,null,value);
+        Log.d("checking","ID");
+        return idcheck;
+    }
+    public long inserttable3(String id1,String id2,String Date,String P)
+    {
+        Log.d("checking","Value1");
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        Log.d("checking","Value2");
+        ContentValues value=new ContentValues();
+        value.put(ShopHelper.ProductID,id1);
+        value.put(ShopHelper.UserID,id2);
+//        value.put(ShopHelper.OrderDate,Date);
+        value.put(ShopHelper.TPrice,P);
+        Log.d("checking","Value");
+        idcheck=db.insert(ShopHelper.TABLE_NAME3,null,value);
         Log.d("checking","ID");
         return idcheck;
     }
@@ -384,6 +422,7 @@ public class DataBaseAdpter {
 
         return check;
     }
+
 
 
 

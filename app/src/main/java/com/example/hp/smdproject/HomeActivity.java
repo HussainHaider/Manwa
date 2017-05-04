@@ -3,6 +3,7 @@ package com.example.hp.smdproject;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -52,11 +53,22 @@ public class HomeActivity extends AppCompatActivity
     private static final String TAG_GAME_NAME = "ProductNames";
     private static final String TAG_PID = "PID";
     private static final String TAG_CID = "CID";
-    Button B1;
+    Button B1,B2;
     DataBaseAdpter Helper;
     String categoryid;
 
     private AdView mAdView;
+    public static final String DEFAULT="N/A";
+    String SP_User_ID;
+    String SP_User_NAME;
+    String SP_User_ADDRESS;
+    String SP_User_COUNTRY;
+    String SP_User_EMAIL;
+    String SP_User_CC;
+    Boolean SharedPreferencesFlag;
+    SharedPreferences sharedPreferences;
+    Button B3;
+
 
 
     @Override
@@ -71,13 +83,13 @@ public class HomeActivity extends AppCompatActivity
         Helper=new DataBaseAdpter(this);
         Log.d("Helper","class");
         categoryid="";btnid=1;
-
+        B3=new Button(getApplicationContext());
         mAdView = (AdView) findViewById(R.id.adView);
 //
         AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                // Check the LogCat to get your test device ID
-                .addTestDevice("51BC4A7A6F9441A4F3FD979DD2D32F66")
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                // Check the LogCat to get your test device ID
+//                .addTestDevice("51BC4A7A6F9441A4F3FD979DD2D32F66")
                 .build();
 
         mAdView.loadAd(adRequest);
@@ -111,7 +123,6 @@ public class HomeActivity extends AppCompatActivity
 
         mAdView.loadAd(adRequest);
 
-
         HomeActivity.ImagePagerAdapter adapter = new HomeActivity.ImagePagerAdapter();
         viewPager.setAdapter(adapter);
 
@@ -124,8 +135,50 @@ public class HomeActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         View headerview = navigationView.getHeaderView(0);
+
+        LinearLayout L1=(LinearLayout)headerview.findViewById(R.id.headerLinear);
         B1=(Button)headerview.findViewById(R.id.joinbtn);
-        Button B2=(Button)headerview.findViewById(R.id.signinbtn);
+        B2=(Button)headerview.findViewById(R.id.signinbtn);
+
+        sharedPreferences=getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        SP_User_ID=sharedPreferences.getString("User_ID",DEFAULT);
+        SP_User_NAME=sharedPreferences.getString("user_NAME",DEFAULT);
+        SP_User_ADDRESS=sharedPreferences.getString("user_ADDRESS",DEFAULT);
+        SP_User_COUNTRY=sharedPreferences.getString("user_COUNTRY",DEFAULT);
+        SP_User_EMAIL=sharedPreferences.getString("user_EMAIL",DEFAULT);
+        SP_User_CC=sharedPreferences.getString("user_CC",DEFAULT);
+
+        if(SP_User_ID.equals(DEFAULT) || SP_User_NAME.equals(DEFAULT) || SP_User_ADDRESS.equals(DEFAULT) || SP_User_COUNTRY.equals(DEFAULT) || SP_User_EMAIL.equals(DEFAULT) || SP_User_CC.equals(DEFAULT))
+        {
+            Toast.makeText(this, "SharedPreferences Empty", Toast.LENGTH_LONG).show();
+            SharedPreferencesFlag=false;
+            B1.setVisibility(View.VISIBLE);
+            B2.setVisibility(View.VISIBLE);
+        }
+        else {
+            SharedPreferencesFlag=true;
+            B1.setVisibility(View.INVISIBLE);
+            B2.setVisibility(View.INVISIBLE);
+            B3.setText("Signout");
+            B3.setTextColor(getResources().getColor(R.color.theme1));
+            B3.setBackground(getResources().getDrawable(R.drawable.mybutton2));
+
+            B3.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(HomeActivity.this, "clicked3", Toast.LENGTH_SHORT).show();
+                    SharedPreferencesFlag=false;
+                    sharedPreferences.edit().clear().commit();
+
+                }
+            });
+            L1.addView(B3);
+
+
+        }
+
+
+
         B1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -144,13 +197,23 @@ public class HomeActivity extends AppCompatActivity
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
+
+
+
+
+
+
         Helper.inserttable6("1","Men");
         Helper.inserttable6("2","Female");
         Helper.inserttable6("3","kid");
+
+
+
+
         callaysnc();
 
         getApplicationContext().startService(new Intent(getApplicationContext(), Sale_Service.class));
-        getApplicationContext().startService(new Intent(getApplicationContext(), Category_Services.class));
+//        getApplicationContext().startService(new Intent(getApplicationContext(), Category_Services.class));
 
 
 
@@ -373,7 +436,7 @@ public class HomeActivity extends AppCompatActivity
             JSONObject json = jParser.makeHttpRequest(url_all_gameName, "GET", params);
 
             // Check your log cat for JSON reponse
-            Log.d("All Patients: ", json.toString());
+//            Log.d("All Patients: ", json.toString());
 
             try {
                 // Checking for SUCCESS TAG

@@ -162,7 +162,7 @@ public class ItemList_Services extends Service {
         protected void onPostExecute(String file_url) {
             Log.d("Productdetail","END");
             // updating UI from Background Thread
-            new LoadProductImage().execute();
+//            new LoadProductImage().execute();
 
         }
     }
