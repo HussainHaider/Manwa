@@ -339,9 +339,9 @@ public class HomeActivity extends AppCompatActivity
     private class ImagePagerAdapter extends PagerAdapter
     {
         private int[] mImages = new int[]{
-                R.drawable.men,
-                R.drawable.women,
-                R.drawable.kids,
+                R.drawable.men1,
+                R.drawable.women1,
+                R.drawable.kids1,
 //                R.drawable.d,
 //                R.drawable.e,
         };

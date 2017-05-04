@@ -192,8 +192,8 @@ public class DataBaseAdpter {
     {
         SQLiteDatabase db=Helper.getWritableDatabase();
         ContentValues value=new ContentValues();
-        value.put(ShopHelper.ProductID,pid);
-        value.put(ShopHelper.UserID,uid);
+        value.put(ShopHelper.pid,pid);
+        value.put(ShopHelper.uid,uid);
 
         Log.d("checking","Value");
         idcheck=db.insert(ShopHelper.TABLE_NAME4,null,value);
@@ -423,6 +423,40 @@ public class DataBaseAdpter {
         return check;
     }
 
+    public long removeFromWhish(String id1)
+    {
+        long check=0;
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        Log.d("checking","columns");
+        //  String query = "DELETE * FROM " + ShopHelper.TABLE_NAME11+ " WHERE "+ShopHelper.pid+"=?" ;
+        //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
+        check=db.delete(ShopHelper.TABLE_NAME4, ShopHelper.pid + "=" + id1, null);
+        //   String[] params = new String[]{ id1 };
+        //  db.execSQL(query,params);
+        Log.d("checking","Query");
+
+        return check;
+    }
+    public ArrayList<Productdetailclass> getWhishList(String id1)
+    {
+        ArrayList<Productdetailclass> list = new ArrayList<>();
+
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        Log.d("checking","columns");
+        String query = "SELECT * FROM " + ShopHelper.TABLE_NAME4+ " WHERE "+ShopHelper.uid+"=?" ;
+        //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
+        String[] params = new String[]{ id1 };
+        Cursor c=db.rawQuery(query,params);
+        Log.d("checking","Query");
+        while (c.moveToNext())
+        {
+            list.add(getitem( c.getString(c.getColumnIndex("pid"))));
+
+        }
+        return list;
+    }
+
+
 
 
 
@@ -443,7 +477,7 @@ public class DataBaseAdpter {
         private static final String TABLE_NAME9 = "Premium_User";
         private static final String TABLE_NAME10 = "SpecialOffer";
         private static final String TABLE_NAME11 = "Cart";
-        private static final int DATABASE_VERSION = 9;
+        private static final int DATABASE_VERSION = 10;
         //Table 1 attribute
         private static final String KEY_IMAGE1 = "Photo";
         private static final String UID = "_id";
@@ -536,15 +570,15 @@ public class DataBaseAdpter {
             //---------------------------------------------------------------------------------------------------------------
 
 
-            String query4 = "CREATE TABLE " + TABLE_NAME4 + " ( " + ProductID + " INTEGER ," + UserID +
-                    " INTEGER, FOREIGN KEY (" + UserID + ") REFERENCES " +
-                    TABLE_NAME1 + "(" + UID + ") , FOREIGN KEY (" + ProductID + ") REFERENCES " + TABLE_NAME2 + "(" + PID + "));";
+            String query4 = "CREATE TABLE " + TABLE_NAME4 + " ( " + pid + " INTEGER ," + uid +
+                    " INTEGER , FOREIGN KEY (" + uid + ") REFERENCES " +
+                    TABLE_NAME1 + "(" + UID + ") , FOREIGN KEY (" + pid + ") REFERENCES " + TABLE_NAME2 + "(" + PID + "), PRIMARY KEY ("+pid+","+uid+"));";
             Log.d("checking", query4);
             try {
                 db.execSQL(query4);
-                Log.d("check for something", "getting done with query4");
+                Log.d("check for something", "getting done with query11");
             } catch (SQLException e) {
-                Log.d("check for something", "getting error4");
+                Log.d("check for something", "getting error11");
             }
             //---------------------------------------------------------------------------------------------------------------
 

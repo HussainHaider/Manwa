@@ -78,14 +78,17 @@ public class userProfile extends AppCompatActivity {
             imgp.setImageResource(R.drawable.images);
 
         }
-        ArrayList<Productdetailclass> list2=Helper.getCartList("4");
+//        ArrayList<Productdetailclass> list2=Helper.getCartList("4");
+
+        ArrayList<Productdetailclass> list2=Helper.getWhishList("4");
 
         final TextView myname = (TextView) findViewById(R.id.user_profile_name);
         myname.setText(name);
-       cart_custom_adapter adapter = new
-                cart_custom_adapter(userProfile.this, list2);
+        whish_custom_adapter adapter = new
+                whish_custom_adapter(userProfile.this, list2);
         list=(ListView)findViewById(R.id.listnumbers);
         list.setAdapter(adapter);
+
    /*     list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override

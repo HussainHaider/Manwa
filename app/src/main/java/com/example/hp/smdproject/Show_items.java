@@ -187,18 +187,39 @@ public class Show_items extends AppCompatActivity {
     }
 
 
-    public void whishlistbtn() {
+    public void whishlistbtn()
+    {
         Log.d("Check", "wishbtn");
         if (btnwhishlist == false && wishcount % 2 == 0) {
-            Toast toast = Toast.makeText(getApplicationContext(), "WhishList_On", Toast.LENGTH_SHORT);
-            toast.show();
+
             btnwhishlist = true;
-            Helper.inserttable4("4", item_id);
+            long c=Helper.inserttable4("4", item_id);
+            if(c==-1)
+            {
+                Toast toast = Toast.makeText(getApplicationContext(), "Item Already Exist in WhishList", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            else
+            {
+                Toast toast = Toast.makeText(getApplicationContext(), "Item added to whishlist", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
         }
         if (btnwhishlist == true && wishcount % 2 != 0) {
-            Toast toast = Toast.makeText(getApplicationContext(), "WhishList_OFF", Toast.LENGTH_SHORT);
-            toast.show();
+
             btnwhishlist = false;
+            long c=Helper.removeFromWhish(item_id);
+            if(c==-1)
+            {
+                Toast toast = Toast.makeText(getApplicationContext(), "Item is not Romved From Whishlist", Toast.LENGTH_SHORT);
+                toast.show();
+            }
+            else
+            {
+                Toast toast = Toast.makeText(getApplicationContext(), "Item Romved From Whishlist", Toast.LENGTH_SHORT);
+                toast.show();
+            }
         }
         wishcount++;
     }
@@ -355,6 +376,15 @@ public class Show_items extends AppCompatActivity {
         }
         if (id == R.id.action_share) {
             Log.d("Menu", "World2");
+
+            Intent share=new Intent();
+            share.setAction(Intent.ACTION_SEND);
+            share.putExtra(Intent.EXTRA_TEXT,
+                    "https://ae01.alicdn.com/kf/HTB12JGALFXXXXajXXXXq6xXFXXXZ/YuooMuoo-Fashion-Chiffon-Patchwork-font-" +
+                            "b-Women-b-font-Asymmetrical-Dress-Brand-Zipper-font-b-Design.jpg");
+            share.setType("text/plain");
+            startActivity(share);
+
             return true;
         }
 
