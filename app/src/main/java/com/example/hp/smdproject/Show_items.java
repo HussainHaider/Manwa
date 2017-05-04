@@ -268,17 +268,19 @@ public class Show_items extends AppCompatActivity {
                     public void onClick(View v) {
                         Toast t=Toast.makeText(getApplicationContext(),"Order now",Toast.LENGTH_SHORT);
                         t.show();
-                        for(int i=0;i<list2.size();i++)
-                        {
-                            Helper.inserttable3(Integer.toString(list2.get(i).ID),"4","4/5/2017",Integer.toString(list2.get(i).Price));
-                            Helper.removeFromCart(Integer.toString(list2.get(i).PID));
-                        }
-                        list2.clear();
 
 
-
-                        count = Helper.getCount("4");
-                        R1.setTitleText(Integer.toString(count));
+//                        for(int i=0;i<list2.size();i++)
+//                        {
+//                            Helper.inserttable3(Integer.toString(list2.get(i).ID),"4","4/5/2017",Integer.toString(list2.get(i).Price));
+//                            Helper.removeFromCart(Integer.toString(list2.get(i).PID));
+//                        }
+//                        list2.clear();
+//
+//
+//
+//                        count = Helper.getCount("4");
+//                        R1.setTitleText(Integer.toString(count));
 
 
                     }
