@@ -335,8 +335,8 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_salebtn) {
             Log.d("Share","option");
-            Intent intent = new Intent(getApplicationContext(), Sale_Activity.class);
-            startActivity(intent);
+//            Intent intent = new Intent(getApplicationContext(), Sale_Activity.class);
+//            startActivity(intent);
 
 
 

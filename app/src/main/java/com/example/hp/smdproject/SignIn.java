@@ -10,7 +10,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -155,20 +154,37 @@ public class SignIn extends AppCompatActivity {
                         }
 
                     }
-                    Intent intent = new Intent(getApplicationContext(), User_Profile_Activity.class);
-                    // intent.putExtra("UserObject",U1);
-                //    intent.putExtra("user", U1);
-                    startActivity(intent);
-                    // closing this screen
-                    finish();
 
-                } else {
+                    String s = getIntent().getStringExtra("check");
+                    if(s!=null && !s.isEmpty())
+                    {
+                        Intent intent = new Intent(getApplicationContext(), Show_items.class);
+                        intent.putExtra("EXTRA_SESSION_ID",s);
+                        startActivity(intent);
+                        finish();
 
-                    Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT)
-                            .show();
+                    }
+                    else {
 
-                    Intent intent = new Intent(getApplicationContext(), SignIn.class);
-                    startActivity(intent);
+
+                        Intent intent = new Intent(getApplicationContext(), User_Profile_Activity.class);
+                        // intent.putExtra("UserObject",U1);
+                        //    intent.putExtra("user", U1);
+                        startActivity(intent);
+                        // closing this screen
+                        finish();
+                    }
+
+                }
+                else {
+
+                    //Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT)
+                      //      .show();
+                        //                    Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                       // startActivity(intent);
+                        //finish();
+
+
 
 
                 }

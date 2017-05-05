@@ -71,7 +71,8 @@ public class Sale_Activity extends AppCompatActivity {
 
                 int id_ = Integer.parseInt(list1.get(i-3));
                 Log.d("get4_1",list1.get(i-3));
-                B=helper.getImage2(list1.get(i-3));
+                if(helper.getImage2(list1.get(i-3))!=null)
+                    B=helper.getImage2(list1.get(i-3));
 
 
                 Log.d("get3_1",list1.get(i-2));

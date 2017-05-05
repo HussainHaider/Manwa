@@ -54,9 +54,6 @@ public class SignUp extends AppCompatActivity {
         Log.d("On Create","String");
         password=etPassword.getText().toString();
         cPassword=etCPassword.getText().toString();
-        if (password.equals(cPassword)) {
-            Log.d("On Create", "password");
-        }
         if(!isValidEmailAddress(email))
         {
             etEmail.setError("Give Correct input!");
@@ -67,7 +64,13 @@ public class SignUp extends AppCompatActivity {
             Toast.makeText(this, "Add Complete info", Toast.LENGTH_LONG).show();
         }
         else{
-            new CreateNewUser().execute();
+            if (password.equals(cPassword)) {
+                Log.d("On Create", "password");
+                new CreateNewUser().execute();
+            }
+            else {
+                Toast.makeText(this, "Password & Cpassword should be same info", Toast.LENGTH_LONG).show();
+            }
         }
     }
     public static boolean isValidEmailAddress(String email) {
@@ -143,6 +146,7 @@ public class SignUp extends AppCompatActivity {
                     Intent intent = new Intent(getApplicationContext(), User_Profile_Activity.class);
                     // intent.putExtra("UserObject",U1);
                     //    intent.putExtra("user", U1);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(intent);
 
                     finish();

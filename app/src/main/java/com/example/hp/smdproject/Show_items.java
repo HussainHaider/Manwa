@@ -284,7 +284,9 @@ public class Show_items extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                        intent.putExtra("check",item_id);
                         startActivity(intent);
+                        finish();
 
                     }
                 });
