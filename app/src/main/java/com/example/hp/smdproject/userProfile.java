@@ -94,7 +94,7 @@ public class userProfile extends AppCompatActivity {
         final TextView myname = (TextView) findViewById(R.id.user_profile_name);
         myname.setText(name);
         whish_custom_adapter adapter = new
-                whish_custom_adapter(userProfile.this, list2);
+                whish_custom_adapter(userProfile.this, list2,"4");
         list = (ListView) findViewById(R.id.listnumbers);
         list.setAdapter(adapter);
 
@@ -166,7 +166,7 @@ public class userProfile extends AppCompatActivity {
                 final ListView list = (ListView) mView.findViewById(R.id.listnumbers);
 
                 cart_custom_adapter adapter = new
-                        cart_custom_adapter(userProfile.this, list2);
+                        cart_custom_adapter(userProfile.this, list2,"4");
 
                 list.setAdapter(adapter);
 

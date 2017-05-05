@@ -22,16 +22,16 @@ public class whish_custom_adapter extends ArrayAdapter<Productdetailclass> {
     ArrayList<Productdetailclass> p;
     private LayoutInflater inflater;
     DataBaseAdpter Helper;
-
+    String uid;
 
     public whish_custom_adapter(Activity context,
-                                ArrayList<Productdetailclass> list) {
+                                ArrayList<Productdetailclass> list,String uuid) {
         super(context, 0,list);
         this.context = context;
         this.p = list;
         inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         Helper = new DataBaseAdpter(context);
-
+        uid=uuid;
 
 
     }
@@ -74,7 +74,7 @@ public class whish_custom_adapter extends ArrayAdapter<Productdetailclass> {
             @Override
             public void onClick(View v) {
                 Integer index = (Integer) v.getTag();
-                long c= Helper.removeFromWhish(Integer.toString( p.get(index).PID));
+                long c= Helper.removeFromWhish(Integer.toString( p.get(index).PID),uid);
                 if(c==-1) {
                     Toast.makeText(context, "Item not removed from Whish", Toast.LENGTH_SHORT)
                             .show();

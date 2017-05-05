@@ -10,5 +10,5 @@
     <string name="action_favorite">favorite</string>
 
     <string name="banner_level">ca-app-pub-5900683309932412/5247501683</string>
-    <string name="title_activity_user__profile_">User_Profile_Activity</string>
+    <string name="title_activity_user__profile_">Profile</string>
 </resources>

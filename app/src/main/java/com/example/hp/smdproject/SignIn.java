@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -143,7 +144,6 @@ public class SignIn extends AppCompatActivity {
 
                         U1.ID=Integer.parseInt(id);
                         U1.Name=name;
-
                         U1.Address=address;
                         U1.Country=country;
                         if(CC.isEmpty() && CC!=null ) {
@@ -154,20 +154,23 @@ public class SignIn extends AppCompatActivity {
                             U1.Creidt_Card=0;
                         }
 
-
                     }
-
-
-
-
                     Intent intent = new Intent(getApplicationContext(), User_Profile_Activity.class);
-                   // intent.putExtra("UserObject",U1);
-                    intent.putExtra("user", U1);
+                    // intent.putExtra("UserObject",U1);
+                //    intent.putExtra("user", U1);
                     startActivity(intent);
                     // closing this screen
                     finish();
+
                 } else {
-                    // failed to create product
+
+                    Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT)
+                            .show();
+
+                    Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                    startActivity(intent);
+
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

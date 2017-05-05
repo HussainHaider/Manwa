@@ -31,13 +31,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 public class User_Profile_Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    User user;
+
     ImageView v;
     TextView t;
     DataBaseAdpter Helper;
@@ -51,7 +56,7 @@ public class User_Profile_Activity extends AppCompatActivity
     ImageView B2;
     String item_id;
     String categoryid;
-
+   User user=null;
     public static final String DEFAULT="N/A";
     String SP_User_ID;
     String SP_User_NAME;
@@ -62,6 +67,8 @@ public class User_Profile_Activity extends AppCompatActivity
     Boolean SharedPreferencesFlag;
     SharedPreferences sharedPreferences;
     Button B3,B4;
+    PayPalConfiguration m_configuration;
+    Intent m_service;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +77,14 @@ public class User_Profile_Activity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        B3=new Button(getApplicationContext());
+        m_configuration = new PayPalConfiguration()
+                .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX) // sandbox for test, production for real
+                .clientId("AWvDMZF-l65d7qGELQVfS0Sj076kN_JEpWpWS3thgqaz0oZ65qV7WI88gUNOpvZN5uoEE307qkGyjjmE");
+        m_service = new Intent(this, PayPalService.class);
+        m_service.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, m_configuration);
+        startService(m_service);
+
+        // B3=new Button(getApplicationContext());
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -91,7 +105,7 @@ public class User_Profile_Activity extends AppCompatActivity
         LinearLayout L1=(LinearLayout)headerview.findViewById(R.id.headerLinear);
         B1=(Button)headerview.findViewById(R.id.joinbtn);
         B4=(Button)headerview.findViewById(R.id.signinbtn);
-
+        B3=(Button)headerview.findViewById(R.id.signout);
         sharedPreferences=getSharedPreferences("MyData", Context.MODE_PRIVATE);
         SP_User_ID=sharedPreferences.getString("User_ID",DEFAULT);
         SP_User_NAME=sharedPreferences.getString("user_NAME",DEFAULT);
@@ -99,24 +113,49 @@ public class User_Profile_Activity extends AppCompatActivity
         SP_User_COUNTRY=sharedPreferences.getString("user_COUNTRY",DEFAULT);
         SP_User_EMAIL=sharedPreferences.getString("user_EMAIL",DEFAULT);
         SP_User_CC=sharedPreferences.getString("user_CC",DEFAULT);
-
-
-
-
         if(SP_User_ID.equals(DEFAULT) || SP_User_NAME.equals(DEFAULT) || SP_User_ADDRESS.equals(DEFAULT) || SP_User_COUNTRY.equals(DEFAULT) || SP_User_EMAIL.equals(DEFAULT) || SP_User_CC.equals(DEFAULT))
         {
             Toast.makeText(this, "SharedPreferences Empty", Toast.LENGTH_LONG).show();
             SharedPreferencesFlag=false;
             B1.setVisibility(View.VISIBLE);
-            B2.setVisibility(View.VISIBLE);
+            B4.setVisibility(View.VISIBLE);
+            B3.setVisibility(View.INVISIBLE);
+            Intent intent = new Intent(this, SignIn.class);
+            startActivity(intent);
+            finish();
+            return;
         }
         else {
             SharedPreferencesFlag=true;
             B1.setVisibility(View.INVISIBLE);
             B4.setVisibility(View.INVISIBLE);
-            B3.setText("Signout");
-            B3.setTextColor(getResources().getColor(R.color.theme1));
-            B3.setBackground(getResources().getDrawable(R.drawable.mybutton2));
+            B3.setVisibility(View.VISIBLE);
+
+            //   B3.setText("Signout");
+          //  B3.setTextColor(getResources().getColor(R.color.theme1));
+           // B3.setBackground(getResources().getDrawable(R.drawable.mybutton2));
+            user=new User();
+
+            user.ID=Integer.parseInt(SP_User_ID);
+            user.Name=SP_User_NAME;
+            user.Address=SP_User_ADDRESS;
+            user.Country=SP_User_COUNTRY;
+            user.Email=SP_User_EMAIL;
+            if(!SP_User_CC.equals("null") && !SP_User_CC.isEmpty()) {
+                user.Creidt_Card = Integer.parseInt(SP_User_CC);
+            }
+            else
+            {
+                user.Creidt_Card=0;
+            }
+            if(!SP_User_COUNTRY.equals("null") && !SP_User_COUNTRY.isEmpty()) {
+                user.Country=null;
+            }
+            else
+            {
+                user.Creidt_Card=0;
+            }
+
 
             B3.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -124,28 +163,26 @@ public class User_Profile_Activity extends AppCompatActivity
                     Toast.makeText(User_Profile_Activity.this, "clicked3", Toast.LENGTH_SHORT).show();
                     SharedPreferencesFlag=false;
                     sharedPreferences.edit().clear().commit();
-
+                    Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                    startActivity(intent);
+                    finish();
+                    return;
                 }
             });
-            L1.addView(B3);
-
+            //L1.addView(B3);
         }
-
-
-
         final ImageButton imgb = (ImageButton) findViewById(R.id.user_profile_photo);
         final ImageView imgp = (ImageView) findViewById(R.id.header_cover_image);
 
-        Intent i = getIntent();
+       // Intent i = getIntent();
 
-
-        user = (User) i.getSerializableExtra("user");
-        if (user == null) {
-            Intent intent = new Intent(this, SignIn.class);
+//        user = (User) i.getSerializableExtra("user");
+ //       if (user == null) {
+     /*       Intent intent = new Intent(this, SignIn.class);
             startActivity(intent);
             finish();
-            return;
-        }
+            return;*/
+   //     }
 
         String image = user.image;
         String name = user.Name;
@@ -165,17 +202,15 @@ public class User_Profile_Activity extends AppCompatActivity
         }
 //        ArrayList<Productdetailclass> list2=Helper.getCartList("4");
 
-        ArrayList<Productdetailclass> list2 = Helper.getWhishList("4");
+        ArrayList<Productdetailclass> list2 = Helper.getWhishList(Integer.toString(user.ID));
 
         final TextView myname = (TextView) findViewById(R.id.user_profile_name);
         myname.setText(name);
         whish_custom_adapter adapter = new
-                whish_custom_adapter(User_Profile_Activity.this, list2);
+                whish_custom_adapter(User_Profile_Activity.this, list2,Integer.toString(user.ID));
         list = (ListView) findViewById(R.id.listnumbers);
         list.setAdapter(adapter);
-
     }
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -195,9 +230,10 @@ public class User_Profile_Activity extends AppCompatActivity
 
         if (id == R.id.nav_homebtn) {
             Log.d("Camera","option");
-            finish();
+
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intent);
+
             // Handle the camera action
 
         } else if (id == R.id.nav_menshop) {
@@ -213,6 +249,8 @@ public class User_Profile_Activity extends AppCompatActivity
             intent.putExtra("EXTRA_SESSION_ID", categoryid);
             startActivity(intent);
 
+
+
         } else if (id == R.id.nav_womenshop) {
             categoryid="2";
 
@@ -225,7 +263,6 @@ public class User_Profile_Activity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), Categories.class);
             intent.putExtra("EXTRA_SESSION_ID", categoryid);
             startActivity(intent);
-
             Log.d("slideshow","option");
 
         } else if (id == R.id.nav_profile) {
@@ -261,11 +298,16 @@ public class User_Profile_Activity extends AppCompatActivity
 
 
 //        B1=(ImageButton) notifCount.findViewById(R.id.pic);
-        R1 = (RoundedLetterView) notifCount.findViewById(R.id.setround);
-        count = Helper.getCount("4");
+        if(user!=null) {
+            R1 = (RoundedLetterView) notifCount.findViewById(R.id.setround);
+            count = Helper.getCount(Integer.toString(user.ID));
 
 
-        R1.setTitleText(Integer.toString(count));
+            R1.setTitleText(Integer.toString(count));
+        }
+
+
+
         B2 = (ImageView) notifCount.findViewById(R.id.pic);
 //        B3=(ImageButton) notifCount.findViewById(R.id.pic);
 
@@ -292,7 +334,7 @@ public class User_Profile_Activity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 //                count++;
-                list2 = Helper.getCartList("4");
+                list2 = Helper.getCartList(Integer.toString(user.ID));
                 android.app.AlertDialog.Builder mBuilder = new android.app.AlertDialog.Builder(User_Profile_Activity.this);
                 View mView = getLayoutInflater().inflate(R.layout.material_design_profile_screen_xml_ui_design, null);
 
@@ -302,7 +344,7 @@ public class User_Profile_Activity extends AppCompatActivity
                 final ListView list = (ListView) mView.findViewById(R.id.listnumbers);
 
                 cart_custom_adapter adapter = new
-                        cart_custom_adapter(User_Profile_Activity.this, list2);
+                        cart_custom_adapter(User_Profile_Activity.this, list2,Integer.toString(user.ID));
 
                 list.setAdapter(adapter);
 
@@ -319,7 +361,7 @@ public class User_Profile_Activity extends AppCompatActivity
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                         // TODO Auto-generated method stub
-                        count = Helper.getCount("4");
+                        count = Helper.getCount(Integer.toString(user.ID));
                         R1.setTitleText(Integer.toString(count));
                     }
                 });
@@ -328,22 +370,25 @@ public class User_Profile_Activity extends AppCompatActivity
                 Btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast t = Toast.makeText(getApplicationContext(), "Order now", Toast.LENGTH_SHORT);
-                        t.show();
+
+                        if(list2.size()!=0) {
+                            PayPalPayment payment = new PayPalPayment(new BigDecimal(100), "USD", "Paypal",
+                                    PayPalPayment.PAYMENT_INTENT_SALE);
+
+                            Intent intent = new Intent(getApplicationContext(), PaymentActivity.class); // it's not paypalpayment, it's paymentactivity !
+                            intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, m_configuration);
+                            intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+                            startActivityForResult(intent, 999);
+                            Helper.deleteCart(Integer.toString(user.ID));
 
 
-//                        for(int i=0;i<list2.size();i++)
-//                        {
-//                            Helper.inserttable3(Integer.toString(list2.get(i).ID),"4","4/5/2017",Integer.toString(list2.get(i).Price));
-//                            Helper.removeFromCart(Integer.toString(list2.get(i).PID));
-//                        }
-//                        list2.clear();
-//
-//
-//
-//                        count = Helper.getCount("4");
-//                        R1.setTitleText(Integer.toString(count));
+                        }
+                        else
+                        {
+                            Toast t = Toast.makeText(getApplicationContext(), "Your Cart Is Empty", Toast.LENGTH_SHORT);
+                            t.show();
 
+                        }
 
                     }
                 });
@@ -462,10 +507,8 @@ public class User_Profile_Activity extends AppCompatActivity
                     });
             alertDialog.show();
 
-
         }
 
     }
-
 
 }

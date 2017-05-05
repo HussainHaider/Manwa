@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -77,6 +79,18 @@ public class Show_items extends AppCompatActivity {
     PayPalConfiguration m_configuration;
     Intent m_service;
 
+    User user=null;
+    public static final String DEFAULT="N/A";
+    String SP_User_ID;
+    String SP_User_NAME;
+    String SP_User_ADDRESS;
+    String SP_User_COUNTRY;
+    String SP_User_EMAIL;
+    String SP_User_CC;
+    Boolean SharedPreferencesFlag;
+    SharedPreferences sharedPreferences;
+
+
 
     JSONArray products = null;
     private ProgressDialog pDialog;
@@ -85,7 +99,8 @@ public class Show_items extends AppCompatActivity {
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_GAME_NAME = "image_detail";
     private static final String TAG_IMAGE = "image";
-
+    int repeat=0;
+    boolean myflag=true;
     private AdView mAdView;
 
     @Override
@@ -148,7 +163,37 @@ public class Show_items extends AppCompatActivity {
         });
 
         mAdView.loadAd(adRequest);
+        sharedPreferences=getSharedPreferences("MyData", Context.MODE_PRIVATE);
+        SP_User_ID=sharedPreferences.getString("User_ID",DEFAULT);
+        SP_User_NAME=sharedPreferences.getString("user_NAME",DEFAULT);
+        SP_User_ADDRESS=sharedPreferences.getString("user_ADDRESS",DEFAULT);
+        SP_User_COUNTRY=sharedPreferences.getString("user_COUNTRY",DEFAULT);
+        SP_User_EMAIL=sharedPreferences.getString("user_EMAIL",DEFAULT);
+        SP_User_CC=sharedPreferences.getString("user_CC",DEFAULT);
 
+        if(SP_User_ID.equals(DEFAULT) || SP_User_NAME.equals(DEFAULT) || SP_User_ADDRESS.equals(DEFAULT) || SP_User_COUNTRY.equals(DEFAULT) || SP_User_EMAIL.equals(DEFAULT) || SP_User_CC.equals(DEFAULT))
+        {
+            Toast.makeText(this, "SharedPreferences Empty", Toast.LENGTH_LONG).show();
+            SharedPreferencesFlag=false;
+
+
+        }
+        else {
+            SharedPreferencesFlag = true;
+            user=new User();
+            user.ID=Integer.parseInt(SP_User_ID);
+            user.Name=SP_User_NAME;
+            user.Address=SP_User_ADDRESS;
+            user.Country=SP_User_COUNTRY;
+            user.Email=SP_User_EMAIL;
+            if(!SP_User_CC.equals("null") && !SP_User_CC.isEmpty()) {
+                user.Creidt_Card = Integer.parseInt(SP_User_CC);
+            }
+            else
+            {
+                user.Creidt_Card=0;
+            }
+        }
 
 //        imageView=(ImageView)findViewById(R.id.img1);
 //        URL url = new URL("http://image10.bizrate-images.com/resize?sq=60&uid=2216744464");
@@ -174,12 +219,10 @@ public class Show_items extends AppCompatActivity {
                 });
 
     }
-
     public void callimagetask(String a) {
         new DownloadImageTask((ImageView) findViewById(R.id.img1))
                 .execute(a);
     }
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -190,41 +233,70 @@ public class Show_items extends AppCompatActivity {
     public void whishlistbtn()
     {
         Log.d("Check", "wishbtn");
-        if (btnwhishlist == false && wishcount % 2 == 0) {
+        if(user!=null) {
+            if (btnwhishlist == false && wishcount % 2 == 0) {
 
-            btnwhishlist = true;
-            long c=Helper.inserttable4("4", item_id);
-            if(c==-1)
-            {
-                Toast toast = Toast.makeText(getApplicationContext(), "Item Already Exist in WhishList", Toast.LENGTH_SHORT);
-                toast.show();
+                btnwhishlist = true;
+                long c = Helper.inserttable4(Integer.toString(user.ID), item_id);
+                if (c == -1) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Item Already Exist in WhishList", Toast.LENGTH_SHORT);
+                    toast.show();
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Item added to whishlist", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
-            else
-            {
-                Toast toast = Toast.makeText(getApplicationContext(), "Item added to whishlist", Toast.LENGTH_SHORT);
-                toast.show();
+            if (btnwhishlist == true && wishcount % 2 != 0) {
+
+                btnwhishlist = false;
+                long c = Helper.removeFromWhish(item_id,Integer.toString(user.ID));
+                if (c == -1) {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Item is not Romved From Whishlist", Toast.LENGTH_SHORT);
+                    toast.show();
+                } else {
+                    Toast toast = Toast.makeText(getApplicationContext(), "Item Romved From Whishlist", Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
+            wishcount++;
+        }
+        else
+        {
+            showDialogue();
 
         }
-        if (btnwhishlist == true && wishcount % 2 != 0) {
-
-            btnwhishlist = false;
-            long c=Helper.removeFromWhish(item_id);
-            if(c==-1)
-            {
-                Toast toast = Toast.makeText(getApplicationContext(), "Item is not Romved From Whishlist", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-            else
-            {
-                Toast toast = Toast.makeText(getApplicationContext(), "Item Romved From Whishlist", Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        }
-        wishcount++;
     }
+    public  void showDialogue()
+    {
+        android.support.v7.app.AlertDialog.Builder alertDialog = new android.support.v7.app.AlertDialog.Builder(Show_items.this);
+        alertDialog.setTitle("Please Login");
+        alertDialog.setIcon(R.drawable.images);
+
+         LinearLayout layout = new LinearLayout(this);
+        layout.setOrientation(LinearLayout.VERTICAL);
+
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
 
 
+        alertDialog.setPositiveButton("Login",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(getApplicationContext(), SignIn.class);
+                        startActivity(intent);
+
+                    }
+                });
+        alertDialog.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+        alertDialog.show();
+
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -238,11 +310,13 @@ public class Show_items extends AppCompatActivity {
 
 
 //        B1=(ImageButton) notifCount.findViewById(R.id.pic);
-        R1 = (RoundedLetterView) notifCount.findViewById(R.id.setround);
-        count = Helper.getCount("4");
+        if(user!=null) {
+            R1 = (RoundedLetterView) notifCount.findViewById(R.id.setround);
+            count = Helper.getCount(Integer.toString(user.ID));
 
 
-        R1.setTitleText(Integer.toString(count));
+            R1.setTitleText(Integer.toString(count));
+        }
         B2 = (ImageView) notifCount.findViewById(R.id.pic);
 //        B3=(ImageButton) notifCount.findViewById(R.id.pic);
 
@@ -250,17 +324,25 @@ public class Show_items extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                long c = Helper.inserttable11(item_id, "4");
-                if (c == -1) {
-                    Toast.makeText(getApplicationContext(), "Item Already Exist in Cart", Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    Toast.makeText(getApplicationContext(), "Item Added to Cart Successfully", Toast.LENGTH_SHORT)
-                            .show();
-                    count++;
-                    Log.d("Hello", "world1");
-                    String numberAsString2 = Integer.toString(count);
-                    R1.setTitleText(numberAsString2);
+                if(user!=null) {
+
+                    long c = Helper.inserttable11(item_id, Integer.toString(user.ID));
+                    if (c == -1) {
+                        Toast.makeText(getApplicationContext(), "Item Already Exist in Cart", Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Item Added to Cart Successfully", Toast.LENGTH_SHORT)
+                                .show();
+                        count++;
+                        Log.d("Hello", "world1");
+                        String numberAsString2 = Integer.toString(count);
+                        R1.setTitleText(numberAsString2);
+
+                    }
+                }
+                else
+                {
+                    showDialogue();
 
                 }
             }
@@ -269,69 +351,72 @@ public class Show_items extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 //                count++;
-                list2 = Helper.getCartList("4");
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(Show_items.this);
-                View mView = getLayoutInflater().inflate(R.layout.material_design_profile_screen_xml_ui_design, null);
+                if(user!=null) {
+                    list2 = Helper.getCartList(Integer.toString(user.ID));
+                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(Show_items.this);
+                    View mView = getLayoutInflater().inflate(R.layout.material_design_profile_screen_xml_ui_design, null);
 
-                final TextView name = (TextView) mView.findViewById(R.id.user_profile_name);
-                name.setText("Cart List");
+                    final TextView name = (TextView) mView.findViewById(R.id.user_profile_name);
+                    name.setText("Cart List");
 
-                final ListView list = (ListView) mView.findViewById(R.id.listnumbers);
+                    final ListView list = (ListView) mView.findViewById(R.id.listnumbers);
 
-                cart_custom_adapter adapter = new
-                        cart_custom_adapter(Show_items.this, list2);
+                    cart_custom_adapter adapter = new
+                            cart_custom_adapter(Show_items.this, list2,Integer.toString(user.ID));
 
-                list.setAdapter(adapter);
+                    list.setAdapter(adapter);
 
-                list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> adapter, View v, int position,
-                                            long arg3) {
+                    list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> adapter, View v, int position,
+                                                long arg3) {
 
-                    }
-                });
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
-                dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-                        // TODO Auto-generated method stub
-                        count = Helper.getCount("4");
-                        R1.setTitleText(Integer.toString(count));
-                    }
-                });
-                final Button Btn = (Button) mView.findViewById(R.id.button_order);
+                        }
+                    });
+                    mBuilder.setView(mView);
+                    final AlertDialog dialog = mBuilder.create();
+                    dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialog) {
+                            // TODO Auto-generated method stub
+                            count = Helper.getCount(Integer.toString(user.ID));
+                            R1.setTitleText(Integer.toString(count));
+                        }
+                    });
+                    final Button Btn = (Button) mView.findViewById(R.id.button_order);
 
-                Btn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Toast t=Toast.makeText(getApplicationContext(),"Order now",Toast.LENGTH_SHORT);
-                        t.show();
-                        PayPalPayment payment = new PayPalPayment(new BigDecimal(100), "USD", "Paypal",
-                                PayPalPayment.PAYMENT_INTENT_SALE);
+                    Btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                        Intent intent = new Intent(getApplicationContext(), PaymentActivity.class); // it's not paypalpayment, it's paymentactivity !
-                        intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, m_configuration);
-                        intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
-                        startActivityForResult(intent, 999);
+                            if(list2.size()!=0) {
+                                PayPalPayment payment = new PayPalPayment(new BigDecimal(100), "USD", "Paypal",
+                                        PayPalPayment.PAYMENT_INTENT_SALE);
 
-//                        for(int i=0;i<list2.size();i++)
-//                        {
-//                            Helper.inserttable3(Integer.toString(list2.get(i).ID),"4","4/5/2017",Integer.toString(list2.get(i).Price));
-//                            Helper.removeFromCart(Integer.toString(list2.get(i).PID));
-//                        }
-//                        list2.clear();
-//
-//
-//
-//                        count = Helper.getCount("4");
-//                        R1.setTitleText(Integer.toString(count));
+                                Intent intent = new Intent(getApplicationContext(), PaymentActivity.class); // it's not paypalpayment, it's paymentactivity !
+                                intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, m_configuration);
+                                intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+                                startActivityForResult(intent, 999);
+                                Helper.deleteCart(Integer.toString(user.ID));
 
+                            }
+                            else
+                            {
+                                Toast t = Toast.makeText(getApplicationContext(), "Your Cart Is Empty", Toast.LENGTH_SHORT);
+                                t.show();
 
-                    }
-                });
+                            }
 
-                dialog.show();
+                        }
+                    });
+
+                    dialog.show();
+                }
+                else
+                {
+                    showDialogue();
+
+                }
             }
         });
         return true;
@@ -385,6 +470,14 @@ public class Show_items extends AppCompatActivity {
             share.setType("text/plain");
             startActivity(share);
 
+            return true;
+        }
+        if (id == R.id.action_home) {
+            Log.d("Menu", "World1");
+
+            Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
             return true;
         }
 

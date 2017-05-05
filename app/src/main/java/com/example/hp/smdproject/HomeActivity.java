@@ -21,6 +21,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,8 +70,6 @@ public class HomeActivity extends AppCompatActivity
     SharedPreferences sharedPreferences;
     Button B3;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +82,16 @@ public class HomeActivity extends AppCompatActivity
         Helper=new DataBaseAdpter(this);
         Log.d("Helper","class");
         categoryid="";btnid=1;
+        LayoutParams params = new LayoutParams(
+                LayoutParams.WRAP_CONTENT,
+                LayoutParams.WRAP_CONTENT
+        );
+        int mar=-40;
+        int zero=0;
+       // params.setMargins((int)getResources().getDimension(R.dimen.all),zero, zero,zero);
         B3=new Button(getApplicationContext());
+       // B3.setLayoutParams(params);
+
         mAdView = (AdView) findViewById(R.id.adView);
 //
         AdRequest adRequest = new AdRequest.Builder()
@@ -139,6 +147,8 @@ public class HomeActivity extends AppCompatActivity
         LinearLayout L1=(LinearLayout)headerview.findViewById(R.id.headerLinear);
         B1=(Button)headerview.findViewById(R.id.joinbtn);
         B2=(Button)headerview.findViewById(R.id.signinbtn);
+        B3=(Button)headerview.findViewById(R.id.signout);
+
 
         sharedPreferences=getSharedPreferences("MyData", Context.MODE_PRIVATE);
         SP_User_ID=sharedPreferences.getString("User_ID",DEFAULT);
@@ -148,43 +158,51 @@ public class HomeActivity extends AppCompatActivity
         SP_User_EMAIL=sharedPreferences.getString("user_EMAIL",DEFAULT);
         SP_User_CC=sharedPreferences.getString("user_CC",DEFAULT);
 
-
-
-
         if(SP_User_ID.equals(DEFAULT) || SP_User_NAME.equals(DEFAULT) || SP_User_ADDRESS.equals(DEFAULT) || SP_User_COUNTRY.equals(DEFAULT) || SP_User_EMAIL.equals(DEFAULT) || SP_User_CC.equals(DEFAULT))
         {
             Toast.makeText(this, "SharedPreferences Empty", Toast.LENGTH_LONG).show();
             SharedPreferencesFlag=false;
             B1.setVisibility(View.VISIBLE);
             B2.setVisibility(View.VISIBLE);
+            B3.setVisibility(View.INVISIBLE);
         }
         else {
             SharedPreferencesFlag=true;
             B1.setVisibility(View.INVISIBLE);
             B2.setVisibility(View.INVISIBLE);
-            B3.setText("Signout");
-            B3.setTextColor(getResources().getColor(R.color.theme1));
-            B3.setBackground(getResources().getDrawable(R.drawable.mybutton2));
+            B3.setVisibility(View.VISIBLE);
+            //B3.setText("Signout");
+            //B3.setTextColor(getResources().getColor(R.color.theme1));
+            //B3.setBackground(getResources().getDrawable(R.drawable.mybutton2));
 
-            B3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(HomeActivity.this, "clicked3", Toast.LENGTH_SHORT).show();
-                    SharedPreferencesFlag=false;
-                    sharedPreferences.edit().clear().commit();
-
-                }
-            });
-            L1.addView(B3);
+//            B3.setOnClickListener(new View.OnClickListener() {
+//               @Override
+//               public void onClick(View v) {
+//                    Toast.makeText(HomeActivity.this, "clicked3", Toast.LENGTH_SHORT).show();
+//                    SharedPreferencesFlag=false;
+//                    sharedPreferences.edit().clear().commit();
+//
+//                }
+//            });
+            //L1.addView(B3);
 
         }
+        B3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferencesFlag=false;
+                sharedPreferences.edit().clear().commit();
+                B1.setVisibility(View.VISIBLE);
+                B2.setVisibility(View.VISIBLE);
+                B3.setVisibility(View.INVISIBLE);
 
-
+            }
+        });
 
         B1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "clicked1", Toast.LENGTH_SHORT).show();
+           //     Toast.makeText(HomeActivity.this, "clicked1", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), SignUp.class);
                 startActivity(intent);
             }
@@ -192,32 +210,18 @@ public class HomeActivity extends AppCompatActivity
         B2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(HomeActivity.this, "clicked2", Toast.LENGTH_SHORT).show();
-
+             //   Toast.makeText(HomeActivity.this, "clicked2", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getApplicationContext(), SignIn.class);
                 startActivity(intent);
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
-
-
-
-
-
-
         Helper.inserttable6("1","Men");
         Helper.inserttable6("2","Female");
         Helper.inserttable6("3","kid");
-
-
-
-
         callaysnc();
-
         getApplicationContext().startService(new Intent(getApplicationContext(), Sale_Service.class));
-//        getApplicationContext().startService(new Intent(getApplicationContext(), Category_Services.class));
-
-
+       getApplicationContext().startService(new Intent(getApplicationContext(), Category_Services.class));
 
     }
 
@@ -286,9 +290,10 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_homebtn) {
             Log.d("Camera","option");
-            finish();
             Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
             startActivity(intent);
+            finish();
+
             // Handle the camera action
 
         } else if (id == R.id.nav_menshop) {
@@ -304,6 +309,8 @@ public class HomeActivity extends AppCompatActivity
             intent.putExtra("EXTRA_SESSION_ID", categoryid);
             startActivity(intent);
 
+
+
         } else if (id == R.id.nav_womenshop) {
             categoryid="2";
 
@@ -317,6 +324,7 @@ public class HomeActivity extends AppCompatActivity
             intent.putExtra("EXTRA_SESSION_ID", categoryid);
             startActivity(intent);
 
+
             Log.d("slideshow","option");
 
         } else if (id == R.id.nav_profile) {
@@ -324,10 +332,13 @@ public class HomeActivity extends AppCompatActivity
             Intent intent = new Intent(getApplicationContext(), User_Profile_Activity.class);
             startActivity(intent);
 
-        } else if (id == R.id.nav_share) {
+
+        } else if (id == R.id.nav_salebtn) {
             Log.d("Share","option");
             Intent intent = new Intent(getApplicationContext(), Sale_Activity.class);
             startActivity(intent);
+
+
 
         } else if (id == R.id.nav_send) {
             Log.d("Send","option");

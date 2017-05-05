@@ -44,7 +44,6 @@ public class DataBaseAdpter {
 
 
 
-
     public List<String> gettable2(String id)
     {
         List<String> list = new ArrayList<String>();
@@ -82,8 +81,11 @@ public class DataBaseAdpter {
         value.put(ShopHelper.Price,P);
         value.put(ShopHelper.Descrption,D);
         Log.d("checking","Value");
+        int a;
+
         idcheck=db.insert(ShopHelper.TABLE_NAME5,null,value);
-        Log.d("checking","ID");
+              //  Log.d(idcheck);
+     //   Log.d(Integer.toString(idcheck));
         return idcheck;
     }
     public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
@@ -408,14 +410,14 @@ public class DataBaseAdpter {
 
 
 
-    public long removeFromCart(String id1)
+    public long removeFromCart(String pid,String uid)
     {
         long check=0;
         SQLiteDatabase db=Helper.getWritableDatabase();
         Log.d("checking","columns");
         //  String query = "DELETE * FROM " + ShopHelper.TABLE_NAME11+ " WHERE "+ShopHelper.pid+"=?" ;
         //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
-        check=db.delete(ShopHelper.TABLE_NAME11, ShopHelper.pid + "=" + id1, null);
+        check=db.delete(ShopHelper.TABLE_NAME11, ShopHelper.pid + "=" + pid+ " AND "+ ShopHelper.uid+"="+uid, null);
         //   String[] params = new String[]{ id1 };
         //  db.execSQL(query,params);
         Log.d("checking","Query");
@@ -423,14 +425,14 @@ public class DataBaseAdpter {
         return check;
     }
 
-    public long removeFromWhish(String id1)
+    public long removeFromWhish(String pid,String uid)
     {
         long check=0;
         SQLiteDatabase db=Helper.getWritableDatabase();
         Log.d("checking","columns");
         //  String query = "DELETE * FROM " + ShopHelper.TABLE_NAME11+ " WHERE "+ShopHelper.pid+"=?" ;
         //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
-        check=db.delete(ShopHelper.TABLE_NAME4, ShopHelper.pid + "=" + id1, null);
+        check=db.delete(ShopHelper.TABLE_NAME4, ShopHelper.pid + "=" + pid+ " AND "+ ShopHelper.uid+"="+uid, null);
         //   String[] params = new String[]{ id1 };
         //  db.execSQL(query,params);
         Log.d("checking","Query");
@@ -456,12 +458,21 @@ public class DataBaseAdpter {
         return list;
     }
 
+     public  long deleteCart(String uid)
+     {
+         long check=0;
+         SQLiteDatabase db=Helper.getWritableDatabase();
+         Log.d("checking","columns");
+         //  String query = "DELETE * FROM " + ShopHelper.TABLE_NAME11+ " WHERE "+ShopHelper.pid+"=?" ;
+         //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
+         check=db.delete(ShopHelper.TABLE_NAME11, ShopHelper.uid + "=" + uid, null);
+         //   String[] params = new String[]{ id1 };
+         //  db.execSQL(query,params);
+         Log.d("checking","Query");
 
+         return check;
 
-
-
-
-
+     }
 
     static class ShopHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "SHOPDB";
@@ -477,7 +488,7 @@ public class DataBaseAdpter {
         private static final String TABLE_NAME9 = "Premium_User";
         private static final String TABLE_NAME10 = "SpecialOffer";
         private static final String TABLE_NAME11 = "Cart";
-        private static final int DATABASE_VERSION = 10;
+        private static final int DATABASE_VERSION = 16;
         //Table 1 attribute
         private static final String KEY_IMAGE1 = "Photo";
         private static final String UID = "_id";

@@ -1,34 +1,19 @@
 package com.example.hp.smdproject;
 
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.paypal.android.sdk.payments.PayPalPayment;
-import com.paypal.android.sdk.payments.PayPalService;
-import com.paypal.android.sdk.payments.PaymentActivity;
-import com.paypal.android.sdk.payments.PaymentConfirmation;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -37,7 +22,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -112,12 +96,12 @@ public class Categories extends AppCompatActivity {
                 Intent intent = new Intent(getBaseContext(),ItemList.class);
                 intent.putExtra("EXTRA_SESSION_ID", sessionId);
                 startActivity(intent);
+            //    pDialog.dismiss();
 
             }
         });
 
         gridview.setAdapter(C1);
-
 
     }
     public void CreateUi()
@@ -181,7 +165,6 @@ public class Categories extends AppCompatActivity {
 
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(url_all_Name, "GET", params);
-
 
             try {
                 // Checking for SUCCESS TAG

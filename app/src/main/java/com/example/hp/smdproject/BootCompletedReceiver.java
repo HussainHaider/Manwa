@@ -14,7 +14,7 @@ public class BootCompletedReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent arg1) {
         // TODO Auto-generated method stub
         Log.w("boot_broadcast_poc", "starting1 service...");
-        context.startService(new Intent(context, Category_Services.class));
+     //   context.startService(new Intent(context, Category_Services.class));
         Log.w("boot_broadcast_poc", "starting2 service...");
         context.startService(new Intent(context, Sale_Notifcation_Service.class));
 

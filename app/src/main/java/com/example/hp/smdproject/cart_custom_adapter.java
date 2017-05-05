@@ -22,15 +22,18 @@ public class cart_custom_adapter extends ArrayAdapter<Productdetailclass> {
     ArrayList<Productdetailclass> p;
     private LayoutInflater inflater;
     DataBaseAdpter Helper;
+    String uid;
+
 
 
     public cart_custom_adapter(Activity context,
-                               ArrayList<Productdetailclass> list) {
+                               ArrayList<Productdetailclass> list,String id) {
         super(context, 0,list);
         this.context = context;
         this.p = list;
         inflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         Helper = new DataBaseAdpter(context);
+        uid=id;
 
 
 
@@ -74,7 +77,7 @@ public class cart_custom_adapter extends ArrayAdapter<Productdetailclass> {
             @Override
             public void onClick(View v) {
                 Integer index = (Integer) v.getTag();
-                long c= Helper.removeFromCart(Integer.toString( p.get(index).PID));
+                long c= Helper.removeFromCart(Integer.toString( p.get(index).PID),uid);
                 if(c==-1) {
                     Toast.makeText(context, "Item not removed from cart", Toast.LENGTH_SHORT)
                             .show();
