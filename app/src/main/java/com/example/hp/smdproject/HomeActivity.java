@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
@@ -48,12 +49,20 @@ public class HomeActivity extends AppCompatActivity
 
     JSONArray products = null;
     private ProgressDialog pDialog;
+    private ProgressDialog progress;
     JSONParser jParser = new JSONParser();
     private static String url_all_gameName = "https://stopshop321.000webhostapp.com/getProductCategory.php";
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_GAME_NAME = "ProductNames";
-    private static final String TAG_PID = "PID";
-    private static final String TAG_CID = "CID";
+    private static final String TAG_PID = "ProductID";
+    private static final String TAG_CID = "CategoryID";
+
+
+    private static String url_all_gameName2 = "https://stopshop321.000webhostapp.com/user_count.php";
+
+    private static final String TAG_GAME_NAME2 = "User_detail";
+    private static final String TAG_Count = "COUNT(*)";
+
     Button B1,B2;
     DataBaseAdpter Helper;
     String categoryid;
@@ -77,6 +86,7 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        progress = new ProgressDialog(this);
         viewPager = (ViewPager) findViewById(R.id.pager);
         Log.d("Helper","class1");
         Helper=new DataBaseAdpter(this);
@@ -150,6 +160,12 @@ public class HomeActivity extends AppCompatActivity
         B3=(Button)headerview.findViewById(R.id.signout);
 
 
+        Log.d("Data inserted6","Yes");
+        Helper.inserttable6("1","Men");
+        Helper.inserttable6("2","Female");
+        Helper.inserttable6("3","kid");
+        callaysnc();
+
         sharedPreferences=getSharedPreferences("MyData", Context.MODE_PRIVATE);
         SP_User_ID=sharedPreferences.getString("User_ID",DEFAULT);
         SP_User_NAME=sharedPreferences.getString("user_NAME",DEFAULT);
@@ -194,6 +210,7 @@ public class HomeActivity extends AppCompatActivity
                 sharedPreferences.edit().clear().commit();
                 B1.setVisibility(View.VISIBLE);
                 B2.setVisibility(View.VISIBLE);
+
                 B3.setVisibility(View.INVISIBLE);
 
             }
@@ -203,6 +220,10 @@ public class HomeActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
            //     Toast.makeText(HomeActivity.this, "clicked1", Toast.LENGTH_SHORT).show();
+
+
+                new LoadUserCount().execute();
+
                 Intent intent = new Intent(getApplicationContext(), SignUp.class);
                 startActivity(intent);
             }
@@ -216,11 +237,8 @@ public class HomeActivity extends AppCompatActivity
             }
         });
         navigationView.setNavigationItemSelectedListener(this);
-        Helper.inserttable6("1","Men");
-        Helper.inserttable6("2","Female");
-        Helper.inserttable6("3","kid");
-        callaysnc();
-        getApplicationContext().startService(new Intent(getApplicationContext(), Sale_Service.class));
+
+      //  getApplicationContext().startService(new Intent(getApplicationContext(), Sale_Service.class));
        getApplicationContext().startService(new Intent(getApplicationContext(), Category_Services.class));
 
     }
@@ -282,6 +300,15 @@ public class HomeActivity extends AppCompatActivity
 //    }
 
 
+    Runnable progressRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            progress.cancel();
+        }
+    };
+
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -307,6 +334,17 @@ public class HomeActivity extends AppCompatActivity
             //Activity
             Intent intent = new Intent(getApplicationContext(), Categories.class);
             intent.putExtra("EXTRA_SESSION_ID", categoryid);
+
+            Handler pdCanceller = new Handler();
+            pdCanceller.postDelayed(progressRunnable, 10000);
+
+
+            progress.setMessage("Please wait while we loading data...");
+            progress.show();
+
+
+
+
             startActivity(intent);
 
 
@@ -421,7 +459,7 @@ public class HomeActivity extends AppCompatActivity
     {
         long id1=Helper.inserttable7(id,n);
         String numberAsString = Long.toString(id1);
-        Log.d("Data inserted",numberAsString);
+        Log.d("Data inserted7",numberAsString);
     }
 
 
@@ -465,6 +503,8 @@ public class HomeActivity extends AppCompatActivity
 
                 if (success == 1) {
                     // products found
+                    Log.d("Product Category","Found");
+
                     // Getting Array of patients
                     products = json.getJSONArray(TAG_GAME_NAME);
 
@@ -500,6 +540,88 @@ public class HomeActivity extends AppCompatActivity
 //            pDialog.dismiss();
             // updating UI from Background Thread
 
+        }
+    }
+    public void addUserCount(String id)
+    {
+        long id1=Helper.inserttable1(id);
+        String numberAsString = Long.toString(id1);
+        Log.d("Data inserted1",numberAsString);
+    }
+
+    class LoadUserCount extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(HomeActivity.this);
+            pDialog.setMessage("Getting Data to server...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+
+        }
+
+        /**
+         * getting All products from url
+         */
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+
+            // getting JSON string from URL
+            JSONObject json = jParser.makeHttpRequest(url_all_gameName2, "GET", params);
+
+
+            try {
+                int success=0;
+                // Checking for SUCCESS TAG
+//                success = json.getInt(TAG_SUCCESS);
+                try{
+                    success = json.getInt(TAG_SUCCESS);
+                }catch (Exception e)
+                {
+                    Log.d("Service","User_count Service not working");
+                }
+
+
+                if (success == 1) {
+                    // products found
+                    // Getting Array of patients
+                    products = json.getJSONArray(TAG_GAME_NAME2);
+                    Log.d("User_count","Service3");
+                    // looping through All Patients
+                    for (int i = 0; i < products.length(); i++) {
+                        JSONObject c = products.getJSONObject(i);
+
+                        // Storing each json item in variable
+                        String id = c.getString(TAG_Count);
+                        Log.d("User-count",id);
+
+
+                        addUserCount(id);
+
+                    }
+                } else {
+                    Log.d("no User","found");
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         **/
+        protected void onPostExecute(String file_url) {
+            pDialog.dismiss();
         }
     }
 

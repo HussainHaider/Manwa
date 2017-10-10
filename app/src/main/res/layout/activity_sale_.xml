@@ -11,6 +11,7 @@
 
     <ListView
         android:layout_width="match_parent"
+
         android:id="@+id/Salelistview"
         android:layout_height="wrap_content">
 

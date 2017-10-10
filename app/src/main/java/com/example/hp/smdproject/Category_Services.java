@@ -2,6 +2,8 @@ package com.example.hp.smdproject;
 
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
@@ -13,6 +15,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +31,9 @@ public class Category_Services extends Service {
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_GAME_NAME = "ProductNames";
     private static final String TAG_GID = "ID";
-    private static final String TAG_NAME = "Name";
+    private static final String TAG_NAME = "Pname";
+    private static final String TAG_IMAGE = "Pimage";
+
 
     DataBaseAdpter Helper;
 
@@ -51,9 +56,9 @@ public class Category_Services extends Service {
         Log.d("Category","Service");
         new LoadAllProductName().execute();
     }
-    public void addproductName(String id,String n)
+    public void addproductName(String id,String n, Bitmap B1)
     {
-        long id1=Helper.inserttable2(id,n);
+        long id1=Helper.inserttable2(id,n,B1);
         String numberAsString = Long.toString(id1);
         Log.d("Data inserted2",numberAsString);
     }
@@ -110,10 +115,25 @@ public class Category_Services extends Service {
                         // Storing each json item in variable
                         String id = c.getString(TAG_GID);
                         String name = c.getString(TAG_NAME);
+                        String image = c.getString(TAG_IMAGE);
                         Log.d("Product_id",id);
                         Log.d("Product_name",name);
+                        Log.d("Product_image", image);
 
-                        addproductName(id,name);
+
+                        String urldisplay = image;
+                        Bitmap mIcon11 = null;
+                        try {
+                            InputStream in = new java.net.URL(urldisplay).openStream();
+                            mIcon11 = BitmapFactory.decodeStream(in);
+
+                        } catch (Exception e) {
+                            Log.e("Error", e.getMessage());
+                            e.printStackTrace();
+                        }
+
+
+                        addproductName(id,name,mIcon11);
 
                     }
                 } else {

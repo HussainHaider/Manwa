@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -35,9 +36,11 @@ public class SignIn extends AppCompatActivity {
     private static final String TAG_COUNTRY = "Country";
     private static final String TAG_EMAIL = "email";
     private static final String TAG_CC = "CC";
+    private static final String TAG_MESSAGE = "message";
 
-    private String email,password;
+    private String email,password,error_text;
     private EditText etEmail,etPassword;
+    public TextView etext;
     User U1=new User();
 
 
@@ -47,6 +50,9 @@ public class SignIn extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         etEmail=(EditText) findViewById(R.id.etEmail);
         etPassword=(EditText) findViewById(R.id.etPassword);
+        etext=(TextView)findViewById(R.id.error_id2);
+        assert etext != null;
+        etext.setVisibility(View.GONE);
     }
 
     public void button(View v)
@@ -178,15 +184,13 @@ public class SignIn extends AppCompatActivity {
                 }
                 else {
 
-                    //Toast.makeText(getApplicationContext(), "Login Failed", Toast.LENGTH_SHORT)
-                      //      .show();
-                        //                    Intent intent = new Intent(getApplicationContext(), SignIn.class);
-                       // startActivity(intent);
-                        //finish();
-
-
-
-
+                    Log.d("failed","Sign In!");
+                    try {
+                        error_text= (String) json.get(TAG_MESSAGE);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("LOss",error_text);
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -201,6 +205,9 @@ public class SignIn extends AppCompatActivity {
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once done
             pDialog.dismiss();
+            if(error_text != null && error_text.contains("No")){
+                etext.setVisibility(View.VISIBLE);
+            }
         }
 
     }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -28,16 +29,74 @@ public class DataBaseAdpter {
         Log.d("Helper","class2");
     }
 
-    public long inserttable2(String id,String name)
+    public long inserttable1(String id)
     {
+
+        Log.d("checking","Value1");
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        Log.d("checking","Value2");
+        ContentValues value=new ContentValues();
+        value.put(ShopHelper.UID,id);
+        Log.d("checking","Value");
+        idcheck=db.insert(ShopHelper.TABLE_NAME1,null,value);
+        Log.d("checking","ID");
+        return idcheck;
+    }
+    public List<String> gettable1()
+    {
+        List<String> list = new ArrayList<String>();
+
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        Log.d("checking","columns");
+        String qu = "select * from "+ ShopHelper.TABLE_NAME1;
+        Log.d("Query",qu);
+        Cursor c = db.rawQuery(qu, null);
+
+        Log.d("checking","Query");
+        while (c.moveToNext())
+        {
+            Log.d("Work","help1");
+            int cid=c.getInt(0);
+            String numberAsString = Integer.toString(cid);
+            list.add(numberAsString);
+            Log.d("Work","help2");
+        }
+        return list;
+    }
+
+
+
+
+
+    public long inserttable2(String id,String name, Bitmap bitmap)
+    {
+
+        byte[] image=null;
+        Log.d("Data inserted2_2_1",id);
+        if(bitmap!=null)
+        {
+            image=getBitmapAsByteArray(bitmap);
+            Log.d("Data inserted2_2_1","Nothing");
+        }
+
+
+
+
+
         Log.d("checking","Value1");
         SQLiteDatabase db=Helper.getWritableDatabase();
         Log.d("checking","Value2");
         ContentValues value=new ContentValues();
         value.put(ShopHelper.PID,id);
         value.put(ShopHelper.PNAME,name);
+        value.put(ShopHelper.PIMAGE,image);
         Log.d("checking","Value");
-        idcheck=db.insert(ShopHelper.TABLE_NAME2,null,value);
+        try {
+            idcheck = db.insert(ShopHelper.TABLE_NAME2, null, value);
+        }catch (SQLiteException e)
+        {
+            Log.d("Error","handling");
+        }
         Log.d("checking","ID");
         return idcheck;
     }
@@ -70,6 +129,30 @@ public class DataBaseAdpter {
         return list;
     }
 
+    public Bitmap get2_Image(String i){
+
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        String qu = "select "+ShopHelper.PIMAGE+"  from "+ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+"="+i+";" ;
+        Log.d("Query",qu);
+        Cursor cur = db.rawQuery(qu, null);
+
+        if (cur.moveToFirst()){
+            byte[] imgByte = cur.getBlob(0);
+            if(imgByte==null)
+            {
+                return null;
+            }
+
+            cur.close();
+            return BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+        }
+        if (cur != null && !cur.isClosed()) {
+            cur.close();
+        }
+
+        return null ;
+    }
+
 
     public long inserttable5(String id,String pid,String S,String D,String P)
     {
@@ -82,8 +165,14 @@ public class DataBaseAdpter {
         value.put(ShopHelper.Descrption,D);
         Log.d("checking","Value");
         int a;
+        try {
+            idcheck=db.insert(ShopHelper.TABLE_NAME5,null,value);
+        }catch (SQLiteException e)
+        {
+            Log.d("Error","handling");
+        }
 
-        idcheck=db.insert(ShopHelper.TABLE_NAME5,null,value);
+
               //  Log.d(idcheck);
      //   Log.d(Integer.toString(idcheck));
         return idcheck;
@@ -502,6 +591,7 @@ public class DataBaseAdpter {
         //Table 2 attribute
         private static final String PID = "ID";
         private static final String PNAME = "Name";
+        private static final String PIMAGE = "pimage";
         private static final String NO_OF_PRODUCT = "product_no";
         //Table 3 attribute
         private static final String OID = "_ID";
@@ -556,7 +646,7 @@ public class DataBaseAdpter {
             //---------------------------------------------------------------------------------------------------------------
 
             String query2 = "CREATE TABLE " + TABLE_NAME2 + " ( " + PID + "" +
-                    " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ," + PNAME + " VARCHAR(255) ," + NO_OF_PRODUCT + " INTEGER );";
+                    " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ," + PNAME + " VARCHAR(255) ,"+ PIMAGE + " BLOB ,"  + NO_OF_PRODUCT + " INTEGER );";
             Log.d("checking", query2);
             try {
                 db.execSQL(query2);

@@ -42,7 +42,7 @@ public class ItemList_Services extends Service {
     String _id;
 
     private static String url_all_Name = "https://stopshop321.000webhostapp.com/getProductdetail2image.php";
-    private static final String TAG_IMAGE = "img";
+    private static final String TAG_IMAGE = "image";
     private static final String TAG_GAME_IMAGE = "productdetailimage";
 
 
