@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.BuniessLayer;
 
 /**
  * Created by HP on 23-Feb-17.

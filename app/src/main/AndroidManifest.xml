@@ -17,7 +17,7 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-            android:name=".FullScreen"
+            android:name=".ActivityLayer.FullScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,20 +25,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Show_items" />
-        <activity android:name=".ItemList" />
-        <activity android:name=".SignIn" />
-        <activity android:name=".SignUp" />
+        <activity android:name=".ActivityLayer.Show_items"
+            android:label="@string/title_activity_home"/>
+        <activity android:name=".ActivityLayer.ItemList"
+            android:label="@string/title_activity_home"/>
+        <activity android:name=".ActivityLayer.SignIn"
+            android:label="@string/title_activity_home"/>
+        <activity android:name=".ActivityLayer.SignUp"
+            android:label="@string/title_activity_home"/>
         <activity
-            android:name=".HomeActivity"
+            android:name=".ActivityLayer.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
-            android:name=".userProfile"
+            android:name=".ActivityLayer.userProfile"
+
             android:label="Profile"></activity>
         <activity
-            android:name=".Categories"
-            android:label="StopShop"></activity>
+            android:name=".ActivityLayer.Categories"
+            android:label="@string/title_activity_home"/>
 
         <receiver android:name=".BootCompletedReceiver">
             <intent-filter>
@@ -47,24 +52,24 @@
             </intent-filter>
         </receiver>
 
-        <service android:name=".Category_Services" />
-        <service android:name=".ItemList_Services" />
-        <service android:name=".Sale_Service" />
-        <service android:name=".Sale_Notifcation_Service" />
+        <service android:name=".DataLayer.Category_Services" />
+        <service android:name=".DataLayer.ItemList_Services" />
+        <service android:name=".DataLayer.Sale_Service" />
+        <service android:name=".DataLayer.Sale_Notifcation_Service" />
 
         <activity
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
-        <activity android:name=".Sale_Activity"></activity>
+        <activity android:name=".ActivityLayer.Sale_Activity"></activity>
 
         <provider
-            android:name=".DetailContentProvider"
-            android:authorities="com.example.hp.smdproject.DetailContentProvider"
+            android:name=".DataLayer.DetailContentProvider"
+            android:authorities="com.example.hp.smdproject.DataLayer.DetailContentProvider"
             android:exported="true" />
 
         <activity
-            android:name=".User_Profile_Activity"
+            android:name=".ActivityLayer.User_Profile_Activity"
             android:label="@string/title_activity_user__profile_"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>

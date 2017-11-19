@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.ActivityLayer;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -31,6 +31,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hp.smdproject.BuniessLayer.Productdetailclass;
+import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
+import com.example.hp.smdproject.JSONParser;
+import com.example.hp.smdproject.R;
+import com.example.hp.smdproject.RoundedLetterView;
+import com.example.hp.smdproject.BuniessLayer.User;
+import com.example.hp.smdproject.adapter.cart_custom_adapter;
 import com.github.ivbaranov.mfb.MaterialFavoriteButton;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
@@ -51,6 +58,8 @@ import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Integer.parseInt;
 
 public class Show_items extends AppCompatActivity {
 
@@ -99,6 +108,17 @@ public class Show_items extends AppCompatActivity {
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_GAME_NAME = "image_detail";
     private static final String TAG_IMAGE = "image";
+
+    private static String url_all_Name = "https://stopshop321.000webhostapp.com/add_new_Order.php";
+    private static final String TAG_PID = "PID";
+    private static final String TAG_UID = "UID";
+    private static final String TAG_DATE = "OrderDate";
+
+
+
+
+
+
     int repeat=0;
     boolean myflag=true;
     private AdView mAdView;
@@ -181,17 +201,17 @@ public class Show_items extends AppCompatActivity {
         else {
             SharedPreferencesFlag = true;
             user=new User();
-            user.ID=Integer.parseInt(SP_User_ID);
-            user.Name=SP_User_NAME;
-            user.Address=SP_User_ADDRESS;
-            user.Country=SP_User_COUNTRY;
-            user.Email=SP_User_EMAIL;
+            user.setID(parseInt(SP_User_ID));
+            user.setName(SP_User_NAME);
+            user.setAddress(SP_User_ADDRESS);
+            user.setCountry(SP_User_COUNTRY);
+            user.setEmail(SP_User_EMAIL);
             if(!SP_User_CC.equals("null") && !SP_User_CC.isEmpty()) {
-                user.Creidt_Card = Integer.parseInt(SP_User_CC);
+                user.setCreidt_Card(Integer.parseInt(SP_User_CC));
             }
             else
             {
-                user.Creidt_Card=0;
+                user.setCreidt_Card(0);
             }
         }
 
@@ -237,7 +257,7 @@ public class Show_items extends AppCompatActivity {
             if (btnwhishlist == false && wishcount % 2 == 0) {
 
                 btnwhishlist = true;
-                long c = Helper.inserttable4(Integer.toString(user.ID), item_id);
+                long c = Helper.inserttable4(Integer.toString(user.getID()), item_id);
                 if (c == -1) {
                     Toast toast = Toast.makeText(getApplicationContext(), "Item Already Exist in WhishList", Toast.LENGTH_SHORT);
                     toast.show();
@@ -249,7 +269,7 @@ public class Show_items extends AppCompatActivity {
             if (btnwhishlist == true && wishcount % 2 != 0) {
 
                 btnwhishlist = false;
-                long c = Helper.removeFromWhish(item_id,Integer.toString(user.ID));
+                long c = Helper.removeFromWhish(item_id,Integer.toString(user.getID()));
                 if (c == -1) {
                     Toast toast = Toast.makeText(getApplicationContext(), "Item is not Romved From Whishlist", Toast.LENGTH_SHORT);
                     toast.show();
@@ -314,7 +334,7 @@ public class Show_items extends AppCompatActivity {
 //        B1=(ImageButton) notifCount.findViewById(R.id.pic);
         if(user!=null) {
             R1 = (RoundedLetterView) notifCount.findViewById(R.id.setround);
-            count = Helper.getCount(Integer.toString(user.ID));
+            count = Helper.getCount(Integer.toString(user.getID()));
 
 
             R1.setTitleText(Integer.toString(count));
@@ -328,7 +348,7 @@ public class Show_items extends AppCompatActivity {
 
                 if(user!=null) {
 
-                    long c = Helper.inserttable11(item_id, Integer.toString(user.ID));
+                    long c = Helper.inserttable11(item_id, Integer.toString(user.getID()));
                     if (c == -1) {
                         Toast.makeText(getApplicationContext(), "Item Already Exist in Cart", Toast.LENGTH_SHORT)
                                 .show();
@@ -354,7 +374,7 @@ public class Show_items extends AppCompatActivity {
             public void onClick(View v) {
 //                count++;
                 if(user!=null) {
-                    list2 = Helper.getCartList(Integer.toString(user.ID));
+                    list2 = Helper.getCartList(Integer.toString(user.getID()));
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(Show_items.this);
                     View mView = getLayoutInflater().inflate(R.layout.material_design_profile_screen_xml_ui_design, null);
 
@@ -364,7 +384,7 @@ public class Show_items extends AppCompatActivity {
                     final ListView list = (ListView) mView.findViewById(R.id.listnumbers);
 
                     cart_custom_adapter adapter = new
-                            cart_custom_adapter(Show_items.this, list2,Integer.toString(user.ID));
+                            cart_custom_adapter(Show_items.this, list2,Integer.toString(user.getID()));
 
                     list.setAdapter(adapter);
 
@@ -381,7 +401,7 @@ public class Show_items extends AppCompatActivity {
                         @Override
                         public void onDismiss(DialogInterface dialog) {
                             // TODO Auto-generated method stub
-                            count = Helper.getCount(Integer.toString(user.ID));
+                            count = Helper.getCount(Integer.toString(user.getID()));
                             R1.setTitleText(Integer.toString(count));
                         }
                     });
@@ -399,7 +419,7 @@ public class Show_items extends AppCompatActivity {
                                 intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, m_configuration);
                                 intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
                                 startActivityForResult(intent, 999);
-                                Helper.deleteCart(Integer.toString(user.ID));
+                                Helper.deleteCart(Integer.toString(user.getID()));
 
                             }
                             else

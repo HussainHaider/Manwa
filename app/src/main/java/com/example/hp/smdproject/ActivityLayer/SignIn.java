@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.ActivityLayer;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,6 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.example.hp.smdproject.JSONParser;
+import com.example.hp.smdproject.R;
+import com.example.hp.smdproject.BuniessLayer.User;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -147,16 +151,16 @@ public class SignIn extends AppCompatActivity {
 
                         editor.commit();
 
-                        U1.ID=Integer.parseInt(id);
-                        U1.Name=name;
-                        U1.Address=address;
-                        U1.Country=country;
+                        U1.setID(Integer.parseInt(id));
+                        U1.setName(name);
+                        U1.setAddress(address);
+                        U1.setCountry(country);
                         if(CC.isEmpty() && CC!=null ) {
-                            U1.Creidt_Card = Integer.parseInt(CC);
+                            U1.setCreidt_Card(Integer.parseInt(CC));
                         }
                         else
                         {
-                            U1.Creidt_Card=0;
+                            U1.setCreidt_Card(0);
                         }
 
                     }

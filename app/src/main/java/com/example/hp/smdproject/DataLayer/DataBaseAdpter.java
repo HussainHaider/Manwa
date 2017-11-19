@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.DataLayer;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -11,9 +11,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.example.hp.smdproject.BuniessLayer.Productdetailclass;
+
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.Integer.parseInt;
 
 /**
  * Created by HP on 13-Apr-17.
@@ -443,10 +447,11 @@ public class DataBaseAdpter {
         Log.d("checking","Query");
         while (c.moveToNext())
         {
-            pr.PID= Integer.parseInt( c.getString(c.getColumnIndex(ShopHelper.PDid)));
-            pr.Size=  Integer.parseInt(c.getString(c.getColumnIndex(ShopHelper.Size)));
-            pr.Description=  c.getString(c.getColumnIndex(ShopHelper.Descrption));
-            pr.Price= Integer.parseInt( c.getString(c.getColumnIndex(ShopHelper.Price)));
+
+            pr.setPID(parseInt( c.getString(c.getColumnIndex(ShopHelper.PDid))));
+            pr.setSize(Integer.parseInt(c.getString(c.getColumnIndex(ShopHelper.Size))));
+            pr.setDescription(c.getString(c.getColumnIndex(ShopHelper.Descrption)));
+            pr.setPrice(Integer.parseInt( c.getString(c.getColumnIndex(ShopHelper.Price))));
 
             byte[] imgByte =  c.getBlob(c.getColumnIndex(ShopHelper.KEY_IMAGE2));
             if(imgByte==null)
@@ -455,7 +460,7 @@ public class DataBaseAdpter {
             }
 
             c.close();
-            pr.image= BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
+            pr.setImage(BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length));
 
 
         }
@@ -563,7 +568,7 @@ public class DataBaseAdpter {
 
      }
 
-    static class ShopHelper extends SQLiteOpenHelper {
+    public static class ShopHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "SHOPDB";
 
         private static final String TABLE_NAME1 = "Users";

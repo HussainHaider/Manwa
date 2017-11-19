@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.ActivityLayer;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,6 +13,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
+import com.example.hp.smdproject.JSONParser;
+import com.example.hp.smdproject.R;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

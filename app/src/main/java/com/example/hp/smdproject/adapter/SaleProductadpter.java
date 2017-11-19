@@ -1,8 +1,4 @@
-package com.example.hp.smdproject;
-
-/**
- * Created by HP on 16-Feb-17.
- */
+package com.example.hp.smdproject.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,17 +8,22 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.hp.smdproject.BuniessLayer.Saleproductclass;
+import com.example.hp.smdproject.R;
+
 import java.util.List;
 
-public class ProductListAdapter extends BaseAdapter {
-
+/**
+ * Created by HP on 03-May-17.
+ */
+public class SaleProductadpter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
-    private List<Productdetailclass> mProductList;
+    private List<Saleproductclass> mProductList;
 
     //Constructor
 
-    public ProductListAdapter(Context mContext, List<Productdetailclass> mProductList) {
+    public SaleProductadpter(Context mContext, List<Saleproductclass> mProductList) {
         this.mContext = mContext;
 //        mProductList=new ArrayList<Country>();
         mInflater = LayoutInflater.from(mContext);
@@ -43,25 +44,25 @@ public class ProductListAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-    public long getlistid(int position)
-    {
-        Productdetailclass p = mProductList.get(position);
-        return p.getID();
-
-    }
+//    public long getlistid(int position)
+//    {
+//        Productdetailclass p = mProductList.get(position);
+//        return p.getID();
+//
+//    }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
 
         ViewHolder holder;
-        Productdetailclass p = mProductList.get(position);
+        Saleproductclass p = mProductList.get(position);
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.list_row, null);
+            convertView = mInflater.inflate(R.layout.sale_listrow, null);
             holder = new ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.Pname);
-            holder.price= (TextView) convertView.findViewById(R.id.Pprice);
-            holder.img= (ImageView) convertView.findViewById(R.id.Pimg);
+            holder.name = (TextView) convertView.findViewById(R.id.SPname);
+            holder.price= (TextView) convertView.findViewById(R.id.SPprice);
+            holder.img= (ImageView) convertView.findViewById(R.id.SPimg);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -70,10 +71,10 @@ public class ProductListAdapter extends BaseAdapter {
 //        String numberAsString = Integer.toString(number);
 
 
-        holder.name.setText("Jeans");
+        holder.name.setText(p.getName());
 //        holder.price.setText(numberAsString);
         holder.price.setText("$ "+p.getPrice());
-//        holder.img.setImageResource(p.getImage());
+//        holder.img.setImageResource(R.drawable.pant2);
         holder.img.setImageBitmap(p.getImage());
 
 
@@ -87,4 +88,3 @@ public class ProductListAdapter extends BaseAdapter {
         ImageView img;
     }
 }
-

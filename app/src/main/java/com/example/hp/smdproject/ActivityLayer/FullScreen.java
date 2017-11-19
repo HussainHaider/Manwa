@@ -1,10 +1,12 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.ActivityLayer;
 
 import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+
+import com.example.hp.smdproject.R;
 
 import gr.net.maroulis.library.EasySplashScreen;
 

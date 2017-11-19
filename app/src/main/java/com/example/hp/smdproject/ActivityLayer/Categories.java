@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.ActivityLayer;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -18,6 +18,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
+
+import com.example.hp.smdproject.adapter.Categories_custom_adapter;
+import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
+import com.example.hp.smdproject.JSONParser;
+import com.example.hp.smdproject.BuniessLayer.Productclass;
+import com.example.hp.smdproject.R;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

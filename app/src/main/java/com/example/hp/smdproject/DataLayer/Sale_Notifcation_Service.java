@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.DataLayer;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -12,6 +12,11 @@ import android.os.IBinder;
 import android.support.v7.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.hp.smdproject.ActivityLayer.Sale_Activity;
+import com.example.hp.smdproject.JSONParser;
+import com.example.hp.smdproject.R;
+import com.example.hp.smdproject.ActivityLayer.SignIn;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

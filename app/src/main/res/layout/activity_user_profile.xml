@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/white"
 
-    tools:context="com.example.hp.smdproject.userProfile">
+    tools:context="com.example.hp.smdproject.ActivityLayer.userProfile">
 
 
     <LinearLayout

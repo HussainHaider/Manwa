@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.DataLayer;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
@@ -17,7 +17,7 @@ public class DetailContentProvider extends ContentProvider {
     private static UriMatcher matcher = new UriMatcher(UriMatcher.NO_MATCH);
     static
     {
-        matcher.addURI("com.example.hp.smdproject.DetailContentProvider","ProductDetail",1);
+        matcher.addURI("com.example.hp.smdproject.DataLayer.DetailContentProvider","ProductDetail",1);
 
     }
 

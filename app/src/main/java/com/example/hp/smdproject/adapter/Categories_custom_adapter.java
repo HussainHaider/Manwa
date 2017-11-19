@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.hp.smdproject.BuniessLayer.Productclass;
+import com.example.hp.smdproject.R;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.ActivityLayer;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -31,6 +31,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
+import com.example.hp.smdproject.DataLayer.ItemList_Services;
+import com.example.hp.smdproject.BuniessLayer.Productdetailclass;
+import com.example.hp.smdproject.R;
+import com.example.hp.smdproject.RoundedLetterView;
+import com.example.hp.smdproject.BuniessLayer.User;
+import com.example.hp.smdproject.adapter.cart_custom_adapter;
+import com.example.hp.smdproject.adapter.whish_custom_adapter;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
 import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
@@ -136,24 +144,24 @@ public class User_Profile_Activity extends AppCompatActivity
            // B3.setBackground(getResources().getDrawable(R.drawable.mybutton2));
             user=new User();
 
-            user.ID=Integer.parseInt(SP_User_ID);
-            user.Name=SP_User_NAME;
-            user.Address=SP_User_ADDRESS;
-            user.Country=SP_User_COUNTRY;
-            user.Email=SP_User_EMAIL;
+            user.setID(Integer.parseInt(SP_User_ID));
+            user.setName(SP_User_NAME);
+            user.setAddress(SP_User_ADDRESS);
+            user.setCountry(SP_User_COUNTRY);
+            user.setEmail(SP_User_EMAIL);
             if(!SP_User_CC.equals("null") && !SP_User_CC.isEmpty()) {
-                user.Creidt_Card = Integer.parseInt(SP_User_CC);
+                user.setCreidt_Card(Integer.parseInt(SP_User_CC));
             }
             else
             {
-                user.Creidt_Card=0;
+                user.setCreidt_Card(0);
             }
             if(!SP_User_COUNTRY.equals("null") && !SP_User_COUNTRY.isEmpty()) {
-                user.Country=null;
+                user.setCountry(null);
             }
             else
             {
-                user.Creidt_Card=0;
+                user.setCreidt_Card(0);
             }
 
 
@@ -184,8 +192,8 @@ public class User_Profile_Activity extends AppCompatActivity
             return;*/
    //     }
 
-        String image = user.image;
-        String name = user.Name;
+        String image = user.getImage();
+        String name = user.getName();
 
         String str = "INFO";
         TextDrawable drawable = TextDrawable.builder().buildRound(str, R.color.blue);
@@ -194,7 +202,7 @@ public class User_Profile_Activity extends AppCompatActivity
         TextView t = (TextView) findViewById(R.id.WatchList);
         t.bringToFront();
         if (image.length() > 0)
-            imgp.setImageBitmap(BitmapFactory.decodeFile(user.image));
+            imgp.setImageBitmap(BitmapFactory.decodeFile(user.getImage()));
 
         else {
             imgp.setImageResource(R.drawable.images);
@@ -202,12 +210,12 @@ public class User_Profile_Activity extends AppCompatActivity
         }
 //        ArrayList<Productdetailclass> list2=Helper.getCartList("4");
 
-        ArrayList<Productdetailclass> list2 = Helper.getWhishList(Integer.toString(user.ID));
+        ArrayList<Productdetailclass> list2 = Helper.getWhishList(Integer.toString(user.getID()));
 
         final TextView myname = (TextView) findViewById(R.id.user_profile_name);
         myname.setText(name);
         whish_custom_adapter adapter = new
-                whish_custom_adapter(User_Profile_Activity.this, list2,Integer.toString(user.ID));
+                whish_custom_adapter(User_Profile_Activity.this, list2,Integer.toString(user.getID()));
         list = (ListView) findViewById(R.id.listnumbers);
         list.setAdapter(adapter);
     }
@@ -300,7 +308,7 @@ public class User_Profile_Activity extends AppCompatActivity
 //        B1=(ImageButton) notifCount.findViewById(R.id.pic);
         if(user!=null) {
             R1 = (RoundedLetterView) notifCount.findViewById(R.id.setround);
-            count = Helper.getCount(Integer.toString(user.ID));
+            count = Helper.getCount(Integer.toString(user.getID()));
 
 
             R1.setTitleText(Integer.toString(count));
@@ -334,7 +342,7 @@ public class User_Profile_Activity extends AppCompatActivity
             @Override
             public void onClick(View v) {
 //                count++;
-                list2 = Helper.getCartList(Integer.toString(user.ID));
+                list2 = Helper.getCartList(Integer.toString(user.getID()));
                 android.app.AlertDialog.Builder mBuilder = new android.app.AlertDialog.Builder(User_Profile_Activity.this);
                 View mView = getLayoutInflater().inflate(R.layout.material_design_profile_screen_xml_ui_design, null);
 
@@ -344,7 +352,7 @@ public class User_Profile_Activity extends AppCompatActivity
                 final ListView list = (ListView) mView.findViewById(R.id.listnumbers);
 
                 cart_custom_adapter adapter = new
-                        cart_custom_adapter(User_Profile_Activity.this, list2,Integer.toString(user.ID));
+                        cart_custom_adapter(User_Profile_Activity.this, list2,Integer.toString(user.getID()));
 
                 list.setAdapter(adapter);
 
@@ -361,7 +369,7 @@ public class User_Profile_Activity extends AppCompatActivity
                     @Override
                     public void onDismiss(DialogInterface dialog) {
                         // TODO Auto-generated method stub
-                        count = Helper.getCount(Integer.toString(user.ID));
+                        count = Helper.getCount(Integer.toString(user.getID()));
                         R1.setTitleText(Integer.toString(count));
                     }
                 });
@@ -379,7 +387,7 @@ public class User_Profile_Activity extends AppCompatActivity
                             intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, m_configuration);
                             intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
                             startActivityForResult(intent, 999);
-                            Helper.deleteCart(Integer.toString(user.ID));
+                            Helper.deleteCart(Integer.toString(user.getID()));
 
 
                         }
@@ -446,7 +454,7 @@ public class User_Profile_Activity extends AppCompatActivity
             final EditText name = new EditText(User_Profile_Activity.this);
             name.setLayoutParams(lp);
             name.setHint("Name");
-            name.setText(user.Name);
+            name.setText(user.getName());
 
             layout.addView(name);
 
@@ -455,20 +463,20 @@ public class User_Profile_Activity extends AppCompatActivity
 
             pass.setLayoutParams(lp);
             pass.setHint("Password");
-            pass.setText(user.Password);
+            pass.setText(user.getPassword());
 
             layout.addView(pass);
 
             final EditText email = new EditText(User_Profile_Activity.this);
             email.setLayoutParams(lp);
             email.setHint("Eamil");
-            email.setText(user.Email);
+            email.setText(user.getEmail());
             layout.addView(email);
 
             final EditText address = new EditText(User_Profile_Activity.this);
             address.setLayoutParams(lp);
             address.setHint("Address");
-            address.setText(user.Address);
+            address.setText(user.getAddress());
 
             layout.addView(address);
 
@@ -476,7 +484,7 @@ public class User_Profile_Activity extends AppCompatActivity
             credit.setLayoutParams(lp);
             credit.setHint("CreditCard");
             credit.setInputType(InputType.TYPE_CLASS_NUMBER);
-            credit.setText(String.valueOf(user.Creidt_Card));
+            credit.setText(String.valueOf(user.getCreidt_Card()));
 
             layout.addView(credit);
 
@@ -486,14 +494,14 @@ public class User_Profile_Activity extends AppCompatActivity
             alertDialog.setPositiveButton("Update",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            user.Name = name.getText().toString();
-                            user.Password = pass.getText().toString();
-                            user.Email = email.getText().toString();
-                            user.Address = address.getText().toString();
-                            user.Creidt_Card = Integer.parseInt(credit.getText().toString());
+                            user.setName(name.getText().toString());
+                            user.setPassword(pass.getText().toString());
+                            user.setEmail(email.getText().toString());
+                            user.setAddress(address.getText().toString());
+                            user.setCreidt_Card(Integer.parseInt(credit.getText().toString()));
                             final ImageButton imgb = (ImageButton) findViewById(R.id.user_profile_photo);
 
-                            String name = user.Name;
+                            String name = user.getName();
                             final TextView myname = (TextView) findViewById(R.id.user_profile_name);
                             myname.setText(name);
 

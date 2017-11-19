@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.ActivityLayer;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,6 +25,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
+import com.example.hp.smdproject.BuniessLayer.Productdetailclass;
+import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
+import com.example.hp.smdproject.R;
+import com.example.hp.smdproject.RoundedLetterView;
+import com.example.hp.smdproject.BuniessLayer.User;
+import com.example.hp.smdproject.adapter.cart_custom_adapter;
+import com.example.hp.smdproject.adapter.whish_custom_adapter;
 
 import java.util.ArrayList;
 
@@ -71,8 +78,8 @@ public class userProfile extends AppCompatActivity {
             return;
         }
 
-        String image = user.image;
-        String name = user.Name;
+        String image = user.getImage();
+        String name = user.getName();
 
         String str = "INFO";
         TextDrawable drawable = TextDrawable.builder().buildRound(str, R.color.blue);
@@ -81,7 +88,7 @@ public class userProfile extends AppCompatActivity {
         TextView t = (TextView) findViewById(R.id.WatchList);
         t.bringToFront();
         if (image.length() > 0)
-            imgp.setImageBitmap(BitmapFactory.decodeFile(user.image));
+            imgp.setImageBitmap(BitmapFactory.decodeFile(user.getImage()));
 
         else {
             imgp.setImageResource(R.drawable.images);
@@ -265,7 +272,7 @@ public class userProfile extends AppCompatActivity {
             final EditText name = new EditText(userProfile.this);
             name.setLayoutParams(lp);
             name.setHint("Name");
-            name.setText(user.Name);
+            name.setText(user.getName());
 
             layout.addView(name);
 
@@ -274,20 +281,20 @@ public class userProfile extends AppCompatActivity {
 
             pass.setLayoutParams(lp);
             pass.setHint("Password");
-            pass.setText(user.Password);
+            pass.setText(user.getPassword());
 
             layout.addView(pass);
 
             final EditText email = new EditText(userProfile.this);
             email.setLayoutParams(lp);
             email.setHint("Eamil");
-            email.setText(user.Email);
+            email.setText(user.getEmail());
             layout.addView(email);
 
             final EditText address = new EditText(userProfile.this);
             address.setLayoutParams(lp);
             address.setHint("Address");
-            address.setText(user.Address);
+            address.setText(user.getAddress());
 
             layout.addView(address);
 
@@ -295,7 +302,7 @@ public class userProfile extends AppCompatActivity {
             credit.setLayoutParams(lp);
             credit.setHint("CreditCard");
             credit.setInputType(InputType.TYPE_CLASS_NUMBER);
-            credit.setText(String.valueOf(user.Creidt_Card));
+            credit.setText(String.valueOf(user.getCreidt_Card()));
 
             layout.addView(credit);
 
@@ -305,14 +312,14 @@ public class userProfile extends AppCompatActivity {
             alertDialog.setPositiveButton("Update",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-                            user.Name = name.getText().toString();
-                            user.Password = pass.getText().toString();
-                            user.Email = email.getText().toString();
-                            user.Address = address.getText().toString();
-                            user.Creidt_Card = Integer.parseInt(credit.getText().toString());
+                            user.setName(name.getText().toString());
+                            user.setPassword(pass.getText().toString());
+                            user.setEmail(email.getText().toString());
+                            user.setAddress(address.getText().toString());
+                            user.setCreidt_Card(Integer.parseInt(credit.getText().toString()));
                             final ImageButton imgb = (ImageButton) findViewById(R.id.user_profile_photo);
 
-                            String name = user.Name;
+                            String name = user.getName();
                             final TextView myname = (TextView) findViewById(R.id.user_profile_name);
                             myname.setText(name);
 

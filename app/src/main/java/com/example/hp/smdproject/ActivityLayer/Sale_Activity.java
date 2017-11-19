@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.ActivityLayer;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -8,6 +8,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
+import com.example.hp.smdproject.R;
+import com.example.hp.smdproject.adapter.SaleProductadpter;
+import com.example.hp.smdproject.BuniessLayer.Saleproductclass;
 
 import java.util.ArrayList;
 import java.util.List;

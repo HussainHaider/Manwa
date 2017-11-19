@@ -1,9 +1,12 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.DataLayer;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+
+import com.example.hp.smdproject.BuniessLayer.User;
+import com.example.hp.smdproject.JSONParser;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;

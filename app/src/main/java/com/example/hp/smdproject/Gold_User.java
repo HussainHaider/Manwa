@@ -1,6 +1,7 @@
 package com.example.hp.smdproject;
 
 
+import com.example.hp.smdproject.BuniessLayer.User;
 
 /**
  * Created by shoib on 4/15/2017.

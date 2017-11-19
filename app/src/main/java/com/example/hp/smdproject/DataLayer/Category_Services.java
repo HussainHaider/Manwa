@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.DataLayer;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
+
+import com.example.hp.smdproject.JSONParser;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -20,26 +22,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by HP on 03-May-17.
+ * Created by HP on 19-Apr-17.
  */
-public class Sale_Service extends Service {
+public class Category_Services extends Service {
 
     JSONArray products = null;
-    //    private ProgressDialog pDialog;
+//    private ProgressDialog pDialog;
     JSONParser jParser = new JSONParser();
-    private static String url_all_gameName = "https://stopshop321.000webhostapp.com/getSaleProduct.php";
+    private static String url_all_gameName = "https://stopshop321.000webhostapp.com/getProduct2.php";
     private static final String TAG_SUCCESS = "success";
-    private static final String TAG_GAME_NAME = "Specailproduct";
-    private static final String TAG_GID = "OfferID";
-    private static final String TAG_NAME = "Name";
-    private static final String TAG_Price = "Price";
-    private static final String TAG_Description = "Description";
-    private static final String TAG_IMG = "img";
+    private static final String TAG_GAME_NAME = "ProductNames";
+    private static final String TAG_GID = "ID";
+    private static final String TAG_NAME = "Pname";
+    private static final String TAG_IMAGE = "Pimage";
+
 
     DataBaseAdpter Helper;
-//    private String[] Saleimages;
-    private List<String> Saleimages;
-
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -50,48 +48,21 @@ public class Sale_Service extends Service {
     @Override
     public int onStartCommand(Intent pIntent, int flags, int startId) {
         // TODO Auto-generated method stub
-        Toast.makeText(this, "Notifying Sale Service", Toast.LENGTH_LONG).show();
+        Toast.makeText(this, "Notifying Category Service", Toast.LENGTH_LONG).show();
         Helper=new DataBaseAdpter(this);
-//        Saleimages= new String[6];
-        Saleimages=new ArrayList<>();
-
         callaysnc();
-//        for(int i=0;i<Saleimages.size();i++)
-//        {
-//            String urldisplay = Saleimages.get(i);
-//            Bitmap mIcon11 = null;
-//            try {
-//                InputStream in = new java.net.URL(urldisplay).openStream();
-//                mIcon11 = BitmapFactory.decodeStream(in);
-//
-//            } catch (Exception e) {;
-//                e.printStackTrace();
-//            }
-//            addSproductImage(i+1,mIcon11);
-//        }
-
-
         return super.onStartCommand(pIntent, flags, startId);
     }
-    public void addSproductImage(int id,Bitmap n)
-    {
-        String numberAsString = Integer.toString(id);
-        long id1=Helper.inserttable10_2(numberAsString,n);
-        String numberAsString2 = Long.toString(id1);
-        Log.d("Data inserted10_image",numberAsString2);
-    }
-
     public void callaysnc()
     {
-
-        Log.d("Sale","Service");
+        Log.d("Category","Service");
         new LoadAllProductName().execute();
     }
-    public void addSaleproduct(String id,String n,String D,String P)
+    public void addproductName(String id,String n, Bitmap B1)
     {
-        long id1=Helper.inserttable10(id,n,D,P);
+        long id1=Helper.inserttable2(id,n,B1);
         String numberAsString = Long.toString(id1);
-        Log.d("Data inserted10",numberAsString);
+        Log.d("Data inserted2",numberAsString);
     }
     class LoadAllProductName extends AsyncTask<String, String, String> {
 
@@ -101,7 +72,11 @@ public class Sale_Service extends Service {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+//            pDialog = new ProgressDialog(HomeActivity.this);
+//            pDialog.setMessage("Loading data. Please wait...");
+//            pDialog.setIndeterminate(false);
+//            pDialog.setCancelable(false);
+//            pDialog.show();
         }
 
         /**
@@ -110,49 +85,43 @@ public class Sale_Service extends Service {
         protected String doInBackground(String... args) {
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            params.add(new BasicNameValuePair("Category_id","2"));
+            params.add(new BasicNameValuePair("category_id","2"));
 
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(url_all_gameName, "GET", params);
 
             // Check your log cat for JSON reponse
 //            Log.d("All Patients: ", json.toString());
-            Log.d("Sale","Service2");
+            Log.d("Category","Service2");
             try {
-                // Checking for SUCCESS TAG
                 int success=0;
                 // Checking for SUCCESS TAG
+//                success = json.getInt(TAG_SUCCESS);
                 try{
                     success = json.getInt(TAG_SUCCESS);
                 }catch (Exception e)
                 {
-                    Log.d("Service","Sale Service not working");
+                    Log.d("Service","Notifying Category Service not working");
                 }
+
 
                 if (success == 1) {
                     // products found
                     // Getting Array of patients
                     products = json.getJSONArray(TAG_GAME_NAME);
-                    Log.d("Sale","Service3");
+                    Log.d("Category","Service3");
                     // looping through All Patients
                     for (int i = 0; i < products.length(); i++) {
                         JSONObject c = products.getJSONObject(i);
-                        Log.d("Sale","Service4");
+                        Log.d("Category","Service4");
                         // Storing each json item in variable
-
                         String id = c.getString(TAG_GID);
                         String name = c.getString(TAG_NAME);
-                        String Description = c.getString(TAG_Description);
-                        String price = c.getString(TAG_Price);
-                        String image = c.getString(TAG_IMG);
+                        String image = c.getString(TAG_IMAGE);
+                        Log.d("Product_id",id);
+                        Log.d("Product_name",name);
+                        Log.d("Product_image", image);
 
-                        Log.d("Special_Product_id",id);
-                        Log.d("Special_Product_name",name);
-                        Log.d("Special_p_Description", Description);
-                        Log.d("Special_product_price", price);
-                        Log.d("Special_IMAGE_URL", image);
-                        Saleimages.add(image);
-                        addSaleproduct(id,name,Description,price);
 
                         String urldisplay = image;
                         Bitmap mIcon11 = null;
@@ -161,15 +130,24 @@ public class Sale_Service extends Service {
                             mIcon11 = BitmapFactory.decodeStream(in);
 
                         } catch (Exception e) {
+                            Log.e("Error", e.getMessage());
                             e.printStackTrace();
                         }
-                        addSproductImage(i+1,mIcon11);
+
+
+                        addproductName(id,name,mIcon11);
 
                     }
                 } else {
-                    Log.d("no Special_Product","found");
-                    Log.d("Sale","Service5");
-
+                    Log.d("no Product","found");
+                    Log.d("Category","Service5");
+                    // no products found
+                    // Launch Add New product Activity
+                   /* Intent i = new Intent(getApplicationContext(),
+                            NewProductActivity.class);
+                    // Closing all previous activities
+                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(i);*/
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -188,4 +166,5 @@ public class Sale_Service extends Service {
 
         }
     }
+
 }

@@ -1,34 +1,32 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.BuniessLayer;
 
 import android.graphics.Bitmap;
 
 /**
- * Created by HP on 21-Apr-17.
+ * Created by HP on 03-May-17.
  */
-public class Productdetailclass {
-    int ID;
-    int PID;
+public class Saleproductclass {
+
+    int offer_ID;
+    String Name;
     String Description;
-    int Size;
     int Price;
     int img;
     Bitmap image;
 
-    Productdetailclass()
+    public Saleproductclass()
     {
-        ID=0;
-        PID=0;
+        offer_ID=0;
         Description="";
-        Size=0;
+        Name="";
         Price=0;
         img=0;
     }
-    Productdetailclass(int pid,String D,int S,int P,int id,Bitmap B)
+    public Saleproductclass(int id,String n,int P,String D,Bitmap B)
     {
-        ID=id;
+        offer_ID=id;
         Description=D;
-        PID=pid;
-        Size=S;
+        Name=n;
         Price=P;
         image=B;
     }
@@ -44,8 +42,12 @@ public class Productdetailclass {
     {
         img=a;
     }
+    public String getName()
+    {
+        return Name;
+    }
 
     public int getID() {
-        return ID;
+        return offer_ID;
     }
 }

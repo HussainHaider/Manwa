@@ -1,4 +1,4 @@
-package com.example.hp.smdproject;
+package com.example.hp.smdproject.ActivityLayer;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -26,6 +26,12 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hp.smdproject.DataLayer.Category_Services;
+import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
+import com.example.hp.smdproject.DataLayer.ItemList_Services;
+import com.example.hp.smdproject.JSONParser;
+import com.example.hp.smdproject.R;
+import com.example.hp.smdproject.DataLayer.testing;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
