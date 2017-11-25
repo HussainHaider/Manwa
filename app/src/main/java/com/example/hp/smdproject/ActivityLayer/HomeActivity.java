@@ -387,6 +387,9 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
             Log.d("Send","option");
 //            getApplicationContext().startService(new Intent(getApplicationContext(), Sale_Notifcation_Service.class));
+            Intent intent = new Intent(getApplicationContext(), changeInfoUserActivity.class);
+            startActivity(intent);
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.hp.smdproject.ActivityLayer.changeInfoUserActivity">
+
+    <ListView
+        android:id="@+id/Userlist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:background="@color/colorPrimary"
+        android:weightSum="6"
+        android:layout_alignParentStart="true">
+        <Button
+            android:id="@+id/btnremove"
+            android:layout_width="0dp"
+            android:text="Delete"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:onClick="DataUpgradition"
+            android:layout_weight="3"
+            android:layout_height="wrap_content" />
+        <Button
+            android:id="@+id/btnsuspend"
+            android:layout_width="0dp"
+            android:text="Suspend"
+            android:onClick="DataUpgradition"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"
+            android:layout_weight="3"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+</RelativeLayout>

@@ -25,25 +25,28 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityLayer.Show_items"
-            android:label="@string/title_activity_home"/>
-        <activity android:name=".ActivityLayer.ItemList"
-            android:label="@string/title_activity_home"/>
-        <activity android:name=".ActivityLayer.SignIn"
-            android:label="@string/title_activity_home"/>
-        <activity android:name=".ActivityLayer.SignUp"
-            android:label="@string/title_activity_home"/>
+        <activity
+            android:name=".ActivityLayer.Show_items"
+            android:label="@string/title_activity_home" />
+        <activity
+            android:name=".ActivityLayer.ItemList"
+            android:label="@string/title_activity_home" />
+        <activity
+            android:name=".ActivityLayer.SignIn"
+            android:label="@string/title_activity_home" />
+        <activity
+            android:name=".ActivityLayer.SignUp"
+            android:label="@string/title_activity_home" />
         <activity
             android:name=".ActivityLayer.HomeActivity"
             android:label="@string/title_activity_home"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ActivityLayer.userProfile"
-
-            android:label="Profile"></activity>
+            android:label="Profile" />
         <activity
             android:name=".ActivityLayer.Categories"
-            android:label="@string/title_activity_home"/>
+            android:label="@string/title_activity_home" />
 
         <receiver android:name=".BootCompletedReceiver">
             <intent-filter>
@@ -61,7 +64,7 @@
             android:name="com.google.android.gms.ads.AdActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize|smallestScreenSize"
             android:theme="@android:style/Theme.Translucent" />
-        <activity android:name=".ActivityLayer.Sale_Activity"></activity>
+        <activity android:name=".ActivityLayer.Sale_Activity" />
 
         <provider
             android:name=".DataLayer.DetailContentProvider"
@@ -71,7 +74,8 @@
         <activity
             android:name=".ActivityLayer.User_Profile_Activity"
             android:label="@string/title_activity_user__profile_"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ActivityLayer.changeInfoUserActivity"></activity>
     </application>
 
 </manifest>
