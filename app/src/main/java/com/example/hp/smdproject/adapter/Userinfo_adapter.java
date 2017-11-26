@@ -1,6 +1,7 @@
 package com.example.hp.smdproject.adapter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.hp.smdproject.R.id.checkBox;
-import static com.paypal.android.sdk.fb.a;
 
 
 /**
@@ -32,8 +32,8 @@ public class Userinfo_adapter extends BaseAdapter {
 
     //Constructor
 
-    public Userinfo_adapter(Context mContext, List<String> mUserList) {
-        this.mContext = mContext;
+    public Userinfo_adapter(Context Context, List<String> mUserList) {
+        this.mContext = Context;
         mInflater = LayoutInflater.from(mContext);
         this.mUserList = mUserList;
         this.filterList=mUserList;
@@ -80,15 +80,18 @@ public class Userinfo_adapter extends BaseAdapter {
                 if(isChecked)
                 {
                     useremail= (String) holder.check.getText();
-
+                    Log.d("isChecked","true1");
                     if(mContext instanceof changeInfoUserActivity){
+                        Log.d("isChecked","true2");
                         ((changeInfoUserActivity)mContext).insertListData(useremail);
                     }
                 }
                 if(isChecked==false)
                 {
                     useremail= (String) holder.check.getText();
+                    Log.d("isChecked","false1");
                     if(mContext instanceof changeInfoUserActivity){
+                        Log.d("isChecked","false2");
                         ((changeInfoUserActivity)mContext).deleteListData(useremail);
                     }
 

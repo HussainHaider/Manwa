@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SearchView;
 
+import com.example.hp.smdproject.DataLayer.UpdateUserData;
 import com.example.hp.smdproject.JSONParser;
 import com.example.hp.smdproject.R;
 import com.example.hp.smdproject.adapter.Userinfo_adapter;
@@ -31,6 +32,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
     private List<String> ListofUser;
     private Userinfo_adapter adapter;
     private ListView lvUser;
+    UpdateUserData User;
 
     JSONParser jsonParser = new JSONParser();
     JSONArray Users = null;
@@ -48,7 +50,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
         mUserList = new ArrayList<>();
         ListofUser = new ArrayList<>();
         lvUser=(ListView)findViewById(R.id.Userlist);
-
+        User=new UpdateUserData();
         new GetUserList().execute();
 
     }
@@ -56,7 +58,9 @@ public class changeInfoUserActivity extends AppCompatActivity {
     {
         if(v.getId()==R.id.btnremove)
         {
-
+            Log.d("remove","button");
+            User.DeleteUSer(ListofUser,changeInfoUserActivity.this);
+            new GetUserList().execute();
         }
         if(v.getId()==R.id.btnsuspend)
         {
@@ -108,10 +112,12 @@ public class changeInfoUserActivity extends AppCompatActivity {
     }
     public void insertListData(String text)
     {
+        Log.d("Data","added");
         ListofUser.add(text);
     }
     public void deleteListData(String text)
     {
+        Log.d("Data","remove");
         ListofUser.remove(text);
     }
 
@@ -125,6 +131,8 @@ public class changeInfoUserActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            lvUser.setAdapter(null);
+            mUserList.clear();
             pDialog = new ProgressDialog(changeInfoUserActivity.this);
             pDialog.setMessage("Checking from server...");
             pDialog.setIndeterminate(false);
@@ -205,7 +213,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
             // dismiss the dialog once don
             pDialog.dismiss();
 
-            adapter=new Userinfo_adapter(getApplicationContext(),mUserList);
+            adapter=new Userinfo_adapter(changeInfoUserActivity.this,mUserList);
             lvUser.setAdapter(adapter);
         }
     }
