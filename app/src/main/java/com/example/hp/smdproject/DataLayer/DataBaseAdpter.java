@@ -83,10 +83,6 @@ public class DataBaseAdpter {
             Log.d("Data inserted2_2_1","Nothing");
         }
 
-
-
-
-
         Log.d("checking","Value1");
         SQLiteDatabase db=Helper.getWritableDatabase();
         Log.d("checking","Value2");
@@ -126,6 +122,31 @@ public class DataBaseAdpter {
             int cid=c.getInt(0);
             String numberAsString = Integer.toString(cid);
             list.add(numberAsString);
+            String name=c.getString(1);
+            list.add(name);
+            Log.d("Work","help2");
+        }
+        return list;
+    }
+
+    public List<String> getalltable2()
+    {
+        List<String> list = new ArrayList<String>();
+
+        SQLiteDatabase db=Helper.getWritableDatabase();
+        String [] columns={ShopHelper.PID,ShopHelper.PNAME};
+        Log.d("checking","columns");
+        String qu = "select "+ShopHelper.PID+","+ShopHelper.PNAME+" from "+ ShopHelper.TABLE_NAME2+";";
+        Log.d("Query",qu);
+        Cursor c = db.rawQuery(qu, null);
+
+        Log.d("checking","Query");
+        while (c.moveToNext())
+        {
+            Log.d("Work","help1");
+            int cid=c.getInt(0);
+//            String numberAsString = Integer.toString(cid);
+//            list.add(numberAsString);
             String name=c.getString(1);
             list.add(name);
             Log.d("Work","help2");

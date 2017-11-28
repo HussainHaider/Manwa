@@ -75,7 +75,8 @@
             android:name=".ActivityLayer.User_Profile_Activity"
             android:label="@string/title_activity_user__profile_"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ActivityLayer.changeInfoUserActivity"></activity>
+        <activity android:name=".ActivityLayer.changeInfoUserActivity" />
+        <activity android:name=".ActivityLayer.addProductsActivity"></activity>
     </application>
 
 </manifest>

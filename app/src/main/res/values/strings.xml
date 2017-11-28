@@ -11,4 +11,18 @@
 
     <string name="banner_level">ca-app-pub-5900683309932412/5247501683</string>
     <string name="title_activity_user__profile_">Profile</string>
+
+
+    <string-array name="category_array">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+
+    <string-array name="product_array">
+        <item>jeans</item>
+        <item>shoes</item>
+        <item>Pents</item>
+        <item>Tie</item>
+    </string-array>
 </resources>

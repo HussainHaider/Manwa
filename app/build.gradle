@@ -26,11 +26,11 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:23.3.0'
     compile files('libs/apache-httpcomponents-httpcore.jar')
+    compile 'com.android.support:appcompat-v7:23.3.0'
+    compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.github.scottyab:showhidepasswordedittext:0.8@aar'
     compile 'com.android.support:design:23.3.0'
-    compile 'com.android.support:appcompat-v7:23.3.0'
     compile 'com.github.pantrif:EasySplashScreen:eb80ef0c68@aar'
     compile 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     compile 'com.github.ivbaranov:materialfavoritebutton:0.1.4'
