@@ -6,26 +6,10 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:weightSum="7"
-    tools:context="com.example.hp.smdproject.ActivityLayer.addProductsActivity">
+    tools:context="com.example.hp.smdproject.ActivityLayer.addProductsdetailActivity">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_weight="1"
-        android:layout_height="wrap_content">
-        <TextView
-            android:layout_width="wrap_content"
-            android:text="Enter Category:"
-            android:textSize="20sp"
-            android:textColor="@color/BackColor"
-            android:layout_height="wrap_content" />
-        <Spinner
-            android:id="@+id/spinner1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:spinnerMode="dropdown" />
-    </LinearLayout>
-
-    <LinearLayout
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_weight="1"
         android:layout_height="wrap_content">
@@ -36,7 +20,7 @@
             android:textColor="@color/BackColor"
             android:layout_height="wrap_content" />
         <Spinner
-            android:id="@+id/spinner2"
+            android:id="@+id/productDetailspinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:spinnerMode="dropdown" />
@@ -54,7 +38,7 @@
             android:layout_height="wrap_content" />
         <EditText
             android:layout_width="match_parent"
-            android:id="@+id/imageurl"
+            android:id="@+id/imageDetailurl"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
@@ -70,7 +54,7 @@
             android:layout_height="wrap_content" />
         <EditText
             android:layout_width="match_parent"
-            android:id="@+id/productsize"
+            android:id="@+id/productDetailsize"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
@@ -86,7 +70,7 @@
             android:layout_height="wrap_content" />
         <EditText
             android:layout_width="match_parent"
-            android:id="@+id/productPrice"
+            android:id="@+id/productDetailPrice"
             android:layout_height="wrap_content" />
     </LinearLayout>
 
@@ -104,17 +88,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lines="2"
-            android:id="@+id/productdesc"
+            android:id="@+id/productDetaildesc"
             android:scrollbars="vertical"/>
     </LinearLayout>
 
 <Button
     android:layout_width="match_parent"
     android:background="@color/colorPrimaryDark"
-    android:text="Add Product"
+    android:text="Add Product Detail"
     android:textColor="@color/white"
-    android:onClick="AddProduct"
-    android:id="@+id/addP"
+    android:onClick="AddProductDetail"
+    android:id="@+id/addPD"
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp"
     android:textSize="20dp"

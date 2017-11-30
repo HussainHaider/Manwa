@@ -129,14 +129,14 @@ public class DataBaseAdpter {
         return list;
     }
 
-    public List<String> getalltable2()
+    public List<String> getalltable2(String id)
     {
         List<String> list = new ArrayList<String>();
 
         SQLiteDatabase db=Helper.getWritableDatabase();
         String [] columns={ShopHelper.PID,ShopHelper.PNAME};
         Log.d("checking","columns");
-        String qu = "select "+ShopHelper.PID+","+ShopHelper.PNAME+" from "+ ShopHelper.TABLE_NAME2+";";
+        String qu = "select "+ShopHelper.PID+","+ShopHelper.PNAME+" from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+" in (Select "+ShopHelper.ProductID+" from "+ShopHelper.TABLE_NAME7+" where "+ShopHelper.CategoryID+" = '"+id+"'"+");";
         Log.d("Query",qu);
         Cursor c = db.rawQuery(qu, null);
 

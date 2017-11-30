@@ -24,12 +24,12 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class addProductsActivity extends AppCompatActivity {
+public class addProductsdetailActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
     JSONParser jsonParser = new JSONParser();
     JSONArray Users = null;
-    private static String url_get_user = "https://stopshop321.000webhostapp.com/add_new_product.php";
+    private static String url_get_user = "https://stopshop321.000webhostapp.com/add_new_productDetail.php";
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
@@ -37,31 +37,25 @@ public class addProductsActivity extends AppCompatActivity {
     EditText E1,E2,E3,E4;
     String imageurl,productSize,productPrice,productDesc;
     boolean flag=true;
-    DataBaseAdpter data=new DataBaseAdpter(addProductsActivity.this);
+    DataBaseAdpter data=new DataBaseAdpter(addProductsdetailActivity.this);
     List<String> name;
-    Spinner spinner1,spinner2;
+    Spinner spinner2;
     private String[] arraySpinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_products);
+        setContentView(R.layout.activity_add_productsdetail);
 
-        E1= (EditText) findViewById(R.id.imageurl);
-        E2= (EditText) findViewById(R.id.productsize);
-        E3= (EditText) findViewById(R.id.productPrice);
-        E4= (EditText) findViewById(R.id.productdesc);
+        E1= (EditText) findViewById(R.id.imageDetailurl);
+        E2= (EditText) findViewById(R.id.productDetailsize);
+        E3= (EditText) findViewById(R.id.productDetailPrice);
+        E4= (EditText) findViewById(R.id.productDetaildesc);
 
         name=new ArrayList<>();
 
 
-        spinner1 = (Spinner) findViewById(R.id.spinner1);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.category_array, android.R.layout.simple_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner1.setAdapter(adapter);
-
-        name=data.getalltable2();
+        name=data.getalltable2("1");
         Log.d("check_add","dataget");
         arraySpinner = new String[name.size()];
         Log.d("check_add","dataget1");
@@ -74,7 +68,7 @@ public class addProductsActivity extends AppCompatActivity {
         }
 
         Log.d("check_add","dataget5");
-        spinner2 = (Spinner) findViewById(R.id.spinner2);
+        spinner2 = (Spinner) findViewById(R.id.productDetailspinner);
         Log.d("check_add","dataget6");
         ArrayAdapter<String> adap = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, arraySpinner);
@@ -90,10 +84,10 @@ public class addProductsActivity extends AppCompatActivity {
         Log.d("check_add","dataget11");
     }
 
-    public void AddProduct(View v) {
+    public void AddProductDetail(View v) {
         flag=true;
 
-        if (v.getId() == R.id.addP) {
+        if (v.getId() == R.id.addPD) {
             imageurl=E1.getText().toString();
             if(imageurl.isEmpty())
             {
@@ -150,7 +144,7 @@ public class addProductsActivity extends AppCompatActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(addProductsActivity.this);
+            pDialog = new ProgressDialog(addProductsdetailActivity.this);
             pDialog.setMessage("Loading data. Please wait...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);

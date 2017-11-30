@@ -387,7 +387,7 @@ public class HomeActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
             Log.d("Send","option");
 //            getApplicationContext().startService(new Intent(getApplicationContext(), Sale_Notifcation_Service.class));
-            Intent intent = new Intent(getApplicationContext(), addProductsActivity.class);
+            Intent intent = new Intent(getApplicationContext(), AdminHomeActivity.class);
             startActivity(intent);
 
         }

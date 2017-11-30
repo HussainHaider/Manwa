@@ -168,11 +168,20 @@ public class SignIn extends AppCompatActivity {
                     String s = getIntent().getStringExtra("check");
                     if(s!=null && !s.isEmpty())
                     {
-                        Intent intent = new Intent(getApplicationContext(), Show_items.class);
-                        intent.putExtra("EXTRA_SESSION_ID",s);
-                        startActivity(intent);
-                        finish();
-
+                        if(email.equals("admin123@gmail.com"))
+                        {
+                            Intent intent = new Intent(getApplicationContext(), AdminHomeActivity.class);
+                            intent.putExtra("EXTRA_SESSION_ID",s);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else
+                        {
+                            Intent intent = new Intent(getApplicationContext(), Show_items.class);
+                            intent.putExtra("EXTRA_SESSION_ID",s);
+                            startActivity(intent);
+                            finish();
+                        }
                     }
                     else {
 
