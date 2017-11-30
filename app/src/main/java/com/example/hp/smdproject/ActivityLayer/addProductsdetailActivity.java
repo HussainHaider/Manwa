@@ -35,7 +35,7 @@ public class addProductsdetailActivity extends AppCompatActivity {
     private static final String TAG_MESSAGE = "message";
 
     EditText E1,E2,E3,E4;
-    String imageurl,productSize,productPrice,productDesc;
+    String imageurl,productSize,productPrice,productDesc,Category_id,product_Category=null;
     boolean flag=true;
     DataBaseAdpter data=new DataBaseAdpter(addProductsdetailActivity.this);
     List<String> name;
@@ -46,6 +46,9 @@ public class addProductsdetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_productsdetail);
+        Category_id = getIntent().getStringExtra("Category_ID1");
+
+
 
         E1= (EditText) findViewById(R.id.imageDetailurl);
         E2= (EditText) findViewById(R.id.productDetailsize);
@@ -55,7 +58,7 @@ public class addProductsdetailActivity extends AppCompatActivity {
         name=new ArrayList<>();
 
 
-        name=data.getalltable2("1");
+        name=data.getalltable2(Category_id);
         Log.d("check_add","dataget");
         arraySpinner = new String[name.size()];
         Log.d("check_add","dataget1");
@@ -116,7 +119,8 @@ public class addProductsdetailActivity extends AppCompatActivity {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                     // your code here
-                    parentView.getItemAtPosition(position).toString();
+                    product_Category=parentView.getItemAtPosition(position).toString();
+
                 }
 
                 @Override
@@ -126,17 +130,30 @@ public class addProductsdetailActivity extends AppCompatActivity {
 
             });
 
-
-            if(flag==true)
+            if(product_Category==null)
             {
-                new AddProduct().execute();
+                product_Category=spinner2.getItemAtPosition(0).toString();
+
+                product_Category=data.getallIDtable2(product_Category);
+                Log.d("product_Category",product_Category);
+            }
+            else {
+                product_Category=data.getallIDtable2(product_Category);
+                Log.d("product_Category",product_Category);
+            }
+
+
+
+            if(flag)
+            {
+                new AddProductDetail().execute();
             }
 
         }
     }
 
 
-    class AddProduct extends AsyncTask<String, String, String> {
+    private class AddProductDetail extends AsyncTask<String, String, String> {
 
         /**
          * Before starting background thread Show Progress Dialog
@@ -157,11 +174,11 @@ public class addProductsdetailActivity extends AppCompatActivity {
          */
         protected String doInBackground(String... args) {
             // Building Parameters
-            Log.d("AddProduct", " IN");
+            Log.d("AddProductDetail", " IN");
             List<NameValuePair> params = new ArrayList<NameValuePair>();
 
 
-            params.add(new BasicNameValuePair("product_category", Integer.toString(1)));
+            params.add(new BasicNameValuePair("product_category", product_Category));
             params.add(new BasicNameValuePair("image", imageurl));
             params.add(new BasicNameValuePair("size", productSize));
             params.add(new BasicNameValuePair("price", productPrice));
@@ -178,18 +195,18 @@ public class addProductsdetailActivity extends AppCompatActivity {
             try {
                 success = json.getInt(TAG_SUCCESS);
             } catch (Exception e) {
-                Log.d("AddProduct", " not working");
+                Log.d("AddProductDetail", " not working");
             }
             Log.d("Success is:", Integer.toString(success));
 
             if (success == 1) {
                 // successfully created product
-                Log.d("Sucess", "Product Addd!");
+                Log.d("Sucess", "ProductDetail Addd!");
 
             } else {
 
                 // failed to create product
-                Log.d("failed", "Product not added!");
+                Log.d("failed", "ProductDetail not added!");
                 try {
                     error_text = (String) json.get(TAG_MESSAGE);
                 } catch (JSONException e) {

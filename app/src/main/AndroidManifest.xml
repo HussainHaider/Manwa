@@ -78,7 +78,8 @@
         <activity android:name=".ActivityLayer.changeInfoUserActivity" />
         <activity android:name=".ActivityLayer.addProductsdetailActivity" />
         <activity android:name=".ActivityLayer.AdminHomeActivity" />
-        <activity android:name=".ActivityLayer.addProductActivity"></activity>
+        <activity android:name=".ActivityLayer.addProductActivity" />
+        <activity android:name=".ActivityLayer.editProductActivity"></activity>
     </application>
 
 </manifest>

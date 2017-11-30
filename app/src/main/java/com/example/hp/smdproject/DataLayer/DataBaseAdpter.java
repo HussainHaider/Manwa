@@ -26,7 +26,7 @@ import static java.lang.Integer.parseInt;
 public class DataBaseAdpter {
     ShopHelper Helper;
     long idcheck;
-
+    SQLiteDatabase db=null;
     public DataBaseAdpter(Context context) {
         Helper = new ShopHelper(context);
         idcheck=0;
@@ -37,7 +37,7 @@ public class DataBaseAdpter {
     {
 
         Log.d("checking","Value1");
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         Log.d("checking","Value2");
         ContentValues value=new ContentValues();
         value.put(ShopHelper.UID,id);
@@ -50,7 +50,7 @@ public class DataBaseAdpter {
     {
         List<String> list = new ArrayList<String>();
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         Log.d("checking","columns");
         String qu = "select * from "+ ShopHelper.TABLE_NAME1;
         Log.d("Query",qu);
@@ -84,7 +84,7 @@ public class DataBaseAdpter {
         }
 
         Log.d("checking","Value1");
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         Log.d("checking","Value2");
         ContentValues value=new ContentValues();
         value.put(ShopHelper.PID,id);
@@ -107,8 +107,8 @@ public class DataBaseAdpter {
     {
         List<String> list = new ArrayList<String>();
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
-        String [] columns={ShopHelper.PID,ShopHelper.PNAME};
+        db=Helper.getWritableDatabase();
+
         Log.d("checking","columns");
         String qu = "select * from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+" in (Select "+ShopHelper.ProductID+" from "+ShopHelper.TABLE_NAME7+" where "+ShopHelper.CategoryID+" = '"+id+"'"+");";
         Log.d("Query",qu);
@@ -133,7 +133,7 @@ public class DataBaseAdpter {
     {
         List<String> list = new ArrayList<String>();
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         String [] columns={ShopHelper.PID,ShopHelper.PNAME};
         Log.d("checking","columns");
         String qu = "select "+ShopHelper.PID+","+ShopHelper.PNAME+" from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+" in (Select "+ShopHelper.ProductID+" from "+ShopHelper.TABLE_NAME7+" where "+ShopHelper.CategoryID+" = '"+id+"'"+");";
@@ -153,10 +153,32 @@ public class DataBaseAdpter {
         }
         return list;
     }
+    public String getallIDtable2(String name)
+    {
+        String numberAsString=null;
+
+        SQLiteDatabase db=Helper.getWritableDatabase();
+
+        String qu = "select "+ShopHelper.PID+" from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PNAME+" = '"+name+"'"+";";
+        Log.d("Query",qu);
+        Cursor c = db.rawQuery(qu, null);
+
+        Log.d("checking","Query");
+        if (c.moveToNext())
+        {
+            Log.d("Work","help1");
+            int cid=c.getInt(0);
+            numberAsString = Integer.toString(cid);
+            Log.d("Work","help2");
+        }
+
+        return numberAsString;
+    }
+
 
     public Bitmap get2_Image(String i){
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         String qu = "select "+ShopHelper.PIMAGE+"  from "+ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+"="+i+";" ;
         Log.d("Query",qu);
         Cursor cur = db.rawQuery(qu, null);
@@ -181,7 +203,7 @@ public class DataBaseAdpter {
 
     public long inserttable5(String id,String pid,String S,String D,String P)
     {
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         ContentValues value=new ContentValues();
         value.put(ShopHelper.PDid,id);
         value.put(ShopHelper.ProductID,pid);
@@ -220,7 +242,7 @@ public class DataBaseAdpter {
 
 
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         ContentValues value=new ContentValues();
         value.put(ShopHelper.KEY_IMAGE2,image); //These Fields should be your String values of actual column names
 
@@ -233,7 +255,7 @@ public class DataBaseAdpter {
     {
         List<String> list = new ArrayList<String>();
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         String [] columns={ShopHelper.ProductID,ShopHelper.PDid,ShopHelper.Size,ShopHelper.Price,ShopHelper.Descrption};
         Log.d("checking","columns");
         Cursor c=db.query(ShopHelper.TABLE_NAME5,columns,ShopHelper.ProductID+" = '"+id+"'",null,null,null,null,null);
@@ -258,7 +280,7 @@ public class DataBaseAdpter {
     }
     public Bitmap getImage(String i){
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         String qu = "select "+ShopHelper.KEY_IMAGE2+"  from "+ShopHelper.TABLE_NAME5+" where "+ShopHelper.PDid+"="+i+";" ;
         Log.d("Query",qu);
         Cursor cur = db.rawQuery(qu, null);
@@ -286,7 +308,7 @@ public class DataBaseAdpter {
     {
         List<String> list = new ArrayList<String>();
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         String [] columns={ShopHelper.PDid,ShopHelper.Size,ShopHelper.Descrption};
         Log.d("checking","columns");
         Cursor c=db.query(ShopHelper.TABLE_NAME5,columns,ShopHelper.PDid+" = '"+id+"'",null,null,null,null,null);
@@ -306,7 +328,7 @@ public class DataBaseAdpter {
     }
     public long inserttable4(String uid,String pid)
     {
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         ContentValues value=new ContentValues();
         value.put(ShopHelper.pid,pid);
         value.put(ShopHelper.uid,uid);
@@ -319,7 +341,7 @@ public class DataBaseAdpter {
     public long inserttable6(String id,String name)
     {
         Log.d("checking","Value1");
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         Log.d("checking","Value2");
         ContentValues value=new ContentValues();
         value.put(ShopHelper.CID,id);
@@ -332,7 +354,7 @@ public class DataBaseAdpter {
     public long inserttable7(String id1,String id2)
     {
         Log.d("checking10","Value1");
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         Log.d("checking10","Value2");
         ContentValues value=new ContentValues();
         value.put(ShopHelper.ProductID,id1);
@@ -347,7 +369,7 @@ public class DataBaseAdpter {
     public long inserttable10(String id,String n,String D,String P)
     {
         Log.d("checking","Value1");
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         Log.d("checking","Value2");
         ContentValues value=new ContentValues();
         value.put(ShopHelper.OfferID,id);
@@ -371,7 +393,7 @@ public class DataBaseAdpter {
         }
 
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         ContentValues value=new ContentValues();
         value.put(ShopHelper.Offer_img,image); //These Fields should be your String values of actual column names
 
@@ -383,7 +405,7 @@ public class DataBaseAdpter {
     {
         List<String> list = new ArrayList<String>();
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         String [] columns={ShopHelper.OfferID,ShopHelper.Name,ShopHelper.Price,ShopHelper.Price};
         Log.d("checking","columns");
         Cursor c=db.query(ShopHelper.TABLE_NAME10,columns,null,null,null,null,null,null);
@@ -405,7 +427,7 @@ public class DataBaseAdpter {
     }
     public Bitmap getImage2(String i){
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         String qu = "select "+ShopHelper.Offer_img+"  from "+ShopHelper.TABLE_NAME10+" where "+ShopHelper.OfferID+"="+i+";" ;
         Log.d("Query",qu);
         Cursor cur = db.rawQuery(qu, null);
@@ -430,7 +452,7 @@ public class DataBaseAdpter {
     public long inserttable11(String id1,String id2)
     {
         Log.d("checking","Value1");
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         Log.d("checking","Value2");
         ContentValues value=new ContentValues();
         value.put(ShopHelper.pid,id1);
@@ -443,7 +465,7 @@ public class DataBaseAdpter {
     public long inserttable3(String id1,String id2,String Date,String P)
     {
         Log.d("checking","Value1");
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         Log.d("checking","Value2");
         ContentValues value=new ContentValues();
         value.put(ShopHelper.ProductID,id1);
@@ -459,7 +481,7 @@ public class DataBaseAdpter {
     public Productdetailclass getitem(String id)
     {
         Productdetailclass pr=new Productdetailclass();
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         String query = "SELECT * FROM " + ShopHelper.TABLE_NAME5+ " where "+ShopHelper.PDid+"=?" ;
 
         String[] params = new String[]{ id };
@@ -492,7 +514,7 @@ public class DataBaseAdpter {
     {
         ArrayList<Productdetailclass> list = new ArrayList<>();
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         Log.d("checking","columns");
         String query = "SELECT * FROM " + ShopHelper.TABLE_NAME11+ " WHERE "+ShopHelper.uid+"=?" ;
         //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
@@ -528,7 +550,7 @@ public class DataBaseAdpter {
     public long removeFromCart(String pid,String uid)
     {
         long check=0;
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         Log.d("checking","columns");
         //  String query = "DELETE * FROM " + ShopHelper.TABLE_NAME11+ " WHERE "+ShopHelper.pid+"=?" ;
         //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
@@ -558,7 +580,7 @@ public class DataBaseAdpter {
     {
         ArrayList<Productdetailclass> list = new ArrayList<>();
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
         Log.d("checking","columns");
         String query = "SELECT * FROM " + ShopHelper.TABLE_NAME4+ " WHERE "+ShopHelper.uid+"=?" ;
         //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
