@@ -149,7 +149,7 @@ public class DataBaseAdpter {
 //            list.add(numberAsString);
             String name=c.getString(1);
             list.add(name);
-            Log.d("Work","help2");
+            Log.d("Work",name);
         }
         return list;
     }

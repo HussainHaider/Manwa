@@ -3,6 +3,7 @@ package com.example.hp.smdproject.ActivityLayer;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -55,10 +56,42 @@ public class AdminHomeActivity extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(adapter);
         spinner2.setAdapter(adapter);
+
+        spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+                categoryid=parentView.getItemAtPosition(position).toString();
+                Log.d("Clicked1 ID",categoryid);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
+
+        spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+                categoryid=parentView.getItemAtPosition(position).toString();
+                Log.d("Clicked2 ID",categoryid);
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
     }
     public void adminfuctionality(View v)
     {
-        categoryid=null;
 
         if(v.getId()==R.id.deleteuser_btn)
         {
@@ -85,21 +118,6 @@ public class AdminHomeActivity extends AppCompatActivity {
         }
         else if(v.getId()==R.id.go_btn1)
         {
-            spinner1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    // your code here
-                    categoryid=parentView.getItemAtPosition(position).toString();
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-                    // your code here
-                }
-
-            });
-
             if(categoryid==null)
             {
                 categoryid=spinner1.getItemAtPosition(0).toString();
@@ -122,20 +140,6 @@ public class AdminHomeActivity extends AppCompatActivity {
         }
         else if(v.getId()==R.id.go_btn2)
         {
-            spinner2.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    // your code here
-                    categoryid=parentView.getItemAtPosition(position).toString();
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-                    // your code here
-                }
-
-            });
 
             if(categoryid==null)
             {

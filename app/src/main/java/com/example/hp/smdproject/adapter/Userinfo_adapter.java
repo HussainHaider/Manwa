@@ -10,6 +10,7 @@ import android.widget.CheckBox;
 import android.widget.Filter;
 
 import com.example.hp.smdproject.ActivityLayer.changeInfoUserActivity;
+import com.example.hp.smdproject.ActivityLayer.editProductActivity;
 import com.example.hp.smdproject.R;
 
 import java.util.ArrayList;
@@ -85,6 +86,12 @@ public class Userinfo_adapter extends BaseAdapter {
                         Log.d("isChecked","true2");
                         ((changeInfoUserActivity)mContext).insertListData(useremail);
                     }
+                    else if (mContext instanceof editProductActivity)
+                    {
+                        Log.d("isChecked","true3");
+                        ((editProductActivity)mContext).insertListData(useremail);
+                    }
+
                 }
                 if(isChecked==false)
                 {
@@ -93,6 +100,11 @@ public class Userinfo_adapter extends BaseAdapter {
                     if(mContext instanceof changeInfoUserActivity){
                         Log.d("isChecked","false2");
                         ((changeInfoUserActivity)mContext).deleteListData(useremail);
+                    }
+                    else if (mContext instanceof editProductActivity)
+                    {
+                        Log.d("isChecked","false3");
+                        ((editProductActivity)mContext).deleteListData(useremail);
                     }
 
                 }
