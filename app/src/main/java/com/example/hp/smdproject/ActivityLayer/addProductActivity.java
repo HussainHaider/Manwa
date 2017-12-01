@@ -1,7 +1,6 @@
 package com.example.hp.smdproject.ActivityLayer;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -12,7 +11,6 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.hp.smdproject.DataLayer.AddProductCategory_Services;
 import com.example.hp.smdproject.JSONParser;
 import com.example.hp.smdproject.R;
 
@@ -31,7 +29,7 @@ public class addProductActivity extends AppCompatActivity {
     private ProgressDialog pDialog;
     JSONParser jsonParser = new JSONParser();
     JSONArray products = null;
-    private static String url_get_user = "https://stopshop321.000webhostapp.com/add_new_product1.php";
+    private static String url_get_user = "https://stopshop321.000webhostapp.com/add_new_product2.php";
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_MESSAGE = "message";
@@ -55,36 +53,43 @@ public class addProductActivity extends AppCompatActivity {
                 R.array.category_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                // your code here
+                category_ID=parentView.getItemAtPosition(position).toString();
+                Log.d("category_ID",category_ID);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
+
     }
     public void AddProduct(View v) {
 
         flag=true;
 
-        if (v.getId() == R.id.addPD) {
+        if (v.getId() == R.id.addP) {
+
+            Log.d("AddProduct","function_1");
             imageurl = E1.getText().toString();
             if (imageurl.isEmpty()) {
                 E1.setError("Give Image Url");
+                Log.d("AddProduct","show_false");
                 flag = false;
             }
             name = E2.getText().toString();
             if (name.isEmpty()) {
                 E2.setError("Give Name");
+                Log.d("AddProduct","show_false");
                 flag = false;
             }
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    // your code here
-                    category_ID=parentView.getItemAtPosition(position).toString();
-
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-                    // your code here
-                }
-
-            });
+            Log.d("AddProduct","function_2");
             if(category_ID==null)
             {
                 category_ID=spinner.getItemAtPosition(0).toString();
@@ -99,10 +104,12 @@ public class addProductActivity extends AppCompatActivity {
             {
                 category_ID="2";
             }
-
+            Log.d("AddProduct","function_3");
 
             if(flag)
             {
+                Log.d("AddProduct","function_4");
+                Log.d("AddProduct","show");
                 new AddProduct().execute();
             }
         }
@@ -135,10 +142,11 @@ public class addProductActivity extends AppCompatActivity {
 
             params.add(new BasicNameValuePair("name", name));
             params.add(new BasicNameValuePair("image", imageurl));
+            params.add(new BasicNameValuePair("CategoryID", category_ID));
 
             String  error_text = null;
             JSONObject json = jsonParser.makeHttpRequest(url_get_user,
-                    "POST", params);
+                    "GET", params);
             // check for success tag
 
             int success = 0;
@@ -154,17 +162,6 @@ public class addProductActivity extends AppCompatActivity {
             if (success == 1) {
                 // successfully created product
                 Log.d("Sucess", "Product Addd!");
-                try {
-                    products = json.getJSONArray(TAG_GAME_NAME);
-                    for (int i = 0; i < products.length(); i++) {
-                        JSONObject c = products.getJSONObject(i);
-                        ID = c.getString(TAG_GID);
-                        Log.d("AddProductID", ID);
-
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
 
             } else {
@@ -190,13 +187,6 @@ public class addProductActivity extends AppCompatActivity {
             // dismiss the dialog once don
             pDialog.dismiss();
 
-            if(ID!=null)
-            {
-                Intent serviceIntent = new Intent(AddProductCategory_Services.class.getName());
-                serviceIntent.putExtra("ProductID", ID);
-                serviceIntent.putExtra("categoryID", category_ID);
-                getApplicationContext().startService(serviceIntent);
-            }
         }
     }
 
