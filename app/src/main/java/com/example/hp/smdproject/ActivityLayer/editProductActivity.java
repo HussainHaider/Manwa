@@ -59,8 +59,12 @@ public class editProductActivity extends AppCompatActivity {
         {
             if(ListofProduct.size()==1)
             {
+                String name=ListofProduct.get(0);
+                String ID=data.getallIDtable2(name);
+
                 Intent intent = new Intent(getApplicationContext(), editProductDetailActivity.class);
-                intent.putExtra("Product_ID", "1");
+                intent.putExtra("Product_ID", ID);
+                intent.putExtra("Product_Name",name);
                 startActivity(intent);
             }
             else

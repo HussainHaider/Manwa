@@ -24,14 +24,16 @@ public class ProductListAdapter extends BaseAdapter {
     private Context mContext;
     private LayoutInflater mInflater;
     private List<Productdetailclass> mProductList;
+    private String name=null;
 
     //Constructor
 
-    public ProductListAdapter(Context mContext, List<Productdetailclass> mProductList) {
+    public ProductListAdapter(Context mContext, List<Productdetailclass> mProductList,String n) {
         this.mContext = mContext;
 //        mProductList=new ArrayList<Country>();
         mInflater = LayoutInflater.from(mContext);
         this.mProductList = mProductList;
+        name=n;
     }
 
     @Override
@@ -88,7 +90,7 @@ public class ProductListAdapter extends BaseAdapter {
 
 
         if(mContext instanceof editProductDetailActivity || mContext instanceof ItemList) {
-            holder.name.setText("Jeans");
+            holder.name.setText(name);
 //        holder.price.setText(numberAsString);
             holder.price.setText("$ " + p.getPrice());
 //        holder.img.setImageResource(p.getImage());

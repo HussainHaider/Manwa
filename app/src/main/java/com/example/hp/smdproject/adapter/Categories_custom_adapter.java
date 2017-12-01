@@ -66,6 +66,12 @@ public class Categories_custom_adapter extends BaseAdapter {
         return p.getID();
 
     }
+    public String  getlistname(int position)
+    {
+        Productclass p = result.get(position);
+        return p.getname();
+
+    }
 
 
 

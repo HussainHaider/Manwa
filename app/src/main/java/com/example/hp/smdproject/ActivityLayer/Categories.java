@@ -19,11 +19,11 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.example.hp.smdproject.adapter.Categories_custom_adapter;
+import com.example.hp.smdproject.BuniessLayer.Productclass;
 import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
 import com.example.hp.smdproject.JSONParser;
-import com.example.hp.smdproject.BuniessLayer.Productclass;
 import com.example.hp.smdproject.R;
+import com.example.hp.smdproject.adapter.Categories_custom_adapter;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -98,14 +98,19 @@ public class Categories extends AppCompatActivity {
                                     int position, long id) {
 
 //                long v=C1.getItemId(position);
+
+
+                String name=C1.getlistname(position);
+                Log.d("Name of Product",name);
                 long v=C1.getlistid(position);
                 sessionId= Long.toString(v);
 
-                Toast.makeText(getApplicationContext(),"Item is clicked no. "+v,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),"Item is clicked no. "+name,Toast.LENGTH_SHORT).show();
 
                new LoadProductImage().execute();
                 Intent intent = new Intent(getBaseContext(),ItemList.class);
                 intent.putExtra("EXTRA_SESSION_ID", sessionId);
+                intent.putExtra("EXTRA_SESSION_NAME", name);
                 startActivity(intent);
             //    pDialog.dismiss();
 

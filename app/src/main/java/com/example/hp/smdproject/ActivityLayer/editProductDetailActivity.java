@@ -26,13 +26,14 @@ public class editProductDetailActivity extends AppCompatActivity {
 
     DataBaseAdpter helper;
     List<String> list1;
-    String Products_id,sessionId;
+    String Products_id,sessionId,Products_name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_product_detail);
         Products_id = getIntent().getStringExtra("Product_ID");
+        Products_name= getIntent().getStringExtra("Product_Name");
         helper=new DataBaseAdpter(this);
         list1 = new ArrayList<String>();
         mProductList = new ArrayList<>();
@@ -43,7 +44,7 @@ public class editProductDetailActivity extends AppCompatActivity {
 
 
 
-        adapter=new ProductListAdapter(editProductDetailActivity.this,mProductList);
+        adapter=new ProductListAdapter(editProductDetailActivity.this,mProductList,Products_name);
         lvProduct.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {

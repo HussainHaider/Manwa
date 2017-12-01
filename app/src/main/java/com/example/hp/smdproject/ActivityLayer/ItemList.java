@@ -26,7 +26,7 @@ public class ItemList extends AppCompatActivity {
 
     DataBaseAdpter helper;
     List<String> list1;
-    String Products_id;
+    String Products_id,Products_name;
 
 
     @Override
@@ -34,6 +34,8 @@ public class ItemList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_list);
         Products_id = getIntent().getStringExtra("EXTRA_SESSION_ID");
+        Products_name=getIntent().getStringExtra("EXTRA_SESSION_NAME");
+
         helper=new DataBaseAdpter(this);
         list1 = new ArrayList<String>();
         mProductList = new ArrayList<>();
@@ -47,7 +49,7 @@ public class ItemList extends AppCompatActivity {
 
 
 
-        adapter=new ProductListAdapter(ItemList.this,mProductList);
+        adapter=new ProductListAdapter(ItemList.this,mProductList,Products_name);
         lvProduct.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
