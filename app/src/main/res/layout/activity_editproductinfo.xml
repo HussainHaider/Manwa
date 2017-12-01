@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:weightSum="5"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -16,11 +18,31 @@
             android:textSize="25dp"
             android:layout_height="wrap_content" />
         <EditText
+            android:id="@+id/priceinfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
 
     <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="20dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Update Size:"
+            android:textColor="@color/theme1"
+            android:textSize="25dp"
+            android:layout_height="wrap_content" />
+        <EditText
+            android:id="@+id/sizeinfo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -33,12 +55,17 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:id="@+id/Descinfo"
+            android:inputType="textMultiLine"
+            android:lines="2"
+            android:maxLines="10"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
     </LinearLayout>
 
 
     <LinearLayout
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
@@ -51,14 +78,17 @@
             android:layout_height="wrap_content" />
 
         <EditText
+            android:id="@+id/imageinfo"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
     </LinearLayout>
 
     <Button
+        android:id="@+id/update_btn"
         android:layout_width="match_parent"
         android:text="Done"
+        android:onClick="UpgradeProduct"
         android:layout_marginTop="5dp"
         android:textColor="@color/theme1"
         android:textSize="20dp"

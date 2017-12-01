@@ -2,10 +2,12 @@ package com.example.hp.smdproject.BuniessLayer;
 
 import android.graphics.Bitmap;
 
+import java.io.Serializable;
+
 /**
  * Created by HP on 21-Apr-17.
  */
-public class Productdetailclass {
+public class Productdetailclass implements Serializable {
     int ID;
     int PID;
     String Description;

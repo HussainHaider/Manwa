@@ -1,5 +1,6 @@
 package com.example.hp.smdproject.ActivityLayer;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -53,13 +54,14 @@ public class editProductActivity extends AppCompatActivity {
         if(v.getId()==R.id.btndeleteProduct)
         {
 
-
         }
         if(v.getId()==R.id.btnsEditProduct)
         {
             if(ListofProduct.size()==1)
             {
-                
+                Intent intent = new Intent(getApplicationContext(), editProductDetailActivity.class);
+                intent.putExtra("Product_ID", "1");
+                startActivity(intent);
             }
             else
             {

@@ -10,15 +10,15 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
-import com.example.hp.smdproject.adapter.ProductListAdapter;
 import com.example.hp.smdproject.BuniessLayer.Productdetailclass;
+import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
 import com.example.hp.smdproject.R;
+import com.example.hp.smdproject.adapter.ProductListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemList extends AppCompatActivity {
+public class editProductDetailActivity extends AppCompatActivity {
 
     private List<Productdetailclass> mProductList;
     private ProductListAdapter adapter;
@@ -26,40 +26,38 @@ public class ItemList extends AppCompatActivity {
 
     DataBaseAdpter helper;
     List<String> list1;
-    String Products_id;
-
+    String Products_id,sessionId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_list);
-        Products_id = getIntent().getStringExtra("EXTRA_SESSION_ID");
+        setContentView(R.layout.activity_edit_product_detail);
+        Products_id = getIntent().getStringExtra("Product_ID");
         helper=new DataBaseAdpter(this);
         list1 = new ArrayList<String>();
         mProductList = new ArrayList<>();
 
-        lvProduct=(ListView)findViewById(R.id.products_listview);
+        lvProduct=(ListView)findViewById(R.id.editdetaillist);
 
-
-//        mProductList.add(new Produtct_Item(1,"Clause pants",30,R.drawable.pant2));
-//        mProductList.add(new Produtct_Item(1,"jeans",20,R.drawable.pants));
         CreateUI();
 
 
 
-        adapter=new ProductListAdapter(ItemList.this,mProductList);
+        adapter=new ProductListAdapter(editProductDetailActivity.this,mProductList);
         lvProduct.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-               // long v=adapter.getItemId(position);
+                // long v=adapter.getItemId(position);
                 long v=adapter.getlistid(position);
 
                 Toast.makeText(getApplicationContext(),"Item is clicked no. "+v,Toast.LENGTH_SHORT).show();
+                sessionId= Long.toString(v);
+                //Productdetailclass P= (Productdetailclass) parent.getItemAtPosition(position);
 
-                String sessionId= Long.toString(v);
-                Intent intent = new Intent(getBaseContext(),Show_items.class);
+                Intent intent = new Intent(getBaseContext(),editProductInfoActivity.class);
                 intent.putExtra("EXTRA_SESSION_ID", sessionId);
                 startActivity(intent);
+
 
             }
         });
@@ -80,7 +78,7 @@ public class ItemList extends AppCompatActivity {
                 Log.d("get5",list1.get(i-4));
 
 //                if(i<=4)
-                    result1 = Integer.parseInt(list1.get(i-4));
+                result1 = Integer.parseInt(list1.get(i-4));
 //                if(i>4)
 //                    des=list1.get(i-4);
 
@@ -101,6 +99,4 @@ public class ItemList extends AppCompatActivity {
         }
         return;
     }
-
-
 }

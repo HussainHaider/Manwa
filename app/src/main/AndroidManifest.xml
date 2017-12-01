@@ -80,7 +80,8 @@
         <activity android:name=".ActivityLayer.AdminHomeActivity" />
         <activity android:name=".ActivityLayer.addProductActivity" />
         <activity android:name=".ActivityLayer.editProductActivity" />
-        <activity android:name=".ActivityLayer.editProductInfoActivity"></activity>
+        <activity android:name=".ActivityLayer.editProductInfoActivity" />
+        <activity android:name=".ActivityLayer.editProductDetailActivity"></activity>
     </application>
 
 </manifest>

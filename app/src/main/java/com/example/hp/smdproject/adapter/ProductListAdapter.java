@@ -12,6 +12,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.hp.smdproject.ActivityLayer.ItemList;
+import com.example.hp.smdproject.ActivityLayer.editProductDetailActivity;
 import com.example.hp.smdproject.BuniessLayer.Productdetailclass;
 import com.example.hp.smdproject.R;
 
@@ -57,15 +59,27 @@ public class ProductListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent)
     {
 
-        ViewHolder holder;
+        ViewHolder holder=null;
         Productdetailclass p = mProductList.get(position);
         if (convertView == null) {
-            convertView = mInflater.inflate(R.layout.list_row, null);
-            holder = new ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.Pname);
-            holder.price= (TextView) convertView.findViewById(R.id.Pprice);
-            holder.img= (ImageView) convertView.findViewById(R.id.Pimg);
-            convertView.setTag(holder);
+            if(mContext instanceof ItemList) {
+                convertView = mInflater.inflate(R.layout.list_row, null);
+                holder = new ViewHolder();
+                holder.name = (TextView) convertView.findViewById(R.id.Pname);
+                holder.price = (TextView) convertView.findViewById(R.id.Pprice);
+                holder.img = (ImageView) convertView.findViewById(R.id.Pimg);
+                convertView.setTag(holder);
+            }
+            else if(mContext instanceof editProductDetailActivity) {
+                convertView = mInflater.inflate(R.layout.editproduct_list, null);
+                holder = new ViewHolder();
+                holder.name = (TextView) convertView.findViewById(R.id.editPname);
+                holder.price = (TextView) convertView.findViewById(R.id.editPprice);
+                holder.size = (TextView) convertView.findViewById(R.id.editPsize);
+                holder.img = (ImageView) convertView.findViewById(R.id.editPimg);
+                convertView.setTag(holder);
+            }
+
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
@@ -73,11 +87,18 @@ public class ProductListAdapter extends BaseAdapter {
 //        String numberAsString = Integer.toString(number);
 
 
-        holder.name.setText("Jeans");
+        if(mContext instanceof editProductDetailActivity || mContext instanceof ItemList) {
+            holder.name.setText("Jeans");
 //        holder.price.setText(numberAsString);
-        holder.price.setText("$ "+p.getPrice());
+            holder.price.setText("$ " + p.getPrice());
 //        holder.img.setImageResource(p.getImage());
-        holder.img.setImageBitmap(p.getImage());
+            holder.img.setImageBitmap(p.getImage());
+        }
+
+        if(mContext instanceof editProductDetailActivity) {
+
+            holder.size.setText(Integer.toString(p.getSize()));
+        }
 
 
         return convertView;
@@ -86,7 +107,7 @@ public class ProductListAdapter extends BaseAdapter {
     static class ViewHolder
     {
         TextView name;
-        TextView price;
+        TextView price,size;
         ImageView img;
     }
 }
