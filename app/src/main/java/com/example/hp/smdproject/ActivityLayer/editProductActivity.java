@@ -1,6 +1,8 @@
 package com.example.hp.smdproject.ActivityLayer;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -13,13 +15,21 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
+import com.example.hp.smdproject.JSONParser;
 import com.example.hp.smdproject.R;
 import com.example.hp.smdproject.adapter.Userinfo_adapter;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class editProductActivity extends AppCompatActivity {
+
 
     String Category_id=null;
     private Userinfo_adapter adapter;
@@ -27,8 +37,18 @@ public class editProductActivity extends AppCompatActivity {
     DataBaseAdpter data=null;
     private List<String> ListofProduct;
     private List<String> productlist;
-
     TextView txt;
+
+    private ProgressDialog pDialog;
+    JSONParser jsonParser = new JSONParser();
+    JSONArray Users = null;
+    private static String url_get_user = "https://stopshop321.000webhostapp.com/deleteProduct.php";
+    // JSON Node names
+    private static final String TAG_SUCCESS = "success";
+    private static final String TAG_MESSAGE = "message";
+    boolean checkflag=false;
+    String ID=null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +73,14 @@ public class editProductActivity extends AppCompatActivity {
     {
         if(v.getId()==R.id.btndeleteProduct)
         {
-
+            new DeleteProduct().execute();
         }
         if(v.getId()==R.id.btnsEditProduct)
         {
             if(ListofProduct.size()==1)
             {
                 String name=ListofProduct.get(0);
-                String ID=data.getallIDtable2(name);
+                ID=data.getallIDtable2(name);
 
                 Intent intent = new Intent(getApplicationContext(), editProductDetailActivity.class);
                 intent.putExtra("Product_ID", ID);
@@ -125,6 +145,87 @@ public class editProductActivity extends AppCompatActivity {
         Log.d("Data","remove");
         ListofProduct.remove(text);
     }
+    public  void deleteProduct(String PID,String CID)
+    {
+        data.Deletetable5(PID);
+        data.Deletetable7(PID,CID);
+        data.Deletetable2(PID);
+    }
 
+    class DeleteProduct extends AsyncTask<String, String, String> {
 
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(editProductActivity.this);
+            pDialog.setMessage("Checking from server...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        /**
+         * Creating product
+         * */
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            Log.d("UserLIst"," IN");
+
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+
+            for(int i=0;i<ListofProduct.size();i++) {
+
+                String name=ListofProduct.get(i);
+                ID=data.getallIDtable2(name);
+
+                params.add(new BasicNameValuePair("ID", ID));
+                params.add(new BasicNameValuePair("Category_ID", Category_id));
+
+                String email = null, error_text = null;
+                JSONObject json = jsonParser.makeHttpRequest(url_get_user,
+                        "GET", params);
+                // check for success tag
+
+                int success = 0;
+
+                // Checking for SUCCESS TAG
+                try {
+                    success = json.getInt(TAG_SUCCESS);
+                } catch (Exception e) {
+                    Log.d("UserLIst", " not working");
+                }
+                Log.d("Success is:", Integer.toString(success));
+
+                if (success == 1) {
+                    // successfully created product
+                    checkflag = true;
+
+                } else {
+
+                    // failed to create product
+                    Log.d("failed", "Getting USer LIst!");
+                    try {
+                        error_text = (String) json.get(TAG_MESSAGE);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    Log.d("LOss", error_text);
+                }
+            }
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once don
+            pDialog.dismiss();
+            deleteProduct(ID,Category_id);
+            finish();
+        }
+    }
 }

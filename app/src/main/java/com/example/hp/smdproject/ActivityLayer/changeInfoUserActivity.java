@@ -37,6 +37,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
     JSONParser jsonParser = new JSONParser();
     JSONArray Users = null;
     private static String url_get_user = "https://stopshop321.000webhostapp.com/getUser_info.php";
+    private static String url_get_suspenduser = "https://stopshop321.000webhostapp.com/getSuspendUser_info.php";
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
     private static final String TAG_GAME_NAME = "User_detail";
@@ -85,6 +86,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
 
         if (id == R.id.action_suspend) {
             Log.d("Menu2", "SUspend");
+            new GetSuspendUserList().execute();
 
             return true;
         }
@@ -161,6 +163,102 @@ public class changeInfoUserActivity extends AppCompatActivity {
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             String email=null,error_text=null;
             JSONObject json = jsonParser.makeHttpRequest(url_get_user,
+                    "GET", params);
+            // check for success tag
+
+            int success=0;
+
+            // Checking for SUCCESS TAG
+            try{
+                success = json.getInt(TAG_SUCCESS);
+            }catch (Exception e)
+            {
+                Log.d("UserLIst"," not working");
+            }
+            Log.d("Success is:",Integer.toString(success));
+
+            if (success == 1) {
+                // successfully created product
+                try {
+                    Users = json.getJSONArray(TAG_GAME_NAME);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                // looping through All Patients
+                for (int i = 0; i < Users.length(); i++) {
+                    JSONObject c = null;
+                    try {
+                        c = Users.getJSONObject(i);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Storing each json item in variable
+                    try {
+                        email = c.getString(TAG_EMAIL);
+                        mUserEmailList.add(email);
+                        Log.d("email_text",email);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            } else {
+
+                // failed to create product
+                Log.d("failed","Getting USer LIst!");
+                try {
+                    error_text= (String) json.get(TAG_MESSAGE);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                Log.d("LOss",error_text);
+            }
+            return null;
+        }
+
+        /**
+         * After completing background task Dismiss the progress dialog
+         * **/
+        protected void onPostExecute(String file_url) {
+            // dismiss the dialog once don
+            pDialog.dismiss();
+
+            adapter=new Userinfo_adapter(changeInfoUserActivity.this,mUserEmailList);
+            lvUser.setAdapter(adapter);
+        }
+    }
+
+
+    class GetSuspendUserList extends AsyncTask<String, String, String> {
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         * */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            lvUser.setAdapter(null);
+            mUserEmailList.clear();
+            pDialog = new ProgressDialog(changeInfoUserActivity.this);
+            pDialog.setMessage("Checking from server...");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(true);
+            pDialog.show();
+        }
+
+        /**
+         * Creating product
+         * */
+        protected String doInBackground(String... args) {
+            // Building Parameters
+            Log.d("UserLIst"," IN");
+
+            List<NameValuePair> params = new ArrayList<NameValuePair>();
+            String email=null,error_text=null;
+            JSONObject json = jsonParser.makeHttpRequest(url_get_suspenduser,
                     "GET", params);
             // check for success tag
 

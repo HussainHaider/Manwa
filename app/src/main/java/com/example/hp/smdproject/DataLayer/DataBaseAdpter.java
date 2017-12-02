@@ -100,6 +100,15 @@ public class DataBaseAdpter {
         Log.d("checking","ID");
         return idcheck;
     }
+    public void Deletetable2(String Pid) {
+
+        db=Helper.getWritableDatabase();
+
+        String qu = "Delete from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+" = '"+Pid+"'"+";";
+        Log.d("Query",qu);
+        db.rawQuery(qu, null);
+
+    }
 
 
 
@@ -157,7 +166,7 @@ public class DataBaseAdpter {
     {
         String numberAsString=null;
 
-        SQLiteDatabase db=Helper.getWritableDatabase();
+        db=Helper.getWritableDatabase();
 
         String qu = "select "+ShopHelper.PID+" from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PNAME+" = '"+name+"'"+";";
         Log.d("Query",qu);
@@ -218,12 +227,42 @@ public class DataBaseAdpter {
         {
             Log.d("Error","handling");
         }
-
-
               //  Log.d(idcheck);
      //   Log.d(Integer.toString(idcheck));
         return idcheck;
     }
+    public long updatetable5(String id,String S,String D,String P)
+    {
+        db=Helper.getWritableDatabase();
+        ContentValues value=new ContentValues();
+        value.put(ShopHelper.Size,S);
+        value.put(ShopHelper.Price,P);
+        value.put(ShopHelper.Descrption,D);
+        Log.d("checking","Value");
+        int a;
+        try {
+            idcheck=db.update(ShopHelper.TABLE_NAME5,value,ShopHelper.PDid+" ="+id,null);
+        }catch (SQLiteException e)
+        {
+            Log.d("Error","handling");
+        }
+        //  Log.d(idcheck);
+        //   Log.d(Integer.toString(idcheck));
+        return idcheck;
+    }
+    public void Deletetable5(String Pid) {
+
+        db=Helper.getWritableDatabase();
+
+        String qu = "Delete from "+ ShopHelper.TABLE_NAME5+" where "+ShopHelper.ProductID+" = '"+Pid+"'"+";";
+        Log.d("Query",qu);
+        db.rawQuery(qu, null);
+
+    }
+
+
+
+
     public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
@@ -363,6 +402,15 @@ public class DataBaseAdpter {
         idcheck=db.insert(ShopHelper.TABLE_NAME7,null,value);
         Log.d("checking","ID");
         return idcheck;
+    }
+    public void Deletetable7(String Pid,String Cid) {
+
+        db=Helper.getWritableDatabase();
+
+        String qu = "Delete from "+ ShopHelper.TABLE_NAME7+" where "+ShopHelper.ProductID+" = '"+Pid+"'"+" AND"+ShopHelper.CategoryID+" = '"+Cid+"'"+" ;";
+        Log.d("Query",qu);
+        db.rawQuery(qu, null);
+
     }
 
 
