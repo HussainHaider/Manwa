@@ -17,7 +17,6 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.example.hp.smdproject.BuniessLayer.Productclass;
 import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
@@ -105,7 +104,7 @@ public class Categories extends AppCompatActivity {
                 long v=C1.getlistid(position);
                 sessionId= Long.toString(v);
 
-                Toast.makeText(getApplicationContext(),"Item is clicked no. "+name,Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),"Item is clicked no. "+name,Toast.LENGTH_SHORT).show();
 
                new LoadProductImage().execute();
                 Intent intent = new Intent(getBaseContext(),ItemList.class);

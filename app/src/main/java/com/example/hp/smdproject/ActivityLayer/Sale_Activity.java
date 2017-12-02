@@ -7,12 +7,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import com.example.hp.smdproject.BuniessLayer.Saleproductclass;
 import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
 import com.example.hp.smdproject.R;
 import com.example.hp.smdproject.adapter.SaleProductadpter;
-import com.example.hp.smdproject.BuniessLayer.Saleproductclass;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,7 +53,7 @@ public class Sale_Activity extends AppCompatActivity {
                 // long v=adapter.getItemId(position);
 
 
-                Toast.makeText(getApplicationContext(),"Item is clicked no. ",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Item is clicked no. ",Toast.LENGTH_SHORT).show();
 
 
             }

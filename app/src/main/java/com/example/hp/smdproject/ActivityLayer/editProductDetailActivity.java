@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.hp.smdproject.BuniessLayer.Productdetailclass;
 import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
@@ -51,7 +50,7 @@ public class editProductDetailActivity extends AppCompatActivity {
                 // long v=adapter.getItemId(position);
                 long v=adapter.getlistid(position);
 
-                Toast.makeText(getApplicationContext(),"Item is clicked no. "+v,Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getApplicationContext(),"Item is clicked no. "+v,Toast.LENGTH_SHORT).show();
                 sessionId= Long.toString(v);
                 //Productdetailclass P= (Productdetailclass) parent.getItemAtPosition(position);
 

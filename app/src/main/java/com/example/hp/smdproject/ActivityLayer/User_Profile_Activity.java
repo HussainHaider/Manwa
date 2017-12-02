@@ -168,7 +168,7 @@ public class User_Profile_Activity extends AppCompatActivity
             B3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(User_Profile_Activity.this, "clicked3", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(User_Profile_Activity.this, "clicked3", Toast.LENGTH_SHORT).show();
                     SharedPreferencesFlag=false;
                     sharedPreferences.edit().clear().commit();
                     Intent intent = new Intent(getApplicationContext(), HomeActivity.class);

@@ -8,12 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
-import com.example.hp.smdproject.adapter.ProductListAdapter;
 import com.example.hp.smdproject.BuniessLayer.Productdetailclass;
+import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
 import com.example.hp.smdproject.R;
+import com.example.hp.smdproject.adapter.ProductListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,7 @@ public class ItemList extends AppCompatActivity {
                // long v=adapter.getItemId(position);
                 long v=adapter.getlistid(position);
 
-                Toast.makeText(getApplicationContext(),"Item is clicked no. "+v,Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"Item is clicked no. "+v,Toast.LENGTH_SHORT).show();
 
                 String sessionId= Long.toString(v);
                 Intent intent = new Intent(getBaseContext(),Show_items.class);

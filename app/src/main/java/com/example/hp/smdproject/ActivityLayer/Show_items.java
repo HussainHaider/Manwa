@@ -350,11 +350,9 @@ public class Show_items extends AppCompatActivity {
 
                     long c = Helper.inserttable11(item_id, Integer.toString(user.getID()));
                     if (c == -1) {
-                        Toast.makeText(getApplicationContext(), "Item Already Exist in Cart", Toast.LENGTH_SHORT)
-                                .show();
+                        Toast.makeText(getApplicationContext(), "Item Already Exist in Cart", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(getApplicationContext(), "Item Added to Cart Successfully", Toast.LENGTH_SHORT)
-                                .show();
+                        Toast.makeText(getApplicationContext(), "Item Added to Cart Successfully", Toast.LENGTH_SHORT).show();
                         count++;
                         Log.d("Hello", "world1");
                         String numberAsString2 = Integer.toString(count);
@@ -508,8 +506,8 @@ public class Show_items extends AppCompatActivity {
 
     public void Button(View v) {
         if (v.getId() == R.id.infobtn) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Infromation", Toast.LENGTH_SHORT);
-            toast.show();
+//            Toast toast = Toast.makeText(getApplicationContext(), "Infromation", Toast.LENGTH_SHORT);
+//            toast.show();
 
             final Dialog minfoDialog = new Dialog(Show_items.this);
 
@@ -559,7 +557,7 @@ public class Show_items extends AppCompatActivity {
         textsize.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(Show_items.this, "Clicked Backup", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Show_items.this, "Clicked Backup", Toast.LENGTH_SHORT).show();
                 mBottomSheetDialog.dismiss();
             }
         });
@@ -589,8 +587,8 @@ public class Show_items extends AppCompatActivity {
         }
 
         protected void onPostExecute(Bitmap result) {
-            Toast toast = Toast.makeText(getApplicationContext(), "Getting Image", Toast.LENGTH_LONG);
-            toast.show();
+//            Toast toast = Toast.makeText(getApplicationContext(), "Getting Image", Toast.LENGTH_LONG);
+//            toast.show();
             bmImage.setImageBitmap(result);
         }
     }
