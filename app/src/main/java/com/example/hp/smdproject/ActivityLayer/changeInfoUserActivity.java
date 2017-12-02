@@ -29,6 +29,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
     private List<String> mUserEmailList;
+    private List<String> mSuspendUserEmailList;
     private List<String> ListofUser;
     private Userinfo_adapter adapter;
     private ListView lvUser;
@@ -49,6 +50,8 @@ public class changeInfoUserActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_info_user);
         mUserEmailList = new ArrayList<>();
+        mSuspendUserEmailList = new ArrayList<>();
+
         ListofUser = new ArrayList<>();
         lvUser=(ListView)findViewById(R.id.Userlist);
         User=new UpdateUserData();
@@ -65,7 +68,9 @@ public class changeInfoUserActivity extends AppCompatActivity {
         }
         if(v.getId()==R.id.btnsuspend)
         {
-
+            Log.d("Suspend","button");
+            User.SuspendUSer(ListofUser,changeInfoUserActivity.this);
+            new GetSuspendUserList().execute();
         }
 
     }
@@ -92,7 +97,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
         }
         else if (id == R.id.action_delete) {
             Log.d("Menu2", "Delete");
-
+            new GetUserList().execute();
             return true;
         }
 
@@ -241,7 +246,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             lvUser.setAdapter(null);
-            mUserEmailList.clear();
+            mSuspendUserEmailList.clear();
             pDialog = new ProgressDialog(changeInfoUserActivity.this);
             pDialog.setMessage("Checking from server...");
             pDialog.setIndeterminate(false);
@@ -293,7 +298,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
                     // Storing each json item in variable
                     try {
                         email = c.getString(TAG_EMAIL);
-                        mUserEmailList.add(email);
+                        mSuspendUserEmailList.add(email);
                         Log.d("email_text",email);
 
                     } catch (JSONException e) {
@@ -322,7 +327,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
             // dismiss the dialog once don
             pDialog.dismiss();
 
-            adapter=new Userinfo_adapter(changeInfoUserActivity.this,mUserEmailList);
+            adapter=new Userinfo_adapter(changeInfoUserActivity.this,mSuspendUserEmailList);
             lvUser.setAdapter(adapter);
         }
     }

@@ -29,7 +29,7 @@ public class FullScreen extends AppCompatActivity {
                 .withSplashTimeOut(2500)
                 .withBackgroundResource(R.color.white)
                 .withFooterText("Copyright 2017")
-                .withLogo(R.drawable.biglogo)
+                .withLogo(R.drawable.manwa_black)
                 .create();
 
         setContentView(easySplashScreenView);
