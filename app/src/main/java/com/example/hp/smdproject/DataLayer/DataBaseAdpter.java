@@ -659,7 +659,7 @@ public class DataBaseAdpter {
 
      }
 
-    private static class ShopHelper extends SQLiteOpenHelper {
+    public static class ShopHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "SHOPDB";
 
         private static final String TABLE_NAME1 = "Users";
