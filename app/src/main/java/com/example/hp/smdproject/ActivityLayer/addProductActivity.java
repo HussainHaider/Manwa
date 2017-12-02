@@ -1,6 +1,8 @@
 package com.example.hp.smdproject.ActivityLayer;
 
 import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,6 +13,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 
+import com.example.hp.smdproject.DataLayer.DataBaseAdpter;
 import com.example.hp.smdproject.JSONParser;
 import com.example.hp.smdproject.R;
 
@@ -20,6 +23,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,13 +42,17 @@ public class addProductActivity extends AppCompatActivity {
 
     EditText E1,E2;
     String imageurl,name,ID=null,category_ID=null;
-    boolean flag=true;
+    boolean flag=true,checkID=false;
     Spinner spinner;
+
+    DataBaseAdpter Helper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_product);
 
+        Helper=new DataBaseAdpter(this);
         E1= (EditText) findViewById(R.id.imageurl);
         E2= (EditText) findViewById(R.id.productName);
 
@@ -114,6 +122,16 @@ public class addProductActivity extends AppCompatActivity {
             }
         }
     }
+    public void addproductName(String id,String n, Bitmap B1)
+    {
+        long id1=Helper.inserttable2(id,n,B1);
+        String numberAsString = Long.toString(id1);
+        Log.d("Data inserted2",numberAsString);
+
+        id1=Helper.inserttable7(id,category_ID);
+        numberAsString = Long.toString(id1);
+        Log.d("Data inserted2",numberAsString);
+    }
 
     private class AddProduct extends AsyncTask<String, String, String> {
 
@@ -162,6 +180,25 @@ public class addProductActivity extends AppCompatActivity {
             if (success == 1) {
                 // successfully created product
                 Log.d("Sucess", "Product Addd!");
+                try {
+                    products = json.getJSONArray(TAG_GAME_NAME);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                // looping through All Patients
+                for (int i = 0; i < products.length(); i++) {
+                    JSONObject c = null;
+                    try {
+                        c = products.getJSONObject(i);
+                        ID=c.getString(TAG_GID);
+                        checkID=true;
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
 
 
             } else {
@@ -186,6 +223,25 @@ public class addProductActivity extends AppCompatActivity {
         protected void onPostExecute(String file_url) {
             // dismiss the dialog once don
             pDialog.dismiss();
+
+            if(checkID==true)
+            {
+                String urldisplay = imageurl;
+                Bitmap mIcon11 = null;
+                try {
+                    InputStream in = new java.net.URL(urldisplay).openStream();
+                    mIcon11 = BitmapFactory.decodeStream(in);
+
+                } catch (Exception e) {
+//                    Log.e("Error", e.getMessage());
+                    e.printStackTrace();
+                }
+
+
+                addproductName(ID,name,mIcon11);
+            }
+
+            finish();
 
         }
     }

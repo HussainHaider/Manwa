@@ -2,8 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- Settings, should always be in the overflow -->
-    <item android:id="@+id/action_settings"
-        android:title="@string/action_settings"
+
+    <item
+        android:id="@+id/action_search"
+        android:title="Buscar"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="collapseActionView|ifRoom"
+        android:actionViewClass="android.widget.SearchView"
+        app:actionViewClass="android.widget.SearchView"/>
+
+
+    <item android:id="@+id/action_suspend"
+        android:title="@string/action_suspend"
+        app:showAsAction="never"/>
+
+    <item android:id="@+id/action_delete"
+        android:title="@string/action_delete"
         app:showAsAction="never"/>
 </menu>

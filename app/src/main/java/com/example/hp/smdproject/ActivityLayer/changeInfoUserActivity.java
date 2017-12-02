@@ -28,7 +28,7 @@ import java.util.List;
 public class changeInfoUserActivity extends AppCompatActivity {
 
     private ProgressDialog pDialog;
-    private List<String> mUserList;
+    private List<String> mUserEmailList;
     private List<String> ListofUser;
     private Userinfo_adapter adapter;
     private ListView lvUser;
@@ -47,7 +47,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_info_user);
-        mUserList = new ArrayList<>();
+        mUserEmailList = new ArrayList<>();
         ListofUser = new ArrayList<>();
         lvUser=(ListView)findViewById(R.id.Userlist);
         User=new UpdateUserData();
@@ -72,7 +72,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu2, menu);
         return true;
     }
 
@@ -82,6 +82,17 @@ public class changeInfoUserActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
+        if (id == R.id.action_suspend) {
+            Log.d("Menu2", "SUspend");
+
+            return true;
+        }
+        else if (id == R.id.action_delete) {
+            Log.d("Menu2", "Delete");
+
+            return true;
+        }
 
         //noinspection SimplifiableIfStatement
         return super.onOptionsItemSelected(item);
@@ -132,7 +143,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             lvUser.setAdapter(null);
-            mUserList.clear();
+            mUserEmailList.clear();
             pDialog = new ProgressDialog(changeInfoUserActivity.this);
             pDialog.setMessage("Checking from server...");
             pDialog.setIndeterminate(false);
@@ -184,7 +195,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
                     // Storing each json item in variable
                     try {
                         email = c.getString(TAG_EMAIL);
-                        mUserList.add(email);
+                        mUserEmailList.add(email);
                         Log.d("email_text",email);
 
                     } catch (JSONException e) {
@@ -213,7 +224,7 @@ public class changeInfoUserActivity extends AppCompatActivity {
             // dismiss the dialog once don
             pDialog.dismiss();
 
-            adapter=new Userinfo_adapter(changeInfoUserActivity.this,mUserList);
+            adapter=new Userinfo_adapter(changeInfoUserActivity.this,mUserEmailList);
             lvUser.setAdapter(adapter);
         }
     }

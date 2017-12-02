@@ -12,6 +12,8 @@
     <string name="banner_level">ca-app-pub-5900683309932412/5247501683</string>
     <string name="title_activity_user__profile_">Profile</string>
 
+    <string name="action_suspend">Suspend</string>
+    <string name="action_delete">Delete</string>
 
     <string-array name="category_array">
         <item>Male</item>
