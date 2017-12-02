@@ -78,7 +78,7 @@ public class addProductsdetailActivity extends AppCompatActivity {
         Log.d("check_add","dataget5");
         spinner2 = (Spinner) findViewById(R.id.productDetailspinner);
         Log.d("check_add","dataget6");
-        ArrayAdapter<String> adap = new ArrayAdapter<String>(this,
+        ArrayAdapter<String> adap = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_item, arraySpinner);
         Log.d("check_add","dataget7");
         adap.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -167,7 +167,7 @@ public class addProductsdetailActivity extends AppCompatActivity {
         String numberAsString = Long.toString(id1);
         Log.d("Data inserted",numberAsString);
 
-        id1=data.inserttable5_2(id,B);
+        data.inserttable5_2(id,B);
 
     }
 
@@ -203,7 +203,7 @@ public class addProductsdetailActivity extends AppCompatActivity {
             params.add(new BasicNameValuePair("price", productPrice));
             params.add(new BasicNameValuePair("desc", productDesc));
 
-            String email = null, error_text = null;
+            String  error_text = null;
             JSONObject json = jsonParser.makeHttpRequest(url_get_user,
                     "GET", params);
             // check for success tag

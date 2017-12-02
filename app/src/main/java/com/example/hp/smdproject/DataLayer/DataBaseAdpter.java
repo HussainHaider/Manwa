@@ -24,9 +24,11 @@ import static java.lang.Integer.parseInt;
  */
 
 public class DataBaseAdpter {
-    ShopHelper Helper;
-    long idcheck;
-    SQLiteDatabase db=null;
+    private ShopHelper Helper;
+    private long idcheck;
+    private SQLiteDatabase db=null;
+    private String qu=null;
+    private Cursor c=null;
     public DataBaseAdpter(Context context) {
         Helper = new ShopHelper(context);
         idcheck=0;
@@ -52,9 +54,9 @@ public class DataBaseAdpter {
 
         db=Helper.getWritableDatabase();
         Log.d("checking","columns");
-        String qu = "select * from "+ ShopHelper.TABLE_NAME1;
+        qu = "select * from "+ ShopHelper.TABLE_NAME1;
         Log.d("Query",qu);
-        Cursor c = db.rawQuery(qu, null);
+        c = db.rawQuery(qu, null);
 
         Log.d("checking","Query");
         while (c.moveToNext())
@@ -104,7 +106,7 @@ public class DataBaseAdpter {
 
         db=Helper.getWritableDatabase();
 
-        String qu = "Delete from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+" = '"+Pid+"'"+";";
+        qu = "Delete from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+" = '"+Pid+"'"+";";
         Log.d("Query",qu);
         db.rawQuery(qu, null);
 
@@ -114,16 +116,16 @@ public class DataBaseAdpter {
 
     public List<String> gettable2(String id)
     {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         db=Helper.getWritableDatabase();
 
         Log.d("checking","columns");
-        String qu = "select * from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+" in (Select "+ShopHelper.ProductID+" from "+ShopHelper.TABLE_NAME7+" where "+ShopHelper.CategoryID+" = '"+id+"'"+");";
+        qu = "select * from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+" in (Select "+ShopHelper.ProductID+" from "+ShopHelper.TABLE_NAME7+" where "+ShopHelper.CategoryID+" = '"+id+"'"+");";
         Log.d("Query",qu);
-        Cursor c = db.rawQuery(qu, null);
+        c = db.rawQuery(qu, null);
 
-//        Cursor c=db.query(ShopHelper.TABLE_NAME2,columns,null,null,null,null,null,null);
+//        c=db.query(ShopHelper.TABLE_NAME2,columns,null,null,null,null,null,null);
         Log.d("checking","Query");
         while (c.moveToNext())
         {
@@ -140,20 +142,19 @@ public class DataBaseAdpter {
 
     public List<String> getalltable2(String id)
     {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         db=Helper.getWritableDatabase();
-        String [] columns={ShopHelper.PID,ShopHelper.PNAME};
         Log.d("checking","columns");
-        String qu = "select "+ShopHelper.PID+","+ShopHelper.PNAME+" from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+" in (Select "+ShopHelper.ProductID+" from "+ShopHelper.TABLE_NAME7+" where "+ShopHelper.CategoryID+" = '"+id+"'"+");";
+        qu = "select "+ShopHelper.PID+","+ShopHelper.PNAME+" from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+" in (Select "+ShopHelper.ProductID+" from "+ShopHelper.TABLE_NAME7+" where "+ShopHelper.CategoryID+" = '"+id+"'"+");";
         Log.d("Query",qu);
-        Cursor c = db.rawQuery(qu, null);
+        c = db.rawQuery(qu, null);
 
         Log.d("checking","Query");
         while (c.moveToNext())
         {
             Log.d("Work","help1");
-            int cid=c.getInt(0);
+//            int cid=c.getInt(0);
 //            String numberAsString = Integer.toString(cid);
 //            list.add(numberAsString);
             String name=c.getString(1);
@@ -168,9 +169,9 @@ public class DataBaseAdpter {
 
         db=Helper.getWritableDatabase();
 
-        String qu = "select "+ShopHelper.PID+" from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PNAME+" = '"+name+"'"+";";
+        qu = "select "+ShopHelper.PID+" from "+ ShopHelper.TABLE_NAME2+" where "+ShopHelper.PNAME+" = '"+name+"'"+";";
         Log.d("Query",qu);
-        Cursor c = db.rawQuery(qu, null);
+        c = db.rawQuery(qu, null);
 
         Log.d("checking","Query");
         if (c.moveToNext())
@@ -188,22 +189,22 @@ public class DataBaseAdpter {
     public Bitmap get2_Image(String i){
 
         db=Helper.getWritableDatabase();
-        String qu = "select "+ShopHelper.PIMAGE+"  from "+ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+"="+i+";" ;
+        qu = "select "+ShopHelper.PIMAGE+"  from "+ShopHelper.TABLE_NAME2+" where "+ShopHelper.PID+"="+i+";" ;
         Log.d("Query",qu);
-        Cursor cur = db.rawQuery(qu, null);
+        c = db.rawQuery(qu, null);
 
-        if (cur.moveToFirst()){
-            byte[] imgByte = cur.getBlob(0);
+        if (c.moveToFirst()){
+            byte[] imgByte = c.getBlob(0);
             if(imgByte==null)
             {
                 return null;
             }
 
-            cur.close();
+            c.close();
             return BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
         }
-        if (cur != null && !cur.isClosed()) {
-            cur.close();
+        if (c != null && !c.isClosed()) {
+            c.close();
         }
 
         return null ;
@@ -220,7 +221,7 @@ public class DataBaseAdpter {
         value.put(ShopHelper.Price,P);
         value.put(ShopHelper.Descrption,D);
         Log.d("checking","Value");
-        int a;
+
         try {
             idcheck=db.insert(ShopHelper.TABLE_NAME5,null,value);
         }catch (SQLiteException e)
@@ -239,7 +240,6 @@ public class DataBaseAdpter {
         value.put(ShopHelper.Price,P);
         value.put(ShopHelper.Descrption,D);
         Log.d("checking","Value");
-        int a;
         try {
             idcheck=db.update(ShopHelper.TABLE_NAME5,value,ShopHelper.PDid+" ="+id,null);
         }catch (SQLiteException e)
@@ -254,7 +254,7 @@ public class DataBaseAdpter {
 
         db=Helper.getWritableDatabase();
 
-        String qu = "Delete from "+ ShopHelper.TABLE_NAME5+" where "+ShopHelper.ProductID+" = '"+Pid+"'"+";";
+        qu = "Delete from "+ ShopHelper.TABLE_NAME5+" where "+ShopHelper.ProductID+" = '"+Pid+"'"+";";
         Log.d("Query",qu);
         db.rawQuery(qu, null);
 
@@ -263,7 +263,7 @@ public class DataBaseAdpter {
 
 
 
-    public static byte[] getBitmapAsByteArray(Bitmap bitmap) {
+    private static byte[] getBitmapAsByteArray(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream);
         return outputStream.toByteArray();
@@ -292,12 +292,12 @@ public class DataBaseAdpter {
 
     public List<String> gettable5(String id)
     {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         db=Helper.getWritableDatabase();
         String [] columns={ShopHelper.ProductID,ShopHelper.PDid,ShopHelper.Size,ShopHelper.Price,ShopHelper.Descrption};
         Log.d("checking","columns");
-        Cursor c=db.query(ShopHelper.TABLE_NAME5,columns,ShopHelper.ProductID+" = '"+id+"'",null,null,null,null,null);
+        c=db.query(ShopHelper.TABLE_NAME5,columns,ShopHelper.ProductID+" = '"+id+"'",null,null,null,null,null);
         Log.d("checking","Query");
         while (c.moveToNext())
         {
@@ -320,22 +320,22 @@ public class DataBaseAdpter {
     public Bitmap getImage(String i){
 
         db=Helper.getWritableDatabase();
-        String qu = "select "+ShopHelper.KEY_IMAGE2+"  from "+ShopHelper.TABLE_NAME5+" where "+ShopHelper.PDid+"="+i+";" ;
+        qu = "select "+ShopHelper.KEY_IMAGE2+"  from "+ShopHelper.TABLE_NAME5+" where "+ShopHelper.PDid+"="+i+";" ;
         Log.d("Query",qu);
-        Cursor cur = db.rawQuery(qu, null);
+        c = db.rawQuery(qu, null);
 
-        if (cur.moveToFirst()){
-            byte[] imgByte = cur.getBlob(0);
+        if (c.moveToFirst()){
+            byte[] imgByte = c.getBlob(0);
             if(imgByte==null)
             {
                 return null;
             }
 
-            cur.close();
+            c.close();
             return BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
         }
-        if (cur != null && !cur.isClosed()) {
-            cur.close();
+        if (c != null && !c.isClosed()) {
+            c.close();
         }
 
         return null ;
@@ -345,12 +345,12 @@ public class DataBaseAdpter {
 
     public List<String> getspeceficitem(String id)
     {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
         db=Helper.getWritableDatabase();
         String [] columns={ShopHelper.PDid,ShopHelper.Size,ShopHelper.Descrption};
         Log.d("checking","columns");
-        Cursor c=db.query(ShopHelper.TABLE_NAME5,columns,ShopHelper.PDid+" = '"+id+"'",null,null,null,null,null);
+        c=db.query(ShopHelper.TABLE_NAME5,columns,ShopHelper.PDid+" = '"+id+"'",null,null,null,null,null);
         Log.d("checking","Query");
         while (c.moveToNext())
         {
@@ -407,7 +407,7 @@ public class DataBaseAdpter {
 
         db=Helper.getWritableDatabase();
 
-        String qu = "Delete from "+ ShopHelper.TABLE_NAME7+" where "+ShopHelper.ProductID+" = '"+Pid+"'"+" AND"+ShopHelper.CategoryID+" = '"+Cid+"'"+" ;";
+        qu = "Delete from "+ ShopHelper.TABLE_NAME7+" where "+ShopHelper.ProductID+" = '"+Pid+"'"+" AND"+ShopHelper.CategoryID+" = '"+Cid+"'"+" ;";
         Log.d("Query",qu);
         db.rawQuery(qu, null);
 
@@ -456,7 +456,7 @@ public class DataBaseAdpter {
         db=Helper.getWritableDatabase();
         String [] columns={ShopHelper.OfferID,ShopHelper.Name,ShopHelper.Price,ShopHelper.Price};
         Log.d("checking","columns");
-        Cursor c=db.query(ShopHelper.TABLE_NAME10,columns,null,null,null,null,null,null);
+        c=db.query(ShopHelper.TABLE_NAME10,columns,null,null,null,null,null,null);
         Log.d("checking","Query");
         while (c.moveToNext())
         {
@@ -476,22 +476,22 @@ public class DataBaseAdpter {
     public Bitmap getImage2(String i){
 
         db=Helper.getWritableDatabase();
-        String qu = "select "+ShopHelper.Offer_img+"  from "+ShopHelper.TABLE_NAME10+" where "+ShopHelper.OfferID+"="+i+";" ;
+        qu = "select "+ShopHelper.Offer_img+"  from "+ShopHelper.TABLE_NAME10+" where "+ShopHelper.OfferID+"="+i+";" ;
         Log.d("Query",qu);
-        Cursor cur = db.rawQuery(qu, null);
+        c = db.rawQuery(qu, null);
 
-        if (cur.moveToFirst()){
-            byte[] imgByte = cur.getBlob(0);
+        if (c.moveToFirst()){
+            byte[] imgByte = c.getBlob(0);
             if(imgByte==null)
             {
                 return null;
             }
 
-            cur.close();
+            c.close();
             return BitmapFactory.decodeByteArray(imgByte, 0, imgByte.length);
         }
-        if (cur != null && !cur.isClosed()) {
-            cur.close();
+        if (c != null && !c.isClosed()) {
+            c.close();
         }
 
         return null ;
@@ -533,7 +533,7 @@ public class DataBaseAdpter {
         String query = "SELECT * FROM " + ShopHelper.TABLE_NAME5+ " where "+ShopHelper.PDid+"=?" ;
 
         String[] params = new String[]{ id };
-        Cursor c=db.rawQuery(query,params);
+        c=db.rawQuery(query,params);
 
         Log.d("checking","Query");
         while (c.moveToNext())
@@ -567,7 +567,7 @@ public class DataBaseAdpter {
         String query = "SELECT * FROM " + ShopHelper.TABLE_NAME11+ " WHERE "+ShopHelper.uid+"=?" ;
         //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
         String[] params = new String[]{ id1 };
-        Cursor c=db.rawQuery(query,params);
+        c=db.rawQuery(query,params);
         Log.d("checking","Query");
         while (c.moveToNext())
         {
@@ -586,7 +586,7 @@ public class DataBaseAdpter {
         String query = "SELECT * FROM " + ShopHelper.TABLE_NAME11+ " WHERE "+ShopHelper.uid+"=?" ;
         //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
         String[] params = new String[]{ id1 };
-        Cursor c=db.rawQuery(query,params);
+        c=db.rawQuery(query,params);
         Log.d("checking","Query");
 
         return c.getCount();
@@ -633,7 +633,7 @@ public class DataBaseAdpter {
         String query = "SELECT * FROM " + ShopHelper.TABLE_NAME4+ " WHERE "+ShopHelper.uid+"=?" ;
         //  db.execSQL("delete from "+ ShopHelper.TABLE_NAME11);
         String[] params = new String[]{ id1 };
-        Cursor c=db.rawQuery(query,params);
+        c=db.rawQuery(query,params);
         Log.d("checking","Query");
         while (c.moveToNext())
         {
@@ -659,7 +659,7 @@ public class DataBaseAdpter {
 
      }
 
-    public static class ShopHelper extends SQLiteOpenHelper {
+    private static class ShopHelper extends SQLiteOpenHelper {
         private static final String DATABASE_NAME = "SHOPDB";
 
         private static final String TABLE_NAME1 = "Users";
